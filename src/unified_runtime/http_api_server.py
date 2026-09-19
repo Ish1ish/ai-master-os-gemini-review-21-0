@@ -17,6 +17,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 from typing import Any, Mapping
 
+from .canonical_http_api import CanonicalHTTPAPI
 from .http_security_adapter import HTTPProductionSecurityAdapter, HTTPRequest
 from .security_hardening import ProductionSecurityConfig
 
@@ -87,6 +88,11 @@ class UnifiedRuntimeHTTPServer:
         self.server_config = server_config or HTTPServerConfig()
         self.adapter = HTTPProductionSecurityAdapter(config, authenticator=authenticator)
         self.entrypoint = entrypoint
+        self.canonical_api = (
+            CanonicalHTTPAPI(entrypoint)
+            if entrypoint is not None and hasattr(entrypoint, "runtime")
+            else None
+        )
         self._server = ThreadingHTTPServer((self.server_config.host, self.server_config.port), _Handler)
         self._server.api_server = self
         self._thread: Thread | None = None
@@ -107,8 +113,21 @@ class UnifiedRuntimeHTTPServer:
         response = self.adapter.handle(request)
         response.body["http_server_version"] = self.VERSION
         response.body["http_server_io_executed"] = True
-
-        if response.status_code == 200 and self.entrypoint is not None and body is not None:
+        if (
+            response.status_code == 200
+            and self.canonical_api is not None
+            and path.startswith("/api/")
+        ):
+            principal = response.body.get("authentication", {})
+            status_code, app_result = self.canonical_api.handle(
+                method=method,
+                path=path,
+                body=body,
+                principal=principal,
+            )
+            response.status_code = status_code
+            response.body["application_response"] = app_result
+        elif response.status_code == 200 and self.entrypoint is not None and body is not None:
             principal = response.body.get("authentication", {})
             app_result = self.entrypoint.run(request=body, principal=principal)
             response.body["application_response"] = app_result

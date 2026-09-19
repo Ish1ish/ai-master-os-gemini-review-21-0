@@ -24,7 +24,7 @@ class Authenticator:
                 return {
                     "status": "BYPASS_FOR_LOCAL",
                     "principal": "local-dev",
-                    "scopes": ["run:submit", "run:read", "run:cancel"],
+                    "scopes": ["run:submit", "run:read", "run:list", "run:cancel"],
                 }
             return {"status": "UNAUTHENTICATED", "reason": "authenticator_not_configured"}
         result = self.verifier(credentials or {})
