@@ -11,6 +11,7 @@ from .experiment_store import ExperimentStore
 from .experiments import ExperimentService
 from .decision_memory import CounterfactualDecisionMemory
 from .adaptive_decision import AdaptiveDecisionIntelligence
+from .auth import Authenticator
 
 
 class ApplicationService:
@@ -38,6 +39,11 @@ class ApplicationService:
             )
         self.jobs=JobStore(db_path)
         self.runtime=selected_runtime
+        if authenticator is None:
+            authenticator = Authenticator(
+                production=production,
+                allow_local_bypass=not production,
+            )
         self.auth=authenticator
         experiment_path = experiments_db_path or __import__("os").getenv("AI_OS_EXPERIMENTS_DB_PATH") or os.path.join(os.path.dirname(os.path.abspath(db_path)), "experiments.sqlite3")
         self.experiments=ExperimentService(ExperimentStore(experiment_path), self.jobs, memory_runtime=getattr(selected_runtime, "memory", None))
@@ -127,14 +133,11 @@ class ApplicationService:
         return self.counterfactual_memory.calibration_context(str(project_id or "").strip())
 
     def _authorize(self, credentials, action, scope):
-        if self.auth:
-            auth=self.auth.authenticate(credentials)
-            if auth.get("status") not in {"ALLOW","BYPASS_FOR_LOCAL"}:
-                return {"status":"UNAUTHORIZED","auth":auth}
-            if scope not in auth.get("scopes",[]):
-                return {"status":"FORBIDDEN","reason":"scope_missing","scope":scope}
-        else:
-            auth={"status":"BYPASS_FOR_LOCAL","principal":"local-dev"}
+        auth=self.auth.authenticate(credentials)
+        if auth.get("status") not in {"ALLOW","BYPASS_FOR_LOCAL"}:
+            return {"status":"UNAUTHORIZED","auth":auth}
+        if scope not in auth.get("scopes",[]):
+            return {"status":"FORBIDDEN","reason":"scope_missing","scope":scope}
         decision=self.policy.authorize(action,scope,external_effect=False)
         if decision["status"]!="ALLOW":
             return {"status":"FORBIDDEN","policy":decision}

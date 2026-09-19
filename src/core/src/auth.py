@@ -7,9 +7,10 @@ from .rbac import RBAC
 class Authenticator:
     """Authentication hook with an explicit local-development bypass only."""
 
-    def __init__(self, verifier=None, production=False):
+    def __init__(self, verifier=None, production=False, allow_local_bypass=False):
         self.verifier = verifier
         self.production = bool(production)
+        self.allow_local_bypass = bool(allow_local_bypass)
 
     def __call__(self, bearer_token):
         """Allow the S19/S20 boundary to invoke the authenticator with a token string."""
@@ -19,11 +20,13 @@ class Authenticator:
         if self.verifier is None:
             if self.production:
                 return {"status": "UNAUTHENTICATED", "reason": "production_authenticator_not_configured"}
-            return {
-                "status": "BYPASS_FOR_LOCAL",
-                "principal": "local-dev",
-                "scopes": ["run:submit", "run:read", "run:cancel"],
-            }
+            if self.allow_local_bypass:
+                return {
+                    "status": "BYPASS_FOR_LOCAL",
+                    "principal": "local-dev",
+                    "scopes": ["run:submit", "run:read", "run:cancel"],
+                }
+            return {"status": "UNAUTHENTICATED", "reason": "authenticator_not_configured"}
         result = self.verifier(credentials or {})
         if result.get("status") != "AUTHENTICATED":
             return result
