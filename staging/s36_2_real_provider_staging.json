@@ -1,0 +1,57 @@
+{
+  "release": "O39-S36.2",
+  "status": "PASS",
+  "provider_module": "core.src.live_providers",
+  "environment_presence": {
+    "AI_OS_ENV": true,
+    "AI_OS_MODEL_BASE_URL": true,
+    "AI_OS_MODEL_API_KEY": true,
+    "AI_OS_MODEL_NAME": true,
+    "AI_OS_SEARCH_BASE_URL": true,
+    "AI_OS_SEARCH_API_KEY": true,
+    "AI_OS_REQUEST_TIMEOUT_S": true
+  },
+  "configuration": {
+    "model_configured": true,
+    "search_configured": true
+  },
+  "provider_configuration_status": {
+    "type": "dict",
+    "keys": [
+      "missing",
+      "status"
+    ],
+    "status": "CONFIGURED"
+  },
+  "model": {
+    "attempted": true,
+    "status": "PASS",
+    "latency_ms": 1643.96,
+    "result_shape": {
+      "type": "dict",
+      "keys": [
+        "model",
+        "provider",
+        "text"
+      ],
+      "status": null
+    },
+    "result_sha256": "4a17941063c467621e4893a685bf632b73bf06ed6c940ab8edae2000f1b4fc68"
+  },
+  "search": {
+    "attempted": true,
+    "status": "PASS",
+    "latency_ms": 1739.57,
+    "result_shape": {
+      "type": "dict",
+      "keys": [
+        "results"
+      ],
+      "status": null
+    },
+    "result_sha256": "86bdc576e06cefa0037031be2ff12bfe25e86f77fa0511574bf55f790f19e611"
+  },
+  "external_action_executed": false,
+  "memory_write_executed": false,
+  "notes": []
+}

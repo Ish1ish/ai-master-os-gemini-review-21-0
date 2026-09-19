@@ -1,0 +1,8 @@
+{
+  "same_tenant": "ALLOW",
+  "cross_tenant": {
+    "status": "DENY",
+    "reason": "cross_tenant_access"
+  },
+  "admin_override": "ALLOW"
+}

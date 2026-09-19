@@ -1,0 +1,20 @@
+{
+  "release": "O39-S37",
+  "status": "PASS",
+  "checks": {
+    "provider_resilience_imported": true,
+    "live_provider_imported": true,
+    "retry_config_defaults_bounded": true,
+    "live_provider_uses_reliability": true,
+    "retries_transient_5xx": true,
+    "rate_limit_bounded": true,
+    "circuit_breaker_fail_closed": true,
+    "non_retryable_fails_without_retry": true,
+    "targeted_tests": true
+  },
+  "targeted_test_output": "S37_TARGETED_TESTS_PASS 5/5",
+  "external_action_executed": false,
+  "memory_write_executed": false,
+  "internet_facing_production_approval": false,
+  "notes": []
+}

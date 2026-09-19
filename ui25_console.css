@@ -1,0 +1,9 @@
+/* UI25 — readable learning/outcome presentation */
+.u25-learning-summary{max-width:1420px;margin:0 auto 14px;padding:16px 18px;border:1px solid rgba(176,192,225,.14);border-radius:18px;background:linear-gradient(180deg,rgba(14,25,43,.96),rgba(7,14,25,.99));}
+.u25-learning-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+.u25-learning-grid>div{padding:14px;border:1px solid rgba(255,255,255,.06);border-radius:14px;background:rgba(255,255,255,.015);min-width:0}
+.u25-eyebrow{display:block;color:#8495b1;font-size:8px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.u25-learning-grid h3{margin:0 0 6px;font-size:14px;color:#f4f7ff}
+.u25-learning-grid p{margin:0;color:#a9b5c8;font-size:11px;line-height:1.55;overflow-wrap:anywhere}
+.u24-step small[data-u25-cleaned="true"],.u24-learning-copy[data-u25-cleaned="true"]{color:#b8c4d8}
+@media(max-width:900px){.u25-learning-grid{grid-template-columns:1fr}}

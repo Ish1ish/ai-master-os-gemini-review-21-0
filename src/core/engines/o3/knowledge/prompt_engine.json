@@ -1,0 +1,72 @@
+{
+  "items": [
+    {
+      "knowledge_id": "PK-01",
+      "title": "Prompt Architecture",
+      "content": "A strong prompt is structured around role, task, context, tone, format, and optional goal.",
+      "source_refs": [
+        "p6"
+      ],
+      "tags": [
+        "prompt",
+        "architecture",
+        "schema"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    },
+    {
+      "knowledge_id": "PK-03",
+      "title": "Context-Based Prompting",
+      "content": "Provide relevant background, situation, inputs, and goal before the task so the model can produce a more relevant response.",
+      "source_refs": [
+        "p8"
+      ],
+      "tags": [
+        "prompt",
+        "context"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    },
+    {
+      "knowledge_id": "PK-06",
+      "title": "One/Few-Shot Prompting",
+      "content": "Examples can anchor style, format, and consistency when the output needs to follow a clear pattern.",
+      "source_refs": [
+        "p11"
+      ],
+      "tags": [
+        "prompt",
+        "few-shot",
+        "examples"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    },
+    {
+      "knowledge_id": "PK-22",
+      "title": "Advanced Prompt Techniques",
+      "content": "Advanced techniques include structured outputs, constraints, iterative refinement, meta-prompting, and context-window management.",
+      "source_refs": [
+        "p27"
+      ],
+      "tags": [
+        "prompt",
+        "structured-output",
+        "constraints",
+        "refinement"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    }
+  ]
+}

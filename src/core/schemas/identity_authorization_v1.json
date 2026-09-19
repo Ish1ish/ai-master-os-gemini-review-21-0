@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS O36 Identity Authorization v1",
+  "type": "object",
+  "required": [
+    "principal_id",
+    "principal_type",
+    "roles",
+    "scopes",
+    "active"
+  ],
+  "properties": {
+    "principal_id": {
+      "type": "string"
+    },
+    "principal_type": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "array"
+    },
+    "scopes": {
+      "type": "array"
+    },
+    "active": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

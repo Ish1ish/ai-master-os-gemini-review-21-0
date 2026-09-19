@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS Release Manifest v1",
+  "type": "object",
+  "required": [
+    "product",
+    "release",
+    "channel",
+    "built_at",
+    "minimum_python",
+    "entrypoint",
+    "release_gate",
+    "notes"
+  ],
+  "properties": {
+    "product": {
+      "const": "AI Master OS"
+    },
+    "release": {
+      "type": "string"
+    },
+    "channel": {
+      "const": "release-candidate"
+    },
+    "built_at": {
+      "type": "string"
+    },
+    "minimum_python": {
+      "type": "string"
+    },
+    "entrypoint": {
+      "type": "string"
+    },
+    "release_gate": {
+      "const": "O29 RELEASE_CANDIDATE"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

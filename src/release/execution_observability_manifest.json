@@ -1,0 +1,12 @@
+{
+  "milestone": "Phase 2",
+  "version": "v1.4.0",
+  "name": "Execution Observability & Outcome Evidence",
+  "schema_version": "EOE-v1.0",
+  "status": "DEVELOPER_VERIFIED_USER_VERIFICATION_REQUIRED",
+  "tests": 256,
+  "governance": "authoritative",
+  "execution_permission": "unchanged_from_v1.3",
+  "trace": "decision_plan -> intent -> execution -> outcome",
+  "outcome_evidence": "durable_and_idempotent"
+}

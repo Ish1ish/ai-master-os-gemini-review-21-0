@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS O31 Deployment Smoke Output v1",
+  "type": "object",
+  "required": [
+    "status",
+    "engine_id",
+    "engine_version",
+    "startup_check",
+    "start",
+    "health",
+    "smoke",
+    "shutdown",
+    "qa"
+  ],
+  "properties": {
+    "status": {
+      "type": "string"
+    },
+    "engine_id": {
+      "const": "E-23"
+    },
+    "engine_version": {
+      "type": "string"
+    },
+    "startup_check": {
+      "type": "object"
+    },
+    "start": {
+      "type": "object"
+    },
+    "health": {
+      "type": "object"
+    },
+    "smoke": {
+      "type": "object"
+    },
+    "shutdown": {
+      "type": "object"
+    },
+    "qa": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

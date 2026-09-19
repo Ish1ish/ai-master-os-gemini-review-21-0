@@ -1,0 +1,5 @@
+/* UI22 — Console surface visibility + dense state polish */
+.page.u22-hidden-force{display:none!important;visibility:hidden!important;height:0!important;min-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important}
+.page.u22-visible-force{display:block!important;visibility:visible!important}
+.u22-stage-detail{display:block;max-height:58px;overflow:hidden;overflow-wrap:anywhere}
+.u22-stage-detail[data-trimmed="true"]{mask-image:linear-gradient(to bottom, black 72%, transparent 100%)}

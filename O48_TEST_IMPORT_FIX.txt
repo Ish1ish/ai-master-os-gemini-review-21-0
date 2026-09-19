@@ -1,0 +1,5 @@
+O48 test import correction
+
+The source real_wiring.py uses package-relative imports (.jobs, .handoff_contracts, etc.).
+The regression test therefore must import it as core.src.real_wiring when PYTHONPATH includes the workspace src directory.
+No production source code is changed by this correction.

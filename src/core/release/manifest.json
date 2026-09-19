@@ -1,0 +1,32 @@
+{
+  "product": "AI Master OS",
+  "release": "O40-v1.0.0",
+  "channel": "production-release-candidate",
+  "built_at": "2026-09-11T00:00:00+00:00",
+  "minimum_python": "3.10+",
+  "entrypoint": "python -m src.cli",
+  "release_gate": "O40 FINAL GO-LIVE EVIDENCE + RELEASE FREEZE",
+  "notes": "Final release layer: fail-closed final gate, isolated rollback rehearsal, release freeze manifest, deployment evidence checklist, and target-environment verification boundaries.",
+  "o37_base_release": "O37-v1.0.1",
+  "o38_gate": "FINAL_POLISH_V1_8_0",
+  "decision": "FINAL RELEASE CANDIDATE / TARGET-ENVIRONMENT-EVIDENCE-REQUIRED",
+  "external_go_live_checks_required": [
+    "real-provider staging smoke",
+    "firewall/public-port verification",
+    "certificate issuance/rotation drill",
+    "backup retention and restore drill",
+    "rollback execution in target environment"
+  ],
+  "offline_verification": "Extended offline suite; operational snapshot is read-only and does not call live providers.",
+  "o38_base_release": "O38-v1.8.0",
+  "o39_gate": "OPERATIONS_FREEZE_V1_0_0",
+  "o39_base_release": "O39-v1.0.0",
+  "o40_gate": "FINAL_GO_LIVE_EVIDENCE_V1_0_0",
+  "final_non_code_checks": [
+    "real-provider staging smoke",
+    "firewall/public-port verification",
+    "trusted TLS certificate and rotation evidence",
+    "backup retention and restore evidence",
+    "rollback execution in target environment"
+  ]
+}

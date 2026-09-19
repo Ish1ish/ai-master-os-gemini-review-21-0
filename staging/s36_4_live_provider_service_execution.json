@@ -1,0 +1,28 @@
+{
+  "release": "O39-S36.4",
+  "status": "PASS",
+  "service_module": "core.src.service",
+  "runtime_module": "core.src.real_wiring",
+  "provider_module": "core.src.live_providers",
+  "checks": {
+    "service_source_hash": "c2dda5b1c6fe121421fa10acbb7063dc258b13fd78a702d1e2fa76f51abaee43",
+    "provider_configuration": {
+      "status": "CONFIGURED",
+      "model_configured": false,
+      "search_configured": false,
+      "missing": []
+    },
+    "service_constructed": true,
+    "submit_status": "QUEUED",
+    "execute_status": "COMPLETE",
+    "run_completed": true,
+    "provider_evidence_present": true,
+    "external_action_executed": false,
+    "memory_write_executed": false
+  },
+  "result": {
+    "status": "COMPLETE",
+    "error": null
+  },
+  "notes": []
+}

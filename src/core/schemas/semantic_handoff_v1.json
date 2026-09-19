@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS Canonical Semantic Handoff v1",
+  "type": "object",
+  "required": [
+    "handoff_type",
+    "source_engine",
+    "target_engine",
+    "object_id",
+    "source_refs"
+  ],
+  "properties": {
+    "handoff_type": {
+      "type": "string"
+    },
+    "source_engine": {
+      "type": "string"
+    },
+    "target_engine": {
+      "type": "string"
+    },
+    "object_id": {
+      "type": "string"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "idea": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "evidence_summary": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "problem": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "promise": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "recommended_model": {
+      "type": "string"
+    },
+    "recommendation_reason": {
+      "type": "string",
+      "maxLength": 240
+    },
+    "origin_theme": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

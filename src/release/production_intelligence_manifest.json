@@ -1,0 +1,9 @@
+{
+  "version": "v0.9.0",
+  "name": "Production Intelligence",
+  "status": "DEVELOPMENT PACKAGE — USER VERIFICATION REQUIRED",
+  "scope": ["cost", "latency", "provider_tool_reliability", "resource_awareness"],
+  "governance": "policy_and_governance_remain_authoritative",
+  "external_actions": false,
+  "advisory_only": true
+}

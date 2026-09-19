@@ -1,0 +1,9 @@
+{
+  "milestone": "Phase 2",
+  "version": "1.2.0",
+  "name": "Governed Execution Planning",
+  "entrypoint": "core/src/execution_intent_planner.py",
+  "verification": "core/scripts/windows_phase2_execution_planning_verify.cmd",
+  "execution_mode": "PLANNING_ONLY",
+  "governance_authority": "POLICY_AND_GOVERNANCE_REMAIN_AUTHORITATIVE"
+}

@@ -1,0 +1,12 @@
+{
+  "product": "AI Master OS",
+  "release": "O42-v1.0.0",
+  "channel": "validation-evidence-candidate",
+  "minimum_python": "3.10+",
+  "entrypoint": "python -m src.cli",
+  "scope": "Validation & Evidence Loop",
+  "decision_states": ["GO", "REFINE", "NO-GO", "INCONCLUSIVE"],
+  "external_actions": false,
+  "human_gate": "Consequential actions remain behind the existing approval boundary.",
+  "artifacts": ["experiments.sqlite3", "decision_surface", "learning_record"]
+}

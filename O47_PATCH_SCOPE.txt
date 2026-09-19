@@ -1,0 +1,15 @@
+O47 — Unified API authentication boundary hardening
+
+Changes:
+- Production FullControlService now uses the signed-bearer authenticator boundary.
+- UnifiedAPIServer derives require_auth from AI_OS_ENV unless explicitly supplied.
+- Non-health/readiness O34 routes now pass through authentication + RBAC/policy scope checks.
+- Run submission forwards authenticated credentials to ApplicationService.
+- Counterfactual routes use ApplicationService authorization.
+- Cancel audit identity uses the authenticated principal when available.
+- Added focused regression tests.
+
+Not changed:
+- O45 execution service fail-open behavior; O45/GEO was not proven live in the supplied source.
+- Frozen RC baseline.
+- O32 primary HTTP path.

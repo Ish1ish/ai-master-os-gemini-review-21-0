@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "O45 Action Execution Receipt",
+  "type": "object",
+  "required": [
+    "execution_id",
+    "idempotency_key",
+    "project_id",
+    "action",
+    "tool_name",
+    "tool_version",
+    "payload_hash",
+    "request_hash",
+    "state",
+    "attempt",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "execution_id": {
+      "type": "string"
+    },
+    "idempotency_key": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "action": {
+      "type": "string"
+    },
+    "tool_name": {
+      "type": "string"
+    },
+    "tool_version": {
+      "type": "string"
+    },
+    "payload_hash": {
+      "type": "string"
+    },
+    "request_hash": {
+      "type": "string"
+    },
+    "governance_decision_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "approval_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "requested_by": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "PENDING_GOVERNANCE",
+        "AWAITING_APPROVAL",
+        "READY",
+        "RUNNING",
+        "SUCCEEDED",
+        "FAILED_RETRYABLE",
+        "FAILED_TERMINAL",
+        "BLOCKED",
+        "CANCELLED",
+        "RECOVERY_REQUIRED"
+      ]
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "result": {},
+    "error": {},
+    "created_at": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "events": {
+      "type": "array"
+    }
+  }
+}

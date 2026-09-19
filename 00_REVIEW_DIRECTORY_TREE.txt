@@ -1,0 +1,1985 @@
+Folder PATH listing
+Volume serial number is 14F2-A97D
+C:.
+|   '
+|   00_REVIEW_DIRECTORY_TREE.txt
+|   cd
+|   cls
+|   copy
+|   execution_outcome_persistence.py
+|   findstr
+|   FREEZE_MANIFEST.txt
+|   id
+|   mkdir
+|   n8n_health_gateway_tmp.py
+|   next
+|   O38_S22.1_STAGING_SECURITY_MODE_FIX_README.md
+|   O38_S22.2_STAGING_SECURITY_MODE_GATE_COMPAT_README.md
+|   O38_S22_STAGING_DEPLOYMENT_GATE_README.md
+|   O38_S23.1_SECRETS_MODULE_PACKAGING_FIX_README.md
+|   O38_S23.2_STDLIB_SECRETS_TEST_IMPORT_ALIGNMENT_README.md
+|   O38_S23_STDLIB_SECRETS_SHADOWING_FIX_README.md
+|   O38_S24_PATCH.diff
+|   O47_PATCH_MANIFEST.sha256
+|   O47_PATCH_SCOPE.txt
+|   O48_CHANGELOG.txt
+|   O48_TEST_IMPORT_FIX.txt
+|   python
+|   README.md
+|   README_S36_4.md
+|   README_S36_5.md
+|   README_S36_5_1.md
+|   real_wiring.py
+|   RELEASE_CONTENTS.txt
+|   repair_s23_2_test_imports.py
+|   repair_secrets_module_name.py
+|   repair_stdlib_secrets_shadowing.py
+|   S10_REAL_UNIFIED_RUNTIME_WIRING_README.md
+|   S11_UNIFIED_RUNTIME_ENTRYPOINT_README.md
+|   S12_PRODUCTIONIZATION_OPERATIONS_README.md
+|   S13_PRODUCTION_GOLDEN_RUN_FINAL_ACCEPTANCE_README.md
+|   S14.1_RELEASE_READINESS_FIX_README.md
+|   S14_RELEASE_READINESS_FREEZE_README.md
+|   S15_GO_LIVE_VALIDATION_README.md
+|   S16.1_OPERATIONAL_ACCEPTANCE_FIX_README.md
+|   S16.3_OPERATIONAL_ACCEPTANCE_FIX_README.md
+|   S16_OPERATIONAL_ACCEPTANCE_README.md
+|   S17_DEPLOYMENT_VALIDATION_README.md
+|   S18_PRODUCTION_SECURITY_HARDENING_README.md
+|   S19_SECURITY_BOUNDARY_WIRING_README.md
+|   S1_README.md
+|   S1_UDI_INTEGRATION_README.md
+|   S20_HTTP_SECURITY_ADAPTER_README.md
+|   S21_HTTP_SERVER_API_WIRING_README.md
+|   S25_README.md
+|   S26_README.md
+|   S27_README.md
+|   S28_README.md
+|   S29_README.md
+|   S2_O42_CONFIDENCE_FIX_README.md
+|   S2_O42_INTEGRATION_README.md
+|   S30_README.md
+|   S31_README.md
+|   S32_README.md
+|   S33_1_README.md
+|   S33_2_README.md
+|   S33_3_README.md
+|   S33_README.md
+|   S34_README.md
+|   S35_README.md
+|   S36_1_README.md
+|   S36_2_1_README.md
+|   S36_2_README.md
+|   S36_3_1_README.md
+|   S36_3_README.md
+|   S36_README.md
+|   S37_README.md
+|   S38_README.md
+|   S39_README.md
+|   S3_EVALUATION_INTEGRATION_README.md
+|   S40_README.md
+|   S41_README.md
+|   S42_README.md
+|   S43_2_README.md
+|   S43_README.md
+|   S44_2_README.md
+|   S44_README.md
+|   S45_README.md
+|   S46_README.md
+|   S47_README.md
+|   S48_README.md
+|   s49_execution_outcome_persistence_gate.py
+|   S49_README.md
+|   S4_GOVERNANCE_INTEGRATION_README.md
+|   S50_README.md
+|   S51_README.md
+|   S52_1_README.md
+|   S52_README.md
+|   S53_README.md
+|   S54_README.md
+|   S55_README.md
+|   S56_README.md
+|   S57_README.md
+|   S58_README.md
+|   S59_README.md
+|   S5_EXECUTION_OUTCOME_INTEGRATION_README.md
+|   S60_README.md
+|   S61_README.md
+|   S62_README.md
+|   S63_README.md
+|   S6_FEEDBACK_LEARNING_ADAPTATION_README.md
+|   S7_GOLDEN_UNIFIED_RUN_README.md
+|   S8_PERSISTENT_TRACE_MEMORY_HANDOFF_README.md
+|   S9_UNIFIED_RUN_COORDINATOR_README.md
+|   set
+|   tar
+|   test_s49_execution_outcome_persistence.py
+|   UI10_README.md
+|   UI11_README.md
+|   UI12_README.md
+|   UI13_README.md
+|   UI13_S61_Regression_Fix_README.md
+|   UI14_README.md
+|   UI15_README.md
+|   UI16_README.md
+|   UI17_README.md
+|   UI18_README.md
+|   UI19_README.md
+|   UI1_README.md
+|   UI22_README.md
+|   UI23_README.md
+|   ui24_console.css
+|   ui24_console.js
+|   ui24_full_console_gate.py
+|   ui24_install_overlay.py
+|   UI24_README.md
+|   ui25_console.css
+|   ui25_console.js
+|   ui25_full_console_gate.py
+|   ui25_install_overlay.py
+|   UI2_README.md
+|   UI3_README.md
+|   UI4_README.md
+|   UI5_README.md
+|   UI6_README.md
+|   UI7_README.md
+|   UI8_README.md
+|   UI9_README.md
+|   unified_runs.jsonl
+|   
++---.O47_BACKUP
+|   |   control_service.py
+|   |   unified_api.py
+|   |   
+|   \---golden_test
+|           test_o46_golden_run_control.py
+|           
++---.O48_BACKUP
++---.O48_R2_BACKUP
+|       real_wiring.py
+|       
++---.s14_acceptance
+|       unified_runs.jsonl
+|       
++---.s17_validation
++---21.0_S12_Productionization_Operations_patch
+|   |   S12_PRODUCTIONIZATION_OPERATIONS_README.md
+|   |   
+|   +---src
+|   |   \---unified_runtime
+|   |       |   production.py
+|   |       |   
+|   |       \---__pycache__
+|   |               production.cpython-313.pyc
+|   |               
+|   \---tests
+|       |   test_unified_runtime_s12_operations.py
+|       |   
+|       \---__pycache__
+|               test_unified_runtime_s12_operations.cpython-313.pyc
+|               
++---config
+|       o39_operations_manifest.json
+|       
++---data
+|       approvals.sqlite3
+|       counterfactual_memory.sqlite3
+|       experiments.sqlite3
+|       governance.sqlite3
+|       jobs.sqlite3
+|       
++---deploy
+|       Caddyfile.example
+|       staging.env.example
+|       
++---docs
+|       O38_S22.3_STAGING_SECURITY_TEST_CONTRACT_ALIGNMENT_README.md
+|       O38_STAGING_RUNBOOK.md
+|       STRATEGY_ADAPTATION_V2_0_CONTRACT.md
+|       STRATEGY_FEEDBACK_V1_9_CONTRACT.md
+|       STRATEGY_INTELLIGENCE_V1_8_CONTRACT.md
+|       UNIFIED_RUNTIME_CONTRACT_V1.md
+|       
++---o46_fix
+|   |   README.md
+|   |   
+|   +---patch
+|   |   |   apply_o46_golden_control_experience_fix.py
+|   |   |   o46_golden_control_fix.js
+|   |   |   
+|   |   \---__pycache__
+|   |           apply_o46_golden_control_experience_fix.cpython-313.pyc
+|   |           
+|   \---src
+|       \---ui
+|           +---tests
+|           |   |   test_o46_golden_control_fix.py
+|           |   |   
+|           |   \---__pycache__
+|           |           test_o46_golden_control_fix.cpython-313.pyc
+|           |           
+|           \---ui
+|                   o46_golden_control_fix.js
+|                   
++---o46_health_contract_fix
+|       apply_o46_health_contract_fix.py
+|       README.txt
+|       
++---o46_semantic_mapping_regression_install
+|   |   O46_SEMANTIC_MAPPING_REGRESSION_CHECKPOINT_2026-09-15.txt
+|   |   
+|   \---src
+|       \---core
+|           \---tests
+|               |   test_o46_semantic_mapping_regression.py
+|               |   
+|               \---__pycache__
+|                       test_o46_semantic_mapping_regression.cpython-313.pyc
+|                       
++---o46_ui_cleanup_phase1
+|   |   README.md
+|   |   
+|   +---patch
+|   |   |   apply_o46_ui_cleanup_phase1.py
+|   |   |   restore_o46_ui_cleanup_phase1.py
+|   |   |   
+|   |   \---__pycache__
+|   |           apply_o46_ui_cleanup_phase1.cpython-313.pyc
+|   |           restore_o46_ui_cleanup_phase1.cpython-313.pyc
+|   |           
+|   \---tests
+|       |   test_o46_canonical_console_cleanup.py
+|       |   
+|       \---__pycache__
+|               test_o46_canonical_console_cleanup.cpython-313.pyc
+|               
++---patch
+|   |   apply_o46_golden_control_experience_fix.py
+|   |   o46_golden_control_fix.js
+|   |   
+|   \---__pycache__
+|           apply_o46_golden_control_experience_fix.cpython-313.pyc
+|           
++---s43_1
+|   |   S43_1_README.md
+|   |   
+|   +---scripts
+|   |   |   s43_1_security_adversarial_gate.py
+|   |   |   s43_security_abuse_gate.py
+|   |   |   
+|   |   \---__pycache__
+|   |           s43_1_security_adversarial_gate.cpython-313.pyc
+|   |           s43_security_abuse_gate.cpython-313.pyc
+|   |           
+|   +---src
+|   |   \---core
+|   |       \---src
+|   |           |   security_abuse_drill.py
+|   |           |   
+|   |           \---__pycache__
+|   |                   security_abuse_drill.cpython-313.pyc
+|   |                   
+|   \---tests
+|       |   test_s43_1_security_contract_gate.py
+|       |   test_s43_security_abuse.py
+|       |   
+|       \---__pycache__
+|               test_s43_1_security_contract_gate.cpython-313.pyc
+|               test_s43_security_abuse.cpython-313.pyc
+|               
++---scripts
+|   |   s21_staging_server.py
+|   |   s32_ops_snapshot.py
+|   |   s33_3_refresh_operator_token.py
+|   |   s34_identity_secret_contract_gate.py
+|   |   s35_edge_network_contract_gate.py
+|   |   s36_1_provider_adapter_discovery.py
+|   |   s36_2_real_provider_staging_gate.py
+|   |   s36_3_1_runtime_provider_wiring_gate.py
+|   |   s36_3_runtime_provider_wiring_gate.py
+|   |   s36_4_live_provider_service_execution_gate.py
+|   |   s36_5_provider_evidence_integrity_gate.py
+|   |   s36_real_provider_staging_gate.py
+|   |   s37_provider_reliability_gate.py
+|   |   s38_runtime_resilience_gate.py
+|   |   s39_concurrency_load_gate.py
+|   |   s40_state_recovery_gate.py
+|   |   s41_crash_recovery_gate.py
+|   |   s42_failure_chaos_gate.py
+|   |   s43_security_abuse_gate.py
+|   |   s44_integrated_production_simulation_gate.py
+|   |   s44_provider_session_bootstrap.py
+|   |   s45_action_execution_gate.py
+|   |   s46_governed_action_integration_gate.py
+|   |   s47_execution_outcome_gate.py
+|   |   s48_execution_outcome_integration_gate.py
+|   |   s49_execution_outcome_persistence_gate.py
+|   |   s50_decision_loop_reentry_gate.py
+|   |   s51_closed_loop_integration_gate.py
+|   |   s52_real_provider_closed_loop_gate.py
+|   |   s53_real_provider_failure_recovery_gate.py
+|   |   s54_failure_learning_gate.py
+|   |   s55_adaptive_recovery_policy_gate.py
+|   |   s56_cost_aware_recovery_gate.py
+|   |   s57_real_provider_cost_aware_loop_gate.py
+|   |   s58_multi_dimensional_resource_governor_gate.py
+|   |   s59_governed_autonomous_loop_prototype_gate.py
+|   |   s60_real_provider_governed_autonomous_loop_gate.py
+|   |   s61_human_approval_boundary_gate.py
+|   |   s62_human_approval_boundary_integration_gate.py
+|   |   s63_approval_persistence_gate.py
+|   |   strategy_adaptation_e2e_smoke.py
+|   |   strategy_adaptation_smoke.py
+|   |   strategy_feedback_e2e_smoke.py
+|   |   strategy_feedback_smoke.py
+|   |   strategy_intelligence_e2e_smoke.py
+|   |   strategy_intelligence_smoke.py
+|   |   ui10_o46_golden_experience_gate.py
+|   |   ui11_o46_golden_live_inspector_gate.py
+|   |   ui12_o46_product_acceptance_gate.py
+|   |   ui13_o46_golden_run_control_gate.py
+|   |   ui14_full_console_gate.py
+|   |   ui15_full_console_wiring_gate.py
+|   |   ui16_real_data_experience_gate.py
+|   |   ui17_real_data_fallback_gate.py
+|   |   ui19_full_visual_polish_gate.py
+|   |   ui19_install_overlay.py
+|   |   ui1_o46_experience_shell_gate.py
+|   |   ui21_full_surface_gate.py
+|   |   ui21_install_overlay.py
+|   |   ui22_full_console_surface_gate.py
+|   |   ui22_install_overlay.py
+|   |   ui23_install_overlay.py
+|   |   ui23_structural_surface_gate.py
+|   |   ui3_o46_run_story_gate.py
+|   |   ui4_o46_evidence_explorer_gate.py
+|   |   ui5_o46_decision_intelligence_gate.py
+|   |   ui6_o46_governance_center_gate.py
+|   |   ui7_o46_outcome_learning_gate.py
+|   |   ui9_o46_visual_polish_gate.py
+|   |   windows_s21_staging_start.cmd
+|   |   windows_s21_staging_stop.cmd
+|   |   windows_s30_staging_release_gate.cmd
+|   |   windows_s31_release_candidate_freeze.cmd
+|   |   windows_s32_ops_snapshot.cmd
+|   |   windows_s32_ops_start.cmd
+|   |   windows_s32_ops_status.cmd
+|   |   windows_s32_ops_stop.cmd
+|   |   windows_s33_1_recovery_restart_gate.cmd
+|   |   windows_s33_2_recovery_restart_gate.cmd
+|   |   windows_s33_3_recovery_restart_gate.cmd
+|   |   windows_s33_recovery_restart_gate.cmd
+|   |   windows_s34_identity_secret_contract_gate.cmd
+|   |   windows_s35_edge_network_contract_gate.cmd
+|   |   windows_s36_1_provider_adapter_discovery.cmd
+|   |   windows_s36_2_real_provider_staging_gate.cmd
+|   |   windows_s36_3_1_runtime_provider_wiring_gate.cmd
+|   |   windows_s36_3_runtime_provider_wiring_gate.cmd
+|   |   windows_s36_real_provider_staging_gate.cmd
+|   |   
+|   \---__pycache__
+|           s21_staging_server.cpython-313.pyc
+|           s32_ops_snapshot.cpython-313.pyc
+|           s33_3_refresh_operator_token.cpython-313.pyc
+|           s34_identity_secret_contract_gate.cpython-313.pyc
+|           s35_edge_network_contract_gate.cpython-313.pyc
+|           s36_1_provider_adapter_discovery.cpython-313.pyc
+|           s36_2_real_provider_staging_gate.cpython-313.pyc
+|           s36_3_1_runtime_provider_wiring_gate.cpython-313.pyc
+|           s36_3_runtime_provider_wiring_gate.cpython-313.pyc
+|           s36_4_live_provider_service_execution_gate.cpython-313.pyc
+|           s36_5_provider_evidence_integrity_gate.cpython-313.pyc
+|           s36_real_provider_staging_gate.cpython-313.pyc
+|           s37_provider_reliability_gate.cpython-313.pyc
+|           s38_runtime_resilience_gate.cpython-313.pyc
+|           s39_concurrency_load_gate.cpython-313.pyc
+|           s40_state_recovery_gate.cpython-313.pyc
+|           s41_crash_recovery_gate.cpython-313.pyc
+|           s42_failure_chaos_gate.cpython-313.pyc
+|           s43_security_abuse_gate.cpython-313.pyc
+|           s44_integrated_production_simulation_gate.cpython-313.pyc
+|           s44_provider_session_bootstrap.cpython-313.pyc
+|           s45_action_execution_gate.cpython-313.pyc
+|           s46_governed_action_integration_gate.cpython-313.pyc
+|           s47_execution_outcome_gate.cpython-313.pyc
+|           s48_execution_outcome_integration_gate.cpython-313.pyc
+|           s49_execution_outcome_persistence_gate.cpython-313.pyc
+|           s50_decision_loop_reentry_gate.cpython-313.pyc
+|           s51_closed_loop_integration_gate.cpython-313.pyc
+|           s52_real_provider_closed_loop_gate.cpython-313.pyc
+|           s53_real_provider_failure_recovery_gate.cpython-313.pyc
+|           s54_failure_learning_gate.cpython-313.pyc
+|           s55_adaptive_recovery_policy_gate.cpython-313.pyc
+|           s56_cost_aware_recovery_gate.cpython-313.pyc
+|           s57_real_provider_cost_aware_loop_gate.cpython-313.pyc
+|           s58_multi_dimensional_resource_governor_gate.cpython-313.pyc
+|           s59_governed_autonomous_loop_prototype_gate.cpython-313.pyc
+|           s60_real_provider_governed_autonomous_loop_gate.cpython-313.pyc
+|           s61_human_approval_boundary_gate.cpython-313.pyc
+|           s62_human_approval_boundary_integration_gate.cpython-313.pyc
+|           s63_approval_persistence_gate.cpython-313.pyc
+|           strategy_adaptation_e2e_smoke.cpython-313.pyc
+|           strategy_adaptation_smoke.cpython-313.pyc
+|           strategy_feedback_e2e_smoke.cpython-313.pyc
+|           strategy_feedback_smoke.cpython-313.pyc
+|           strategy_intelligence_e2e_smoke.cpython-313.pyc
+|           strategy_intelligence_smoke.cpython-313.pyc
+|           ui10_o46_golden_experience_gate.cpython-313.pyc
+|           ui11_o46_golden_live_inspector_gate.cpython-313.pyc
+|           ui12_o46_product_acceptance_gate.cpython-313.pyc
+|           ui13_o46_golden_run_control_gate.cpython-313.pyc
+|           ui14_full_console_gate.cpython-313.pyc
+|           ui15_full_console_wiring_gate.cpython-313.pyc
+|           ui16_real_data_experience_gate.cpython-313.pyc
+|           ui17_real_data_fallback_gate.cpython-313.pyc
+|           ui19_full_visual_polish_gate.cpython-313.pyc
+|           ui19_install_overlay.cpython-313.pyc
+|           ui1_o46_experience_shell_gate.cpython-313.pyc
+|           ui21_full_surface_gate.cpython-313.pyc
+|           ui21_install_overlay.cpython-313.pyc
+|           ui22_full_console_surface_gate.cpython-313.pyc
+|           ui22_install_overlay.cpython-313.pyc
+|           ui23_install_overlay.cpython-313.pyc
+|           ui23_structural_surface_gate.cpython-313.pyc
+|           ui3_o46_run_story_gate.cpython-313.pyc
+|           ui4_o46_evidence_explorer_gate.cpython-313.pyc
+|           ui5_o46_decision_intelligence_gate.cpython-313.pyc
+|           ui6_o46_governance_center_gate.cpython-313.pyc
+|           ui7_o46_outcome_learning_gate.cpython-313.pyc
+|           ui9_o46_visual_polish_gate.cpython-313.pyc
+|           
++---src
+|   |   MILESTONE.md
+|   |   README.md
+|   |   release_manifest.json
+|   |   s44_integrated_simulation.py
+|   |   s44_integrated_simulation.py.s44_backup
+|   |   strategy_adaptation_intelligence.py
+|   |   strategy_adaptation_runtime.py
+|   |   strategy_adaptation_store.py
+|   |   strategy_feedback_intelligence.py
+|   |   strategy_feedback_intelligence_store.py
+|   |   strategy_feedback_runtime.py
+|   |   strategy_intelligence.py
+|   |   strategy_intelligence_runtime.py
+|   |   strategy_intelligence_store.py
+|   |   __init__.py
+|   |   
+|   +---core
+|   |   |   approvals.sqlite3
+|   |   |   core_placeholder
+|   |   |   experiments.sqlite3
+|   |   |   golden_run.json
+|   |   |   governance.sqlite3
+|   |   |   O42_RELEASE_MANIFEST.json
+|   |   |   python
+|   |   |   README.md
+|   |   |   README_O41.md
+|   |   |   README_O41_2.md
+|   |   |   README_O41_3.md
+|   |   |   README_O41_4.md
+|   |   |   README_O42.md
+|   |   |   README_O45.md
+|   |   |   README_O46.md
+|   |   |   requirements.txt
+|   |   |   run_evaluation.py
+|   |   |   scls
+|   |   |   
+|   |   +---backend
+|   |   |   \---ai_master_os
+|   |   |       \---engines
+|   |   |           \---o12
+|   |   |               \---src
+|   |   |                   |   generator.py
+|   |   |                   |   opportunity.py
+|   |   |                   |   
+|   |   |                   \---__pycache__
+|   |   |                           generator.cpython-313.pyc
+|   |   |                           opportunity.cpython-313.pyc
+|   |   |                           
+|   |   +---config
+|   |   |       .env.example
+|   |   |       local.env.example
+|   |   |       production.env.example
+|   |   |       
+|   |   +---data
+|   |   |       approvals.sqlite3
+|   |   |       audit_auth_probe.sqlite3
+|   |   |       auth_repro_8082.sqlite3
+|   |   |       auth_repro_8082_audit.sqlite3
+|   |   |       auth_repro_8082_memory.sqlite3
+|   |   |       counterfactual_memory.sqlite3
+|   |   |       experiments.sqlite3
+|   |   |       governance.sqlite3
+|   |   |       jobs.sqlite3
+|   |   |       jobs_auth_probe.sqlite3
+|   |   |       memory_auth_probe.sqlite3
+|   |   |       
+|   |   +---deploy
+|   |   |       o32-api.service.example
+|   |   |       o32-worker.service.example
+|   |   |       o33-api.service.example
+|   |   |       o33-worker.service.example
+|   |   |       o38-api.service.example
+|   |   |       o38-nginx.example.conf
+|   |   |       README.md
+|   |   |       
+|   |   +---docs
+|   |   |       ADAPTIVE_DECISION_V1_7_CONTRACT.md
+|   |   |       AOA_V1_6_CONTRACT.md
+|   |   |       BUSINESS_DECISION_GUIDE_AR.md
+|   |   |       FINAL_PHASE.md
+|   |   |       FINAL_RELEASE_CHECKLIST.md
+|   |   |       NEXT.md
+|   |   |       O38_GO_LIVE_CHECKLIST.md
+|   |   |       O38_GO_LIVE_VALIDATION.md
+|   |   |       O38_PRODUCTION_SECURITY.md
+|   |   |       O39_OPERATIONS.md
+|   |   |       O39_RELEASE_FREEZE.md
+|   |   |       O39_RUNBOOK.md
+|   |   |       O41_OPPORTUNITY_SYNTHESIS.md
+|   |   |       O42_VALIDATION_EVIDENCE_LOOP.md
+|   |   |       O43_LEARNING_DECISION_MEMORY_LOOP.md
+|   |   |       O44_GOVERNANCE_INTELLIGENCE.md
+|   |   |       O45_TOOL_ACTION_EXECUTION_HARDENING.md
+|   |   |       O46_GOVERNED_AUTONOMOUS_LOOP.md
+|   |   |       O47_CONTEXTUAL_DECISION_FINGERPRINTS.md
+|   |   |       O48_BOUNDED_SELF_OPTIMIZATION.md
+|   |   |       OIL_V1_5_CONTRACT.md
+|   |   |       OPERATOR_CARD_AR.md
+|   |   |       PHASE2_EXECUTION_PLANNING.md
+|   |   |       README.md
+|   |   |       RELEASE_CHECKLIST.md
+|   |   |       RUNBOOK.md
+|   |   |       
+|   |   +---engines
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   +---o10
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   adapter.py
+|   |   |   |   |   |   compiler.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   integration.py
+|   |   |   |   |   |   qa_adapter.py
+|   |   |   |   |   |   techniques.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           adapter.cpython-313.pyc
+|   |   |   |   |           compiler.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           integration.cpython-313.pyc
+|   |   |   |   |           qa_adapter.cpython-313.pyc
+|   |   |   |   |           techniques.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o11
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   analyzer.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   evidence.py
+|   |   |   |   |   |   models.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   research_planner.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   search_provider.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           analyzer.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           evidence.cpython-313.pyc
+|   |   |   |   |           models.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           research_planner.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           search_provider.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o12
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   extractor.py
+|   |   |   |   |   |   generator.py
+|   |   |   |   |   |   opportunity.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   scorer.py
+|   |   |   |   |   |   validator.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           extractor.cpython-313.pyc
+|   |   |   |   |           generator.cpython-313.pyc
+|   |   |   |   |           opportunity.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           scorer.cpython-313.pyc
+|   |   |   |   |           validator.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o13
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   decision.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   mvp.py
+|   |   |   |   |   |   options.py
+|   |   |   |   |   |   plan.py
+|   |   |   |   |   |   positioning.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   risk.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           decision.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           mvp.cpython-313.pyc
+|   |   |   |   |           options.cpython-313.pyc
+|   |   |   |   |           plan.cpython-313.pyc
+|   |   |   |   |           positioning.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           risk.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o14
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   architecture.py
+|   |   |   |   |   |   content_architecture.py
+|   |   |   |   |   |   definition.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   features.py
+|   |   |   |   |   |   launch.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           architecture.cpython-313.pyc
+|   |   |   |   |           content_architecture.cpython-313.pyc
+|   |   |   |   |           definition.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           features.cpython-313.pyc
+|   |   |   |   |           launch.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o15
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   dna.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   messaging.py
+|   |   |   |   |   |   naming.py
+|   |   |   |   |   |   positioning.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   visual.py
+|   |   |   |   |   |   voice.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           dna.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           messaging.cpython-313.pyc
+|   |   |   |   |           naming.cpython-313.pyc
+|   |   |   |   |           positioning.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           visual.cpython-313.pyc
+|   |   |   |   |           voice.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o16
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   copy.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   formats.py
+|   |   |   |   |   |   hooks.py
+|   |   |   |   |   |   pillars.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   repurpose.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   topics.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           copy.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           formats.cpython-313.pyc
+|   |   |   |   |           hooks.cpython-313.pyc
+|   |   |   |   |           pillars.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           repurpose.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           topics.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o17
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   assets.py
+|   |   |   |   |   |   brief.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   layout.py
+|   |   |   |   |   |   prompts.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           assets.cpython-313.pyc
+|   |   |   |   |           brief.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           layout.cpython-313.pyc
+|   |   |   |   |           prompts.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o18
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   audience.py
+|   |   |   |   |   |   campaign.py
+|   |   |   |   |   |   channels.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   experiments.py
+|   |   |   |   |   |   funnel.py
+|   |   |   |   |   |   metrics.py
+|   |   |   |   |   |   offer.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           audience.cpython-313.pyc
+|   |   |   |   |           campaign.cpython-313.pyc
+|   |   |   |   |           channels.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           experiments.cpython-313.pyc
+|   |   |   |   |           funnel.cpython-313.pyc
+|   |   |   |   |           metrics.cpython-313.pyc
+|   |   |   |   |           offer.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o19
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   expansion.py
+|   |   |   |   |   |   followup.py
+|   |   |   |   |   |   objections.py
+|   |   |   |   |   |   page_copy.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   qualifier.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   sales_message.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           expansion.cpython-313.pyc
+|   |   |   |   |           followup.cpython-313.pyc
+|   |   |   |   |           objections.cpython-313.pyc
+|   |   |   |   |           page_copy.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           qualifier.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           sales_message.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o20
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   approval.py
+|   |   |   |   |   |   conditions.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   monitoring.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   recovery.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   tools.py
+|   |   |   |   |   |   triggers.py
+|   |   |   |   |   |   workflow.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           approval.cpython-313.pyc
+|   |   |   |   |           conditions.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           monitoring.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           recovery.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           tools.cpython-313.pyc
+|   |   |   |   |           triggers.cpython-313.pyc
+|   |   |   |   |           workflow.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o21
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   attribution.py
+|   |   |   |   |   |   diagnosis.py
+|   |   |   |   |   |   engine.py
+|   |   |   |   |   |   events.py
+|   |   |   |   |   |   experiments.py
+|   |   |   |   |   |   funnel.py
+|   |   |   |   |   |   kpis.py
+|   |   |   |   |   |   learning.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           attribution.cpython-313.pyc
+|   |   |   |   |           diagnosis.cpython-313.pyc
+|   |   |   |   |           engine.cpython-313.pyc
+|   |   |   |   |           events.cpython-313.pyc
+|   |   |   |   |           experiments.cpython-313.pyc
+|   |   |   |   |           funnel.cpython-313.pyc
+|   |   |   |   |           kpis.cpython-313.pyc
+|   |   |   |   |           learning.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o3
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---knowledge
+|   |   |   |   |       market_intelligence.json
+|   |   |   |   |       prompt_engine.json
+|   |   |   |   |       strategy_engine.json
+|   |   |   |   |       
+|   |   |   |   +---src
+|   |   |   |   |   |   freshness.py
+|   |   |   |   |   |   knowledge_store.py
+|   |   |   |   |   |   models.py
+|   |   |   |   |   |   provenance.py
+|   |   |   |   |   |   qa.py
+|   |   |   |   |   |   retriever.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           freshness.cpython-313.pyc
+|   |   |   |   |           knowledge_store.cpython-313.pyc
+|   |   |   |   |           models.cpython-313.pyc
+|   |   |   |   |           provenance.cpython-313.pyc
+|   |   |   |   |           qa.cpython-313.pyc
+|   |   |   |   |           retriever.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o5
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   controller.py
+|   |   |   |   |   |   models.py
+|   |   |   |   |   |   risk.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   store.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           controller.cpython-313.pyc
+|   |   |   |   |           models.cpython-313.pyc
+|   |   |   |   |           risk.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           store.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o7
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   classifier.py
+|   |   |   |   |   |   integration.py
+|   |   |   |   |   |   learning.py
+|   |   |   |   |   |   sqlite_store.py
+|   |   |   |   |   |   store.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           classifier.cpython-313.pyc
+|   |   |   |   |           integration.cpython-313.pyc
+|   |   |   |   |           learning.cpython-313.pyc
+|   |   |   |   |           sqlite_store.cpython-313.pyc
+|   |   |   |   |           store.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   +---o8
+|   |   |   |   |   __init__.py
+|   |   |   |   |   
+|   |   |   |   +---src
+|   |   |   |   |   |   audit.py
+|   |   |   |   |   |   events.py
+|   |   |   |   |   |   exporter.py
+|   |   |   |   |   |   health.py
+|   |   |   |   |   |   metrics.py
+|   |   |   |   |   |   runtime.py
+|   |   |   |   |   |   sqlite_audit.py
+|   |   |   |   |   |   __init__.py
+|   |   |   |   |   |   
+|   |   |   |   |   \---__pycache__
+|   |   |   |   |           audit.cpython-313.pyc
+|   |   |   |   |           events.cpython-313.pyc
+|   |   |   |   |           exporter.cpython-313.pyc
+|   |   |   |   |           health.cpython-313.pyc
+|   |   |   |   |           metrics.cpython-313.pyc
+|   |   |   |   |           runtime.cpython-313.pyc
+|   |   |   |   |           sqlite_audit.cpython-313.pyc
+|   |   |   |   |           __init__.cpython-313.pyc
+|   |   |   |   |           
+|   |   |   |   \---__pycache__
+|   |   |   |           __init__.cpython-313.pyc
+|   |   |   |           
+|   |   |   \---__pycache__
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---knowledge
+|   |   |       market_intelligence.json
+|   |   |       prompt_engine.json
+|   |   |       strategy_engine.json
+|   |   |       
+|   |   +---release
+|   |   |       FINAL_SYSTEM_GATE.md
+|   |   |       manifest.json
+|   |   |       O37_VERIFICATION.txt
+|   |   |       O38_PRODUCTION_GATE.md
+|   |   |       O38_V1_6_0_CHANGELOG.md
+|   |   |       O38_V1_7_0_CHANGELOG.md
+|   |   |       O38_V1_8_0_CHANGELOG.md
+|   |   |       O41_2_CHANGELOG.md
+|   |   |       O41_2_MANIFEST.json
+|   |   |       O41_3_CHANGELOG.md
+|   |   |       O41_4_CHANGELOG.md
+|   |   |       O41_CHANGELOG.md
+|   |   |       O45_CHANGELOG.md
+|   |   |       O45_MANIFEST.json
+|   |   |       O48_MANIFEST.json
+|   |   |       
+|   |   +---reports
+|   |   |       O29_release_evaluation.json
+|   |   |       
+|   |   +---schemas
+|   |   |       action_execution_v1.json
+|   |   |       api_transport_v1.json
+|   |   |       approval_governance_v1.json
+|   |   |       deployment_output_v1.json
+|   |   |       evaluation_report_v1.json
+|   |   |       governed_cycle_v1.json
+|   |   |       identity_authorization_v1.json
+|   |   |       o33_smoke_v1.json
+|   |   |       release_manifest_v1.json
+|   |   |       semantic_handoff_v1.json
+|   |   |       tenant_isolation_v1.json
+|   |   |       
+|   |   +---scripts
+|   |   |   |   adaptive_decision_context_smoke.py
+|   |   |   |   adaptive_decision_e2e_smoke.py
+|   |   |   |   adaptive_decision_smoke.py
+|   |   |   |   advanced_outcome_analysis_e2e_smoke.py
+|   |   |   |   advanced_outcome_analysis_smoke.py
+|   |   |   |   backup_sqlite.py
+|   |   |   |   bounded_self_optimization_smoke.py
+|   |   |   |   build_manifest.py
+|   |   |   |   contextual_fingerprint_smoke.py
+|   |   |   |   counterfactual_preflight_smoke.py
+|   |   |   |   decision_uncertainty_smoke.py
+|   |   |   |   deploy_smoke.py
+|   |   |   |   execution_intent_smoke.py
+|   |   |   |   execution_observability_smoke.py
+|   |   |   |   final_release_gate.py
+|   |   |   |   governed_execution_orchestration_smoke.py
+|   |   |   |   go_live_gate.py
+|   |   |   |   init_databases.py
+|   |   |   |   o33_smoke.py
+|   |   |   |   o34_smoke.py
+|   |   |   |   o35_smoke.py
+|   |   |   |   o37_smoke.py
+|   |   |   |   o42_validation_smoke.py
+|   |   |   |   o43_learning_smoke.py
+|   |   |   |   o44_governance_smoke.py
+|   |   |   |   o45_execution_smoke.py
+|   |   |   |   o46_governed_loop_smoke.py
+|   |   |   |   ops_snapshot.py
+|   |   |   |   outcome_intelligence_e2e_smoke.py
+|   |   |   |   outcome_intelligence_smoke.py
+|   |   |   |   outcome_learning_smoke.py
+|   |   |   |   production_intelligence_smoke.py
+|   |   |   |   restore_verify.py
+|   |   |   |   staging_provider_smoke.py
+|   |   |   |   startup_check.py
+|   |   |   |   start_api.py
+|   |   |   |   start_worker.py
+|   |   |   |   unified_decision_intelligence_smoke.py
+|   |   |   |   windows_execution_observability_verify.cmd
+|   |   |   |   windows_final_release_gate.cmd
+|   |   |   |   windows_governed_execution_orchestration_verify.cmd
+|   |   |   |   windows_go_live_verify_o38.cmd
+|   |   |   |   windows_o412_offline_quality_verify.cmd
+|   |   |   |   windows_o414_decision_surface_verify.cmd
+|   |   |   |   windows_o41_offline_quality_verify.cmd
+|   |   |   |   windows_o42_verify.cmd
+|   |   |   |   windows_o43_verify.cmd
+|   |   |   |   windows_o44_verify.cmd
+|   |   |   |   windows_o45_verify.cmd
+|   |   |   |   windows_o46_verify.cmd
+|   |   |   |   windows_offline_quality_verify_o38.cmd
+|   |   |   |   windows_ops_snapshot.cmd
+|   |   |   |   windows_phase2_execution_planning_verify.cmd
+|   |   |   |   windows_phase2_unified_intelligence_verify.cmd
+|   |   |   |   windows_v04_decision_memory_verify.cmd
+|   |   |   |   windows_v05_adaptive_verify.cmd
+|   |   |   |   windows_v06_contextual_verify.cmd
+|   |   |   |   windows_v07_uncertainty_verify.cmd
+|   |   |   |   windows_v08_bounded_optimization_verify.cmd
+|   |   |   |   windows_v09_production_intelligence_verify.cmd
+|   |   |   |   windows_verify_final.cmd
+|   |   |   |   windows_verify_o37.cmd
+|   |   |   |   windows_verify_o38.cmd
+|   |   |   |   windows_verify_o39.cmd
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           adaptive_decision_context_smoke.cpython-313.pyc
+|   |   |           adaptive_decision_e2e_smoke.cpython-313.pyc
+|   |   |           adaptive_decision_smoke.cpython-313.pyc
+|   |   |           advanced_outcome_analysis_e2e_smoke.cpython-313.pyc
+|   |   |           advanced_outcome_analysis_smoke.cpython-313.pyc
+|   |   |           backup_sqlite.cpython-313.pyc
+|   |   |           bounded_self_optimization_smoke.cpython-313.pyc
+|   |   |           build_manifest.cpython-313.pyc
+|   |   |           contextual_fingerprint_smoke.cpython-313.pyc
+|   |   |           counterfactual_preflight_smoke.cpython-313.pyc
+|   |   |           decision_uncertainty_smoke.cpython-313.pyc
+|   |   |           deploy_smoke.cpython-313.pyc
+|   |   |           execution_intent_smoke.cpython-313.pyc
+|   |   |           execution_observability_smoke.cpython-313.pyc
+|   |   |           final_release_gate.cpython-313.pyc
+|   |   |           governed_execution_orchestration_smoke.cpython-313.pyc
+|   |   |           go_live_gate.cpython-313.pyc
+|   |   |           init_databases.cpython-313.pyc
+|   |   |           o33_smoke.cpython-313.pyc
+|   |   |           o34_smoke.cpython-313.pyc
+|   |   |           o35_smoke.cpython-313.pyc
+|   |   |           o37_smoke.cpython-313.pyc
+|   |   |           o42_validation_smoke.cpython-313.pyc
+|   |   |           o43_learning_smoke.cpython-313.pyc
+|   |   |           o44_governance_smoke.cpython-313.pyc
+|   |   |           o45_execution_smoke.cpython-313.pyc
+|   |   |           o46_governed_loop_smoke.cpython-313.pyc
+|   |   |           ops_snapshot.cpython-313.pyc
+|   |   |           outcome_intelligence_e2e_smoke.cpython-313.pyc
+|   |   |           outcome_intelligence_smoke.cpython-313.pyc
+|   |   |           outcome_learning_smoke.cpython-313.pyc
+|   |   |           production_intelligence_smoke.cpython-313.pyc
+|   |   |           restore_verify.cpython-313.pyc
+|   |   |           staging_provider_smoke.cpython-313.pyc
+|   |   |           startup_check.cpython-313.pyc
+|   |   |           start_api.cpython-313.pyc
+|   |   |           start_worker.cpython-313.pyc
+|   |   |           unified_decision_intelligence_smoke.cpython-313.pyc
+|   |   |           
+|   |   +---src
+|   |   |   |   action_execution_hardening.py
+|   |   |   |   adaptive_decision.py
+|   |   |   |   adaptive_decision_context.py
+|   |   |   |   adaptive_decision_context_store.py
+|   |   |   |   adaptive_decision_runtime.py
+|   |   |   |   adaptive_recovery_policy.py
+|   |   |   |   advanced_outcome_analysis.py
+|   |   |   |   advanced_outcome_analysis_runtime.py
+|   |   |   |   advanced_outcome_analysis_store.py
+|   |   |   |   ai_runtime.py
+|   |   |   |   api.py
+|   |   |   |   api_adapter.py
+|   |   |   |   api_o35.py
+|   |   |   |   api_o36.py
+|   |   |   |   approvals_view.py
+|   |   |   |   approval_authority.py
+|   |   |   |   approval_store.py
+|   |   |   |   audit_approval.py
+|   |   |   |   auth.py
+|   |   |   |   authz.py
+|   |   |   |   bounded_self_optimization.py
+|   |   |   |   chaos_drill.py
+|   |   |   |   circuit.py
+|   |   |   |   classification.py
+|   |   |   |   cli.py
+|   |   |   |   closed_loop_integration.py
+|   |   |   |   context_firewall.py
+|   |   |   |   contracts.py
+|   |   |   |   control_plane.py
+|   |   |   |   control_service.py
+|   |   |   |   control_service_o35.py
+|   |   |   |   cost_aware_recovery.py
+|   |   |   |   counterfactual_delta.py
+|   |   |   |   counterfactual_preflight.py
+|   |   |   |   crash_recovery.py
+|   |   |   |   daemon_health.py
+|   |   |   |   dead_letter.py
+|   |   |   |   decision_fingerprint.py
+|   |   |   |   decision_loop_reentry.py
+|   |   |   |   decision_memory.py
+|   |   |   |   decision_uncertainty.py
+|   |   |   |   deployment_health.py
+|   |   |   |   evaluator.py
+|   |   |   |   evidence_loop.py
+|   |   |   |   execution_gate.py
+|   |   |   |   execution_intent_planner.py
+|   |   |   |   execution_observability.py
+|   |   |   |   execution_outcome_integration.py
+|   |   |   |   execution_outcome_intelligence.py
+|   |   |   |   execution_outcome_persistence.py
+|   |   |   |   experiments.py
+|   |   |   |   experiment_store.py
+|   |   |   |   failure_injection.py
+|   |   |   |   golden.py
+|   |   |   |   governance_intelligence.py
+|   |   |   |   governed_action_integration.py
+|   |   |   |   governed_control.py
+|   |   |   |   governed_execution_orchestrator.py
+|   |   |   |   governed_executor.py
+|   |   |   |   handoff_contracts.py
+|   |   |   |   harness.py
+|   |   |   |   health.py
+|   |   |   |   http_server.py
+|   |   |   |   human_approval_boundary.py
+|   |   |   |   human_approval_boundary_integration.py
+|   |   |   |   identity.py
+|   |   |   |   isolation.py
+|   |   |   |   jobs.py
+|   |   |   |   learning_loop.py
+|   |   |   |   learning_signal_adapter.py
+|   |   |   |   live_providers.py
+|   |   |   |   localization.py
+|   |   |   |   metrics.py
+|   |   |   |   migrations.py
+|   |   |   |   multi_dimensional_resource_governor.py
+|   |   |   |   o33_smoke.py
+|   |   |   |   o34_smoke.py
+|   |   |   |   o35_smoke.py
+|   |   |   |   o45_execution_service.py
+|   |   |   |   o46_governed_autonomous_loop.py
+|   |   |   |   o46_orchestrator.py
+|   |   |   |   o46_store.py
+|   |   |   |   operator_store.py
+|   |   |   |   optimization_store.py
+|   |   |   |   outcome_intelligence.py
+|   |   |   |   outcome_intelligence_runtime.py
+|   |   |   |   outcome_intelligence_store.py
+|   |   |   |   performance.py
+|   |   |   |   persistent_human_approval.py
+|   |   |   |   policy.py
+|   |   |   |   production_intelligence.py
+|   |   |   |   production_intelligence_store.py
+|   |   |   |   providers.py
+|   |   |   |   provider_resilience.py
+|   |   |   |   qa.py
+|   |   |   |   qa_o35.py
+|   |   |   |   queue.py
+|   |   |   |   queue_service.py
+|   |   |   |   quota.py
+|   |   |   |   rate_limit.py
+|   |   |   |   rbac.py
+|   |   |   |   real_provider_closed_loop.py
+|   |   |   |   real_provider_cost_aware_loop.py
+|   |   |   |   real_provider_failure_learning.py
+|   |   |   |   real_provider_failure_recovery.py
+|   |   |   |   real_provider_governed_autonomous_loop.py
+|   |   |   |   real_wiring.py
+|   |   |   |   receipt_store.py
+|   |   |   |   release_gate.py
+|   |   |   |   release_manifest.py
+|   |   |   |   report.py
+|   |   |   |   resource_policy.py
+|   |   |   |   resource_service.py
+|   |   |   |   retry.py
+|   |   |   |   runtime.py
+|   |   |   |   runtime_adapter.py
+|   |   |   |   runtime_bridge.py
+|   |   |   |   runtime_load_validation.py
+|   |   |   |   runtime_o36.py
+|   |   |   |   runtime_o37.py
+|   |   |   |   runtime_resilience.py
+|   |   |   |   secret_provider.py
+|   |   |   |   security_abuse_drill.py
+|   |   |   |   security_qa.py
+|   |   |   |   server.py
+|   |   |   |   service.py
+|   |   |   |   service_commands.py
+|   |   |   |   shared_deployment.py
+|   |   |   |   shutdown.py
+|   |   |   |   startup.py
+|   |   |   |   state_recovery.py
+|   |   |   |   supervisor.py
+|   |   |   |   tenant_authz.py
+|   |   |   |   tenant_store.py
+|   |   |   |   tool_registry.py
+|   |   |   |   unified_api.py
+|   |   |   |   unified_decision_intelligence.py
+|   |   |   |   worker.py
+|   |   |   |   worker_daemon.py
+|   |   |   |   worker_process.py
+|   |   |   |   __init__.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           action_execution_hardening.cpython-313.pyc
+|   |   |           adaptive_decision.cpython-313.pyc
+|   |   |           adaptive_decision_context.cpython-313.pyc
+|   |   |           adaptive_decision_context_store.cpython-313.pyc
+|   |   |           adaptive_decision_runtime.cpython-313.pyc
+|   |   |           adaptive_recovery_policy.cpython-313.pyc
+|   |   |           advanced_outcome_analysis.cpython-313.pyc
+|   |   |           advanced_outcome_analysis_runtime.cpython-313.pyc
+|   |   |           advanced_outcome_analysis_store.cpython-313.pyc
+|   |   |           ai_runtime.cpython-313.pyc
+|   |   |           api.cpython-313.pyc
+|   |   |           api_adapter.cpython-313.pyc
+|   |   |           api_o35.cpython-313.pyc
+|   |   |           api_o36.cpython-313.pyc
+|   |   |           approvals_view.cpython-313.pyc
+|   |   |           approval_authority.cpython-313.pyc
+|   |   |           approval_store.cpython-313.pyc
+|   |   |           audit_approval.cpython-313.pyc
+|   |   |           auth.cpython-313.pyc
+|   |   |           authz.cpython-313.pyc
+|   |   |           bounded_self_optimization.cpython-313.pyc
+|   |   |           chaos_drill.cpython-313.pyc
+|   |   |           circuit.cpython-313.pyc
+|   |   |           classification.cpython-313.pyc
+|   |   |           cli.cpython-313.pyc
+|   |   |           closed_loop_integration.cpython-313.pyc
+|   |   |           context_firewall.cpython-313.pyc
+|   |   |           contracts.cpython-313.pyc
+|   |   |           control_plane.cpython-313.pyc
+|   |   |           control_service.cpython-313.pyc
+|   |   |           control_service_o35.cpython-313.pyc
+|   |   |           cost_aware_recovery.cpython-313.pyc
+|   |   |           counterfactual_delta.cpython-313.pyc
+|   |   |           counterfactual_preflight.cpython-313.pyc
+|   |   |           crash_recovery.cpython-313.pyc
+|   |   |           daemon_health.cpython-313.pyc
+|   |   |           dead_letter.cpython-313.pyc
+|   |   |           decision_fingerprint.cpython-313.pyc
+|   |   |           decision_loop_reentry.cpython-313.pyc
+|   |   |           decision_memory.cpython-313.pyc
+|   |   |           decision_uncertainty.cpython-313.pyc
+|   |   |           deployment_health.cpython-313.pyc
+|   |   |           evaluator.cpython-313.pyc
+|   |   |           evidence_loop.cpython-313.pyc
+|   |   |           execution_gate.cpython-313.pyc
+|   |   |           execution_intent_planner.cpython-313.pyc
+|   |   |           execution_observability.cpython-313.pyc
+|   |   |           execution_outcome_integration.cpython-313.pyc
+|   |   |           execution_outcome_intelligence.cpython-313.pyc
+|   |   |           execution_outcome_persistence.cpython-313.pyc
+|   |   |           experiments.cpython-313.pyc
+|   |   |           experiment_store.cpython-313.pyc
+|   |   |           failure_injection.cpython-313.pyc
+|   |   |           golden.cpython-313.pyc
+|   |   |           governance_intelligence.cpython-313.pyc
+|   |   |           governed_action_integration.cpython-313.pyc
+|   |   |           governed_control.cpython-313.pyc
+|   |   |           governed_execution_orchestrator.cpython-313.pyc
+|   |   |           governed_executor.cpython-313.pyc
+|   |   |           handoff_contracts.cpython-313.pyc
+|   |   |           harness.cpython-313.pyc
+|   |   |           health.cpython-313.pyc
+|   |   |           http_server.cpython-313.pyc
+|   |   |           human_approval_boundary.cpython-313.pyc
+|   |   |           human_approval_boundary_integration.cpython-313.pyc
+|   |   |           identity.cpython-313.pyc
+|   |   |           isolation.cpython-313.pyc
+|   |   |           jobs.cpython-313.pyc
+|   |   |           learning_loop.cpython-313.pyc
+|   |   |           learning_signal_adapter.cpython-313.pyc
+|   |   |           live_providers.cpython-313.pyc
+|   |   |           localization.cpython-313.pyc
+|   |   |           metrics.cpython-313.pyc
+|   |   |           migrations.cpython-313.pyc
+|   |   |           multi_dimensional_resource_governor.cpython-313.pyc
+|   |   |           o33_smoke.cpython-313.pyc
+|   |   |           o34_smoke.cpython-313.pyc
+|   |   |           o35_smoke.cpython-313.pyc
+|   |   |           o45_execution_service.cpython-313.pyc
+|   |   |           o46_governed_autonomous_loop.cpython-313.pyc
+|   |   |           o46_orchestrator.cpython-313.pyc
+|   |   |           o46_store.cpython-313.pyc
+|   |   |           operator_store.cpython-313.pyc
+|   |   |           optimization_store.cpython-313.pyc
+|   |   |           outcome_intelligence.cpython-313.pyc
+|   |   |           outcome_intelligence_runtime.cpython-313.pyc
+|   |   |           outcome_intelligence_store.cpython-313.pyc
+|   |   |           performance.cpython-313.pyc
+|   |   |           persistent_human_approval.cpython-313.pyc
+|   |   |           policy.cpython-313.pyc
+|   |   |           production_intelligence.cpython-313.pyc
+|   |   |           production_intelligence_store.cpython-313.pyc
+|   |   |           providers.cpython-313.pyc
+|   |   |           provider_resilience.cpython-313.pyc
+|   |   |           qa.cpython-313.pyc
+|   |   |           qa_o35.cpython-313.pyc
+|   |   |           queue.cpython-313.pyc
+|   |   |           queue_service.cpython-313.pyc
+|   |   |           quota.cpython-313.pyc
+|   |   |           rate_limit.cpython-313.pyc
+|   |   |           rbac.cpython-313.pyc
+|   |   |           real_provider_closed_loop.cpython-313.pyc
+|   |   |           real_provider_cost_aware_loop.cpython-313.pyc
+|   |   |           real_provider_failure_learning.cpython-313.pyc
+|   |   |           real_provider_failure_recovery.cpython-313.pyc
+|   |   |           real_provider_governed_autonomous_loop.cpython-313.pyc
+|   |   |           real_wiring.cpython-313.pyc
+|   |   |           receipt_store.cpython-313.pyc
+|   |   |           release_gate.cpython-313.pyc
+|   |   |           release_manifest.cpython-313.pyc
+|   |   |           report.cpython-313.pyc
+|   |   |           resource_policy.cpython-313.pyc
+|   |   |           resource_service.cpython-313.pyc
+|   |   |           retry.cpython-313.pyc
+|   |   |           runtime.cpython-313.pyc
+|   |   |           runtime_adapter.cpython-313.pyc
+|   |   |           runtime_bridge.cpython-313.pyc
+|   |   |           runtime_load_validation.cpython-313.pyc
+|   |   |           runtime_o36.cpython-313.pyc
+|   |   |           runtime_o37.cpython-313.pyc
+|   |   |           runtime_resilience.cpython-313.pyc
+|   |   |           secrets.cpython-313.pyc
+|   |   |           secret_provider.cpython-313.pyc
+|   |   |           security_abuse_drill.cpython-313.pyc
+|   |   |           security_qa.cpython-313.pyc
+|   |   |           server.cpython-313.pyc
+|   |   |           service.cpython-313.pyc
+|   |   |           service_commands.cpython-313.pyc
+|   |   |           shared_deployment.cpython-313.pyc
+|   |   |           shutdown.cpython-313.pyc
+|   |   |           startup.cpython-313.pyc
+|   |   |           state_recovery.cpython-313.pyc
+|   |   |           supervisor.cpython-313.pyc
+|   |   |           tenant_authz.cpython-313.pyc
+|   |   |           tenant_store.cpython-313.pyc
+|   |   |           tool_registry.cpython-313.pyc
+|   |   |           unified_api.cpython-313.pyc
+|   |   |           unified_decision_intelligence.cpython-313.pyc
+|   |   |           worker.cpython-313.pyc
+|   |   |           worker_daemon.cpython-313.pyc
+|   |   |           worker_process.cpython-313.pyc
+|   |   |           __init__.cpython-313.pyc
+|   |   |           
+|   |   +---tests
+|   |   |   |   test_adaptive_decision.py
+|   |   |   |   test_adaptive_decision_context.py
+|   |   |   |   test_adaptive_decision_context_store.py
+|   |   |   |   test_adaptive_decision_runtime.py
+|   |   |   |   test_advanced_outcome_analysis.py
+|   |   |   |   test_advanced_outcome_analysis_runtime.py
+|   |   |   |   test_advanced_outcome_analysis_store.py
+|   |   |   |   test_bounded_self_optimization.py
+|   |   |   |   test_canonical_handoff_chain.py
+|   |   |   |   test_contextual_adaptive_decision.py
+|   |   |   |   test_counterfactual_decision_memory_api.py
+|   |   |   |   test_counterfactual_delta.py
+|   |   |   |   test_counterfactual_preflight.py
+|   |   |   |   test_counterfactual_preflight_api.py
+|   |   |   |   test_decision_fingerprint.py
+|   |   |   |   test_decision_memory.py
+|   |   |   |   test_decision_uncertainty.py
+|   |   |   |   test_execution_intent_planner.py
+|   |   |   |   test_execution_observability.py
+|   |   |   |   test_final_gate_hardening.py
+|   |   |   |   test_final_polish.py
+|   |   |   |   test_governed_execution_orchestrator.py
+|   |   |   |   test_handoff_quality.py
+|   |   |   |   test_o37.py
+|   |   |   |   test_o38_go_live_gate.py
+|   |   |   |   test_o38_security.py
+|   |   |   |   test_o39_operations.py
+|   |   |   |   test_o40_final_release.py
+|   |   |   |   test_o41_decision_surface_integrity.py
+|   |   |   |   test_o41_semantic_hardening.py
+|   |   |   |   test_o42_experiment_service.py
+|   |   |   |   test_o42_http_api.py
+|   |   |   |   test_o42_validation_evidence_loop.py
+|   |   |   |   test_o43_http_api.py
+|   |   |   |   test_o43_learning_loop.py
+|   |   |   |   test_o44_governance_intelligence.py
+|   |   |   |   test_o45_execution_hardening.py
+|   |   |   |   test_o46_governed_loop.py
+|   |   |   |   test_o46_semantic_mapping_regression.py
+|   |   |   |   test_o47_unified_api_auth_boundary.py
+|   |   |   |   test_outcome_intelligence.py
+|   |   |   |   test_outcome_intelligence_runtime.py
+|   |   |   |   test_outcome_intelligence_store.py
+|   |   |   |   test_persistent_runtime.py
+|   |   |   |   test_production_intelligence.py
+|   |   |   |   test_production_runtime_hardening_v160.py
+|   |   |   |   test_runtime_quality_hardening.py
+|   |   |   |   test_schema.py
+|   |   |   |   test_tavily_provider.py
+|   |   |   |   test_unified_decision_intelligence.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           test_adaptive_decision.cpython-313.pyc
+|   |   |           test_adaptive_decision_context.cpython-313.pyc
+|   |   |           test_adaptive_decision_context_store.cpython-313.pyc
+|   |   |           test_adaptive_decision_runtime.cpython-313.pyc
+|   |   |           test_advanced_outcome_analysis.cpython-313.pyc
+|   |   |           test_advanced_outcome_analysis_runtime.cpython-313.pyc
+|   |   |           test_advanced_outcome_analysis_store.cpython-313.pyc
+|   |   |           test_bounded_self_optimization.cpython-313.pyc
+|   |   |           test_canonical_handoff_chain.cpython-313.pyc
+|   |   |           test_contextual_adaptive_decision.cpython-313.pyc
+|   |   |           test_counterfactual_decision_memory_api.cpython-313.pyc
+|   |   |           test_counterfactual_delta.cpython-313.pyc
+|   |   |           test_counterfactual_preflight.cpython-313.pyc
+|   |   |           test_counterfactual_preflight_api.cpython-313.pyc
+|   |   |           test_decision_fingerprint.cpython-313.pyc
+|   |   |           test_decision_memory.cpython-313.pyc
+|   |   |           test_decision_uncertainty.cpython-313.pyc
+|   |   |           test_execution_intent_planner.cpython-313.pyc
+|   |   |           test_execution_observability.cpython-313.pyc
+|   |   |           test_final_gate_hardening.cpython-313.pyc
+|   |   |           test_final_polish.cpython-313.pyc
+|   |   |           test_governed_execution_orchestrator.cpython-313.pyc
+|   |   |           test_handoff_quality.cpython-313.pyc
+|   |   |           test_o37.cpython-313.pyc
+|   |   |           test_o38_go_live_gate.cpython-313.pyc
+|   |   |           test_o38_security.cpython-313.pyc
+|   |   |           test_o39_operations.cpython-313.pyc
+|   |   |           test_o40_final_release.cpython-313.pyc
+|   |   |           test_o41_decision_surface_integrity.cpython-313.pyc
+|   |   |           test_o41_semantic_hardening.cpython-313.pyc
+|   |   |           test_o42_experiment_service.cpython-313.pyc
+|   |   |           test_o42_http_api.cpython-313.pyc
+|   |   |           test_o42_validation_evidence_loop.cpython-313.pyc
+|   |   |           test_o43_http_api.cpython-313.pyc
+|   |   |           test_o43_learning_loop.cpython-313.pyc
+|   |   |           test_o44_governance_intelligence.cpython-313.pyc
+|   |   |           test_o45_execution_hardening.cpython-313.pyc
+|   |   |           test_o46_governed_loop.cpython-313.pyc
+|   |   |           test_o46_semantic_mapping_regression.cpython-313.pyc
+|   |   |           test_o47_unified_api_auth_boundary.cpython-313.pyc
+|   |   |           test_outcome_intelligence.cpython-313.pyc
+|   |   |           test_outcome_intelligence_runtime.cpython-313.pyc
+|   |   |           test_outcome_intelligence_store.cpython-313.pyc
+|   |   |           test_persistent_runtime.cpython-313.pyc
+|   |   |           test_production_intelligence.cpython-313.pyc
+|   |   |           test_production_runtime_hardening_v160.cpython-313.pyc
+|   |   |           test_runtime_quality_hardening.cpython-313.pyc
+|   |   |           test_schema.cpython-313.pyc
+|   |   |           test_tavily_provider.cpython-313.pyc
+|   |   |           test_unified_decision_intelligence.cpython-313.pyc
+|   |   |           
+|   |   \---__pycache__
+|   |           run_evaluation.cpython-313.pyc
+|   |           
+|   +---docs
+|   |       FINAL_RELEASE_AUDIT_CHECKLIST.md
+|   |       WINDOWS_WORKSPACE_LAYOUT.md
+|   |       
+|   +---release
+|   |       execution_observability_manifest.json
+|   |       execution_planning_manifest.json
+|   |       governed_execution_orchestration_manifest.json
+|   |       production_intelligence_manifest.json
+|   |       
+|   +---scripts
+|   |   |   final_e2e_audit.py
+|   |   |   windows_final_e2e_audit.cmd
+|   |   |   windows_v04_final_verify.cmd
+|   |   |   
+|   |   \---__pycache__
+|   |           final_e2e_audit.cpython-313.pyc
+|   |           
+|   +---ui
+|   |   |   README.md
+|   |   |   
+|   |   +---contracts
+|   |   |       o46_experience_view.schema.json
+|   |   |       
+|   |   +---docs
+|   |   |       UI_CONSOLE.md
+|   |   |       UI_V4_1_COMMAND_CENTER.md
+|   |   |       UI_V4_6_FINAL_RELEASE_CANDIDATE.md
+|   |   |       UI_V4_FINAL_TEST_CANDIDATE.md
+|   |   |       UI_V5_0_INTEGRATED_INTELLIGENCE.md
+|   |   |       
+|   |   +---scripts
+|   |   |   |   console_server.py
+|   |   |   |   strategy_adaptation_ui_smoke.py
+|   |   |   |   windows_start_console.cmd
+|   |   |   |   windows_ui_v20_verify.cmd
+|   |   |   |   windows_ui_v402_verify.cmd
+|   |   |   |   windows_ui_v40_rtl_verify.cmd
+|   |   |   |   windows_ui_v40_verify.cmd
+|   |   |   |   windows_ui_v41_verify.cmd
+|   |   |   |   windows_ui_v42_verify.cmd
+|   |   |   |   windows_ui_v44_verify.cmd
+|   |   |   |   windows_ui_v45_verify.cmd
+|   |   |   |   windows_ui_v46_final_verify.cmd
+|   |   |   |   windows_ui_v46_verify.cmd
+|   |   |   |   windows_ui_v47_preflight_verify.cmd
+|   |   |   |   windows_ui_v49_verify.cmd
+|   |   |   |   windows_ui_v50_verify.cmd
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           console_server.cpython-313.pyc
+|   |   |           strategy_adaptation_ui_smoke.cpython-313.pyc
+|   |   |           
+|   |   +---tests
+|   |   |   |   test_o46_decision_intelligence.py
+|   |   |   |   test_o46_evidence_explorer.py
+|   |   |   |   test_o46_experience_dashboard.py
+|   |   |   |   test_o46_experience_shell.py
+|   |   |   |   test_o46_explainability.py
+|   |   |   |   test_o46_golden_control_fix.py
+|   |   |   |   test_o46_golden_experience.py
+|   |   |   |   test_o46_golden_live_inspector.py
+|   |   |   |   test_o46_golden_run_control.py
+|   |   |   |   test_o46_governance_center.py
+|   |   |   |   test_o46_outcome_learning.py
+|   |   |   |   test_o46_product_acceptance.py
+|   |   |   |   test_o46_run_story.py
+|   |   |   |   test_o46_visual_polish.py
+|   |   |   |   test_ui14_full_console.py
+|   |   |   |   test_ui15_full_console_wiring.py
+|   |   |   |   test_ui15_full_console_wiring.py.before_canonical_cleanup
+|   |   |   |   test_ui16_real_data_experience.py
+|   |   |   |   test_ui17_real_data_fallback.py
+|   |   |   |   test_ui_console.py
+|   |   |   |   test_ui_typography_icon_polish.py
+|   |   |   |   
+|   |   |   \---__pycache__
+|   |   |           test_o46_decision_intelligence.cpython-313.pyc
+|   |   |           test_o46_evidence_explorer.cpython-313.pyc
+|   |   |           test_o46_experience_dashboard.cpython-313.pyc
+|   |   |           test_o46_experience_shell.cpython-313.pyc
+|   |   |           test_o46_explainability.cpython-313.pyc
+|   |   |           test_o46_golden_control_fix.cpython-313.pyc
+|   |   |           test_o46_golden_experience.cpython-313.pyc
+|   |   |           test_o46_golden_live_inspector.cpython-313.pyc
+|   |   |           test_o46_golden_run_control.cpython-313.pyc
+|   |   |           test_o46_governance_center.cpython-313.pyc
+|   |   |           test_o46_outcome_learning.cpython-313.pyc
+|   |   |           test_o46_product_acceptance.cpython-313.pyc
+|   |   |           test_o46_run_story.cpython-313.pyc
+|   |   |           test_o46_visual_polish.cpython-313.pyc
+|   |   |           test_ui14_full_console.cpython-313.pyc
+|   |   |           test_ui15_full_console_wiring.cpython-313.pyc
+|   |   |           test_ui16_real_data_experience.cpython-313.pyc
+|   |   |           test_ui17_real_data_fallback.cpython-313.pyc
+|   |   |           test_ui_console.cpython-313.pyc
+|   |   |           test_ui_typography_icon_polish.cpython-313.pyc
+|   |   |           
+|   |   \---ui
+|   |           app.js
+|   |           app.js.o46_canonical_ui_patch.bak
+|   |           app.js.o46_health_contract_fix_v2.bak
+|   |           app.js.o46_static_boundary_fix.bak
+|   |           experience.js
+|   |           golden_run_control.js
+|   |           index.html
+|   |           index.html.o46_golden_fix.bak
+|   |           index.html.o46_navigation_recovery.bak
+|   |           index.html.o46_phase1.bak
+|   |           index.html.o46_session_actions_recovery.bak
+|   |           index.html.o46_session_modal_recovery.bak
+|   |           meta.json
+|   |           o46_golden_control_fix.js
+|   |           o46_golden_control_fix.js.o46_secret_safe.bak
+|   |           o46_navigation_recovery.js
+|   |           o46_session_actions_recovery.js
+|   |           o46_session_modal_recovery.js
+|   |           styles.css
+|   |           ui19_console.css
+|   |           ui19_console.js
+|   |           ui21_console.css
+|   |           ui21_console.js
+|   |           ui22_console.css
+|   |           ui22_console.js
+|   |           ux14_console.css
+|   |           ux14_console.js
+|   |           ux15_console.css
+|   |           ux15_console.js
+|   |           ux16_experience.js
+|   |           
+|   +---unified_runtime
+|   |   |   contract.py
+|   |   |   deployment_validation.py
+|   |   |   entrypoint.py
+|   |   |   evaluation_adapter.py
+|   |   |   execution_outcome.py
+|   |   |   final_gate.py
+|   |   |   golden_run.py
+|   |   |   governance_adapter.py
+|   |   |   go_live.py
+|   |   |   http_api_server.py
+|   |   |   http_security_adapter.py
+|   |   |   integrated_runtime.py
+|   |   |   learning_adaptation.py
+|   |   |   o42_adapter.py
+|   |   |   operational_acceptance.py
+|   |   |   persistence.py
+|   |   |   production.py
+|   |   |   release_readiness.py
+|   |   |   runtime.py
+|   |   |   s1.py
+|   |   |   security_boundary.py
+|   |   |   security_hardening.py
+|   |   |   staging_gate.py
+|   |   |   udi_adapter.py
+|   |   |   __init__.py
+|   |   |   
+|   |   \---__pycache__
+|   |           contract.cpython-313.pyc
+|   |           deployment_validation.cpython-313.pyc
+|   |           entrypoint.cpython-313.pyc
+|   |           evaluation_adapter.cpython-313.pyc
+|   |           execution_outcome.cpython-313.pyc
+|   |           final_gate.cpython-313.pyc
+|   |           golden_run.cpython-313.pyc
+|   |           governance_adapter.cpython-313.pyc
+|   |           go_live.cpython-313.pyc
+|   |           http_api_server.cpython-313.pyc
+|   |           http_security_adapter.cpython-313.pyc
+|   |           integrated_runtime.cpython-313.pyc
+|   |           learning_adaptation.cpython-313.pyc
+|   |           o42_adapter.cpython-313.pyc
+|   |           operational_acceptance.cpython-313.pyc
+|   |           persistence.cpython-313.pyc
+|   |           production.cpython-313.pyc
+|   |           release_readiness.cpython-313.pyc
+|   |           runtime.cpython-313.pyc
+|   |           s1.cpython-313.pyc
+|   |           security_boundary.cpython-313.pyc
+|   |           security_hardening.cpython-313.pyc
+|   |           staging_gate.cpython-313.pyc
+|   |           udi_adapter.cpython-313.pyc
+|   |           __init__.cpython-313.pyc
+|   |           
+|   +---windows
+|   |       load_project_env.cmd
+|   |       organize_ai_master_os.cmd
+|   |       
+|   \---__pycache__
+|           s44_integrated_simulation.cpython-313.pyc
+|           strategy_adaptation_intelligence.cpython-313.pyc
+|           strategy_adaptation_runtime.cpython-313.pyc
+|           strategy_adaptation_store.cpython-313.pyc
+|           strategy_feedback_intelligence.cpython-313.pyc
+|           strategy_feedback_intelligence_store.cpython-313.pyc
+|           strategy_feedback_runtime.cpython-313.pyc
+|           strategy_intelligence.cpython-313.pyc
+|           strategy_intelligence_runtime.cpython-313.pyc
+|           strategy_intelligence_store.cpython-313.pyc
+|           __init__.cpython-313.pyc
+|           
++---staging
+|   |   Caddyfile
+|   |   operator_token.txt
+|   |   s21.pid
+|   |   s36_1_provider_adapter_inventory.json
+|   |   s36_2_real_provider_staging.json
+|   |   s36_3_runtime_provider_wiring.json
+|   |   s36_4_live_provider_service_execution.json
+|   |   s36_5_provider_evidence_integrity.json
+|   |   s37_provider_reliability.json
+|   |   s38_runtime_resilience.json
+|   |   s39_concurrency_load.json
+|   |   s40_state_recovery.json
+|   |   s41_crash_recovery.json
+|   |   s42_failure_chaos.json
+|   |   s43_security_abuse.json
+|   |   
+|   +---ops_snapshot
+|   |       s33_2_live_https_response.txt
+|   |       s33_3_live_https_response.txt
+|   |       s33_3_recovery_gate_summary.txt
+|   |       s34_identity_secret_contract.txt
+|   |       s35_edge_network_contract.json
+|   |       snapshot.json
+|   |       snapshot.txt
+|   |       
+|   +---release_candidate
+|   |       caddy_8443_listener.txt
+|   |       compileall.txt
+|   |       full_regression.txt
+|   |       live_https_response.txt
+|   |       release_candidate_manifest.txt
+|   |       s21_8091_listener.txt
+|   |       
+|   \---release_gate
+|           compileall.txt
+|           full_regression.txt
+|           live_https_response.txt
+|           
++---tests
+|   |   test_o46_approval_persistence.py
+|   |   test_o46_governed_autonomous_loop.py
+|   |   test_o46_human_approval_boundary.py
+|   |   test_o46_human_approval_integration.py
+|   |   test_o46_real_provider_loop.py
+|   |   test_o48_consequential_action_outcome_contract.py
+|   |   test_s23_1_secrets_module_packaging.py
+|   |   test_s23_stdlib_secrets_shadowing.py
+|   |   test_s25_package_import_alignment.py
+|   |   test_s26_o36_authenticator_callable_contract.py
+|   |   test_s36_1_provider_adapter_discovery.py
+|   |   test_s36_2_real_provider_staging.py
+|   |   test_s36_3_1_runtime_provider_wiring.py
+|   |   test_s36_3_runtime_provider_wiring.py
+|   |   test_s36_4_live_provider_service_execution.py
+|   |   test_s36_5_1_ai_runtime_live_text_contract.py
+|   |   test_s36_5_provider_evidence_integrity.py
+|   |   test_s37_provider_reliability.py
+|   |   test_s38_runtime_resilience.py
+|   |   test_s39_concurrency_load.py
+|   |   test_s40_state_recovery.py
+|   |   test_s41_crash_recovery.py
+|   |   test_s42_failure_chaos.py
+|   |   test_s43_2_security_adversarial_gate.py
+|   |   test_s43_security_abuse.py
+|   |   test_s44_2_provider_session_bootstrap.py
+|   |   test_s44_integrated_production_simulation.py
+|   |   test_s45_action_execution_hardening.py
+|   |   test_s46_governed_action_integration.py
+|   |   test_s47_execution_outcome_intelligence.py
+|   |   test_s48_execution_outcome_integration.py
+|   |   test_s49_execution_outcome_persistence.py
+|   |   test_s50_decision_loop_reentry.py
+|   |   test_s51_closed_loop_integration.py
+|   |   test_s52_real_provider_closed_loop.py
+|   |   test_s53_real_provider_failure_recovery.py
+|   |   test_s54_failure_learning.py
+|   |   test_s55_adaptive_recovery_policy.py
+|   |   test_s56_cost_aware_recovery.py
+|   |   test_s57_real_provider_cost_aware_loop.py
+|   |   test_s58_multi_dimensional_resource_governor.py
+|   |   test_strategy_adaptation_intelligence.py
+|   |   test_strategy_adaptation_runtime.py
+|   |   test_strategy_adaptation_store.py
+|   |   test_strategy_feedback_intelligence.py
+|   |   test_strategy_feedback_intelligence_store.py
+|   |   test_strategy_feedback_runtime.py
+|   |   test_strategy_intelligence.py
+|   |   test_strategy_intelligence_runtime.py
+|   |   test_strategy_intelligence_store.py
+|   |   test_ui18_backend_route_alignment.py
+|   |   test_ui18_backend_route_alignment.py.before_isolated_probe
+|   |   test_ui18_backend_route_alignment.py.ui18_backup
+|   |   test_ui18_backend_route_alignment.py.ui18_pre_subprocess_backup
+|   |   test_unified_runtime_contract.py
+|   |   test_unified_runtime_s1.py
+|   |   test_unified_runtime_s10_integrated.py
+|   |   test_unified_runtime_s11_entrypoint.py
+|   |   test_unified_runtime_s12_operations.py
+|   |   test_unified_runtime_s13_final_gate.py
+|   |   test_unified_runtime_s14_release.py
+|   |   test_unified_runtime_s15_go_live.py
+|   |   test_unified_runtime_s16_operational.py
+|   |   test_unified_runtime_s17_deployment.py
+|   |   test_unified_runtime_s18_security.py
+|   |   test_unified_runtime_s19_security_boundary.py
+|   |   test_unified_runtime_s1_udi.py
+|   |   test_unified_runtime_s20_http_security.py
+|   |   test_unified_runtime_s21_http_server.py
+|   |   test_unified_runtime_s22_1_staging_security.py
+|   |   test_unified_runtime_s22_2_gate_compat.py
+|   |   test_unified_runtime_s22_staging_gate.py
+|   |   test_unified_runtime_s2_o42.py
+|   |   test_unified_runtime_s3_evaluation.py
+|   |   test_unified_runtime_s4_governance.py
+|   |   test_unified_runtime_s5_execution_outcome.py
+|   |   test_unified_runtime_s6_feedback_learning_adaptation.py
+|   |   test_unified_runtime_s7_golden.py
+|   |   test_unified_runtime_s8_persistence_memory.py
+|   |   test_unified_runtime_s9_coordinator.py
+|   |   
+|   \---__pycache__
+|           test_o46_approval_persistence.cpython-313.pyc
+|           test_o46_governed_autonomous_loop.cpython-313.pyc
+|           test_o46_human_approval_boundary.cpython-313.pyc
+|           test_o46_human_approval_integration.cpython-313.pyc
+|           test_o46_real_provider_loop.cpython-313.pyc
+|           test_o48_consequential_action_outcome_contract.cpython-313.pyc
+|           test_s23_1_secrets_module_packaging.cpython-313.pyc
+|           test_s23_stdlib_secrets_shadowing.cpython-313.pyc
+|           test_s25_package_import_alignment.cpython-313.pyc
+|           test_s26_o36_authenticator_callable_contract.cpython-313.pyc
+|           test_s36_1_provider_adapter_discovery.cpython-313.pyc
+|           test_s36_2_real_provider_staging.cpython-313.pyc
+|           test_s36_3_1_runtime_provider_wiring.cpython-313.pyc
+|           test_s36_3_runtime_provider_wiring.cpython-313.pyc
+|           test_s36_4_live_provider_service_execution.cpython-313.pyc
+|           test_s36_5_1_ai_runtime_live_text_contract.cpython-313.pyc
+|           test_s36_5_provider_evidence_integrity.cpython-313.pyc
+|           test_s37_provider_reliability.cpython-313.pyc
+|           test_s38_runtime_resilience.cpython-313.pyc
+|           test_s39_concurrency_load.cpython-313.pyc
+|           test_s40_state_recovery.cpython-313.pyc
+|           test_s41_crash_recovery.cpython-313.pyc
+|           test_s42_failure_chaos.cpython-313.pyc
+|           test_s43_2_security_adversarial_gate.cpython-313.pyc
+|           test_s43_security_abuse.cpython-313.pyc
+|           test_s44_2_provider_session_bootstrap.cpython-313.pyc
+|           test_s44_integrated_production_simulation.cpython-313.pyc
+|           test_s45_action_execution_hardening.cpython-313.pyc
+|           test_s46_governed_action_integration.cpython-313.pyc
+|           test_s47_execution_outcome_intelligence.cpython-313.pyc
+|           test_s48_execution_outcome_integration.cpython-313.pyc
+|           test_s49_execution_outcome_persistence.cpython-313.pyc
+|           test_s50_decision_loop_reentry.cpython-313.pyc
+|           test_s51_closed_loop_integration.cpython-313.pyc
+|           test_s52_real_provider_closed_loop.cpython-313.pyc
+|           test_s53_real_provider_failure_recovery.cpython-313.pyc
+|           test_s54_failure_learning.cpython-313.pyc
+|           test_s55_adaptive_recovery_policy.cpython-313.pyc
+|           test_s56_cost_aware_recovery.cpython-313.pyc
+|           test_s57_real_provider_cost_aware_loop.cpython-313.pyc
+|           test_s58_multi_dimensional_resource_governor.cpython-313.pyc
+|           test_strategy_adaptation_intelligence.cpython-313.pyc
+|           test_strategy_adaptation_runtime.cpython-313.pyc
+|           test_strategy_adaptation_store.cpython-313.pyc
+|           test_strategy_feedback_intelligence.cpython-313.pyc
+|           test_strategy_feedback_intelligence_store.cpython-313.pyc
+|           test_strategy_feedback_runtime.cpython-313.pyc
+|           test_strategy_intelligence.cpython-313.pyc
+|           test_strategy_intelligence_runtime.cpython-313.pyc
+|           test_strategy_intelligence_store.cpython-313.pyc
+|           test_ui18_backend_route_alignment.cpython-313.pyc
+|           test_unified_runtime_contract.cpython-313.pyc
+|           test_unified_runtime_s1.cpython-313.pyc
+|           test_unified_runtime_s10_integrated.cpython-313.pyc
+|           test_unified_runtime_s11_entrypoint.cpython-313.pyc
+|           test_unified_runtime_s12_operations.cpython-313.pyc
+|           test_unified_runtime_s13_final_gate.cpython-313.pyc
+|           test_unified_runtime_s14_release.cpython-313.pyc
+|           test_unified_runtime_s15_go_live.cpython-313.pyc
+|           test_unified_runtime_s16_operational.cpython-313.pyc
+|           test_unified_runtime_s17_deployment.cpython-313.pyc
+|           test_unified_runtime_s18_security.cpython-313.pyc
+|           test_unified_runtime_s19_security_boundary.cpython-313.pyc
+|           test_unified_runtime_s1_udi.cpython-313.pyc
+|           test_unified_runtime_s20_http_security.cpython-313.pyc
+|           test_unified_runtime_s21_http_server.cpython-313.pyc
+|           test_unified_runtime_s22_1_staging_security.cpython-313.pyc
+|           test_unified_runtime_s22_2_gate_compat.cpython-313.pyc
+|           test_unified_runtime_s22_staging_gate.cpython-313.pyc
+|           test_unified_runtime_s2_o42.cpython-313.pyc
+|           test_unified_runtime_s3_evaluation.cpython-313.pyc
+|           test_unified_runtime_s4_governance.cpython-313.pyc
+|           test_unified_runtime_s5_execution_outcome.cpython-313.pyc
+|           test_unified_runtime_s6_feedback_learning_adaptation.cpython-313.pyc
+|           test_unified_runtime_s7_golden.cpython-313.pyc
+|           test_unified_runtime_s8_persistence_memory.cpython-313.pyc
+|           test_unified_runtime_s9_coordinator.cpython-313.pyc
+|           
++---tools
+|   \---caddy
+|           caddy.exe
+|           Caddyfile
+|           
++---ui20_build
+|   |   UI20_README.md
+|   |   
+|   +---scripts
+|   |   |   ui20_full_console_visual_gate.py
+|   |   |   ui20_install_overlay.py
+|   |   |   
+|   |   \---__pycache__
+|   |           ui20_full_console_visual_gate.cpython-313.pyc
+|   |           ui20_install_overlay.cpython-313.pyc
+|   |           
+|   \---src
+|       \---ui
+|           \---ui
+|                   ui20_console.css
+|                   ui20_console.js
+|                   
+\---__pycache__
+        execution_outcome_persistence.cpython-313.pyc
+        real_wiring.cpython-313.pyc
+        repair_s23_2_test_imports.cpython-313.pyc
+        repair_secrets_module_name.cpython-313.pyc
+        repair_stdlib_secrets_shadowing.cpython-313.pyc
+        s49_execution_outcome_persistence_gate.cpython-313.pyc
+        test_s49_execution_outcome_persistence.cpython-313.pyc
+        ui24_full_console_gate.cpython-313.pyc
+        ui24_install_overlay.cpython-313.pyc
+        ui25_full_console_gate.cpython-313.pyc
+        ui25_install_overlay.cpython-313.pyc
+        

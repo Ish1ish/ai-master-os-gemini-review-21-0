@@ -1,0 +1,7 @@
+O48 Consequential Action Outcome Contract - corrected package path
+
+Targets the canonical workspace paths:
+src/core/src/real_wiring.py
+tests/test_o48_consequential_action_outcome_contract.py
+
+No change to top-level run status. Adds explicit execution_outcome fields and preserves external_action_executed=false because this runtime path does not perform an external publisher call.

@@ -1,0 +1,39 @@
+{
+  "release": "O39-S32",
+  "purpose": "Production-operations foundation for the verified O38 staging release candidate.",
+  "mode": "staging",
+  "fail_closed": true,
+  "secret_safe": true,
+  "services": [
+    {
+      "id": "s21",
+      "name": "AIOS S21 staging API",
+      "listen": "127.0.0.1:8091",
+      "start": "scripts\\windows_s21_staging_start.cmd",
+      "stop": "scripts\\windows_s21_staging_stop.cmd"
+    },
+    {
+      "id": "caddy",
+      "name": "Caddy local TLS edge",
+      "listen": "localhost:8443",
+      "config": "tools\\caddy\\Caddyfile"
+    }
+  ],
+  "required_files": [
+    "scripts\\windows_s21_staging_start.cmd",
+    "scripts\\windows_s21_staging_stop.cmd",
+    "tools\\caddy\\caddy.exe",
+    "tools\\caddy\\Caddyfile",
+    "staging\\operator_token.txt"
+  ],
+  "secret_policy": {
+    "never_print": [
+      "staging\\operator_token.txt",
+      "AI_OS_IDENTITY_SIGNING_SECRET",
+      "AI_OS_SEARCH_API_KEY",
+      "Authorization headers"
+    ],
+    "snapshot_policy": "metadata_and_hashes_only"
+  },
+  "production_approval": false
+}

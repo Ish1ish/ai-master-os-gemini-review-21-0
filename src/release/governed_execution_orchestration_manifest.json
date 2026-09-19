@@ -1,0 +1,9 @@
+{
+  "version": "v1.3.0",
+  "name": "Governed Execution Orchestration",
+  "schema_version": "GEO-v1.0",
+  "purpose": "Bridge Execution Intent into O45 governed execution with deterministic binding, durable mapping, approval-aware execution, idempotent replay, recovery boundaries, and audit events.",
+  "execution_boundary": "Decision planning does not call tool handlers directly.",
+  "governance": "Policy and governance remain authoritative.",
+  "autonomous_provider_switching": false
+}

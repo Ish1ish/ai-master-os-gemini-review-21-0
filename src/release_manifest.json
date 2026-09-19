@@ -1,0 +1,19 @@
+{
+  "product": "AI Master OS",
+  "release": "Decision Uncertainty & Calibration Intelligence",
+  "version": "0.7.0",
+  "baseline": "Contextual Decision Fingerprints v0.6.0",
+  "status": "USER_VERIFICATION_REQUIRED",
+  "core_features": [
+    "counterfactual_preflight",
+    "counterfactual_delta",
+    "counterfactual_prediction_memory",
+    "prediction_outcome_calibration",
+    "adaptive_decision_intelligence",
+    "contextual_decision_fingerprints",
+    "decision_uncertainty",
+    "calibration_reliability"
+  ],
+  "ui_build": "5.0.0",
+  "safety_boundary": "Reliability and uncertainty can increase advisory caution but cannot lower, bypass, approve or execute a governance decision."
+}

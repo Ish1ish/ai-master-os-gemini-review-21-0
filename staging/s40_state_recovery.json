@@ -1,0 +1,27 @@
+{
+  "release": "O39-S40",
+  "status": "PASS",
+  "checks": {
+    "backup_all_state_domains": true,
+    "backup_manifest_present": true,
+    "restore_all_files": true,
+    "restore_hash_integrity": true,
+    "restored_state_readable": true,
+    "row_count_integrity": true,
+    "targeted_tests": true,
+    "compileall": true
+  },
+  "state_domains": [
+    "jobs.sqlite3",
+    "queue.sqlite3",
+    "approvals.sqlite3",
+    "operator.sqlite3",
+    "memory.sqlite3",
+    "audit.sqlite3"
+  ],
+  "targeted_test_output": "S40_TARGETED_TESTS_PASS 6/6",
+  "external_action_executed": false,
+  "memory_write_executed": false,
+  "internet_facing_production_approval": false,
+  "notes": []
+}

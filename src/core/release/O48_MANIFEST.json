@@ -1,0 +1,17 @@
+{
+  "product": "AI Master OS",
+  "release": "v0.8.0",
+  "codename": "Bounded Self-Optimization",
+  "channel": "development-release-candidate",
+  "base_release": "v0.7.0",
+  "minimum_python": "3.10+",
+  "verification_required": "USER_WINDOWS_VERIFICATION",
+  "safety_boundary": [
+    "simulation_side_effect free",
+    "evidence required",
+    "rollback required",
+    "governance remains authoritative",
+    "no unrestricted self-modification",
+    "no external action execution in optimizer"
+  ]
+}

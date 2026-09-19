@@ -1,0 +1,68 @@
+--- a/src/core/src/auth.py
++++ b/src/core/src/auth.py
+@@ -26,6 +26,7 @@
+         principal = result.get("principal") or {}
+         return {
+             "status": "ALLOW",
++            "authenticated": True,
+             "principal": principal.get("principal_id"),
+             "scopes": principal.get("scopes", []),
+             "roles": principal.get("roles", []),
+--- a/tests/test_s23_1_secrets_module_packaging.py
++++ b/tests/test_s23_1_secrets_module_packaging.py
+@@ -15,6 +15,16 @@
+         self.assertGreater(len(token), 50)
+         self.assertIn(".", token)
+ 
++    def test_o36_authenticator_exposes_normalized_authenticated_contract(self):
++        from core.src.auth import build_default_production_authenticator
++        authenticator, identity = build_default_production_authenticator()
++        token = identity.issue_token("operator-01")["token"]
++        result = authenticator.authenticate({"bearer_token": token})
++        self.assertEqual(result["status"], "ALLOW")
++        self.assertIs(result["authenticated"], True)
++        self.assertEqual(result["principal"], "operator-01")
++        self.assertEqual(result["auth_method"], "signed-bearer")
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+--- a/tests/test_unified_runtime_s19_security_boundary.py
++++ b/tests/test_unified_runtime_s19_security_boundary.py
+@@ -1,6 +1,8 @@
+ from __future__ import annotations
+ 
++import os
+ import unittest
++from unittest.mock import patch
+ 
+ from unified_runtime.security_boundary import ProductionSecurityBoundary, SecurityRequest
+ from unified_runtime.security_hardening import ProductionSecurityConfig, SECRET_ENV
+@@ -8,7 +10,7 @@
+ 
+ class TestS19SecurityBoundary(unittest.TestCase):
+     def _production(self, auth=None):
+-        cfg = ProductionSecurityConfig.from_env({"AI_OS_RUNTIME_MODE": "production", SECRET_ENV: "test-secret"})
++        cfg = ProductionSecurityConfig.from_env({"AI_OS_RUNTIME_MODE": "production", SECRET_ENV: "test-secret-123456"})
+         return ProductionSecurityBoundary(cfg, authenticator=auth)
+ 
+     def _request(self, **kwargs):
+@@ -25,6 +27,18 @@
+         result = self._production(lambda token: {"authenticated": token == "token", "subject": "user-1"}).admit(self._request())
+         self.assertEqual(result["status"], "ADMITTED")
+         self.assertEqual(result["authentication"]["subject"], "user-1")
++
++    def test_o36_signed_bearer_authenticator_is_admitted(self):
++        from core.src.auth import build_default_production_authenticator
++
++        with patch.dict(os.environ, {"AI_OS_IDENTITY_SIGNING_SECRET": "test-secret-123456"}, clear=False):
++            authenticator, identity = build_default_production_authenticator()
++            token = identity.issue_token("operator-01")["token"]
++        result = self._production(lambda bearer_token: authenticator.authenticate({"bearer_token": bearer_token})).admit(self._request(bearer_token=token))
++        self.assertEqual(result["status"], "ADMITTED")
++        self.assertEqual(result["authentication"]["status"], "ALLOW")
++        self.assertIs(result["authentication"]["authenticated"], True)
++        self.assertEqual(result["authentication"]["principal"], "operator-01")
+ 
+     def test_missing_token_blocks(self):
+         result = self._production(lambda token: True).admit(self._request(bearer_token=""))

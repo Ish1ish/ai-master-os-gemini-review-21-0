@@ -1,0 +1,6 @@
+# O38 staging edge example.
+# Replace staging.example.com with the real hostname and keep the application
+# listener private/non-public (for example 127.0.0.1:8080).
+staging.example.com {
+    reverse_proxy 127.0.0.1:8080
+}

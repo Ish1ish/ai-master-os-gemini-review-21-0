@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "O46 Governed Autonomous Cycle",
+  "type": "object",
+  "required": ["cycle_id", "project_id", "state", "plan", "execution_ids"],
+  "properties": {
+    "cycle_id": {"type": "string"},
+    "project_id": {"type": "string"},
+    "run_id": {"type": ["string", "null"]},
+    "requested_by": {"type": "string"},
+    "state": {
+      "enum": ["RECEIVED", "RUNNING", "WAITING_HUMAN_APPROVAL", "BLOCKED", "EVIDENCE_PENDING", "LEARNING", "COMPLETE", "RECOVERY_REQUIRED", "FAILED"]
+    },
+    "execution_ids": {"type": "array", "items": {"type": "string"}},
+    "experiment_id": {"type": ["string", "null"]},
+    "next_cycle": {"type": ["object", "null"]}
+  }
+}

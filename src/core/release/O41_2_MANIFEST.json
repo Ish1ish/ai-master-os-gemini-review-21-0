@@ -1,0 +1,16 @@
+{
+  "product": "AI Master OS",
+  "release": "O41.3",
+  "base": "O40-v1.0.0",
+  "channel": "semantic-hardening",
+  "entrypoint": "python -m src.cli",
+  "minimum_python": "3.10+",
+  "purpose": "Egypt-first evidence hardening, semantic product/content hardening, and Arabic decision surface",
+  "backend_tests": "pending local rebuild; developer verification below",
+  "ui_tests": "21/21 PASS",
+  "compileall": "PASS",
+  "node_check": "PASS",
+  "user_windows_verification": "REQUIRED",
+  "target_environment_go_live": "UNCHANGED / STILL MANUAL",
+  "external_actions": "Human approval remains required for governed public actions"
+}

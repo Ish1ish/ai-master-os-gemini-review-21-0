@@ -1,0 +1,57 @@
+{
+  "release": "O39-S36.1",
+  "status": "PASS",
+  "module": "core.src.live_providers",
+  "environment_presence": {
+    "AI_OS_ENV": false,
+    "AI_OS_MODEL_BASE_URL": false,
+    "AI_OS_MODEL_API_KEY": false,
+    "AI_OS_MODEL_NAME": false,
+    "AI_OS_SEARCH_BASE_URL": false,
+    "AI_OS_SEARCH_API_KEY": false,
+    "AI_OS_REQUEST_TIMEOUT_S": false
+  },
+  "module_imported": true,
+  "module_file": "C:\\Users\\PC\\Desktop\\AI Master OS\\07_WORKSPACE\\21.0_Unified_End_to_End_User_Journey\\src\\core\\src\\live_providers.py",
+  "public_callables": [
+    {
+      "name": "HTTPError",
+      "kind": "class",
+      "signature": "(url, code, msg, hdrs, fp)"
+    },
+    {
+      "name": "URLError",
+      "kind": "class",
+      "signature": "(reason, filename=None)"
+    },
+    {
+      "name": "model_provider",
+      "kind": "function",
+      "signature": "(prompt)"
+    },
+    {
+      "name": "provider_configuration_status",
+      "kind": "function",
+      "signature": "()"
+    },
+    {
+      "name": "search_provider",
+      "kind": "function",
+      "signature": "(query)"
+    }
+  ],
+  "provider_candidates": {
+    "model": [
+      "model_provider"
+    ],
+    "search": [
+      "search_provider"
+    ],
+    "other": [
+      "HTTPError",
+      "URLError",
+      "provider_configuration_status"
+    ]
+  },
+  "notes": []
+}

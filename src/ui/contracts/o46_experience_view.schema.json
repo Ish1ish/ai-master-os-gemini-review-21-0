@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"O46 Unified Experience View",
+  "type":"object",
+  "required":["run","intent","research","decision","governance","approval","execution","outcome","learning","next_step","provenance"],
+  "properties":{
+    "run":{"type":"object"}, "intent":{"type":"object"}, "research":{"type":"object"},
+    "decision":{"type":"object"}, "governance":{"type":"object"}, "approval":{"type":"object"},
+    "execution":{"type":"object"}, "outcome":{"type":"object"}, "learning":{"type":"object"},
+    "next_step":{"type":"object"}, "provenance":{"type":"object"}
+  }
+}

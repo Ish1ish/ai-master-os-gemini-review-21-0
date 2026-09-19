@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "knowledge_id": "MI-01",
+      "title": "Evidence Boundary",
+      "content": "Prompt libraries identify what to research; they do not themselves prove current demand, pricing, competitor activity, or trends.",
+      "source_refs": [
+        "Market Intelligence Engine v1.0"
+      ],
+      "tags": [
+        "market",
+        "evidence",
+        "freshness"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    },
+    {
+      "knowledge_id": "MI-02",
+      "title": "Customer Intelligence Dimensions",
+      "content": "Useful customer dimensions include pain, desired outcome, objections, behavior, language, purchase behavior, trust, and priority segment.",
+      "source_refs": [
+        "1000 Online Business Prompts"
+      ],
+      "tags": [
+        "customer",
+        "pain",
+        "objections",
+        "language",
+        "trust"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    }
+  ]
+}

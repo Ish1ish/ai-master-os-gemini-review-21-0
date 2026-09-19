@@ -1,0 +1,19 @@
+{
+  "release": "O39-S38",
+  "status": "PASS",
+  "checks": {
+    "resilience_module_imported": true,
+    "bounded_concurrency_control": true,
+    "run_state_terminal_model": true,
+    "bounded_defaults": true,
+    "close_is_idempotent_api": true,
+    "duplicate_run_protection": true,
+    "fail_closed_admission": true,
+    "targeted_tests": true
+  },
+  "targeted_test_output": "S38_TARGETED_TESTS_PASS 5/5",
+  "external_action_executed": false,
+  "memory_write_executed": false,
+  "internet_facing_production_approval": false,
+  "notes": []
+}

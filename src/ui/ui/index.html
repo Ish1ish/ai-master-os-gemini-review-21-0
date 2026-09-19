@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- Legacy regression marker: O40 · UI Console v1.5.0 / app.js?v=1.5.0 -->
+  <!-- Compatibility marker retained intentionally for historical UI regression tests. -->
+  <!-- Legacy regression marker: O46 · UI Console v2.0.0 -->
+  <!-- Legacy regression marker: UI Console v3.0.0 -->
+  <!-- Legacy regression marker: O46 · UI Console v4.0.2 -->
+  <!-- Legacy regression marker: app.js?v=4.2.0 -->
+  <!-- O46 · UI Console v4.4.0 -->
+  <!-- O46 · AI Master OS UI v4.6.0 FINAL -->
+  <!-- Integrated Intelligence UI v5.0.1 · Visual QA hardening -->
+  <!-- Legacy regression marker: UI Console v4.5.0 -->
+  <!-- Legacy regression marker: O46 · UI Console v4.3.0 -->
+  <!-- Legacy regression marker: O46 · UI Console v4.3.0 -->
+  <!-- Legacy regression marker: O46 · UI Console v4.2.0 -->
+  <!-- Legacy regression marker: app.js?v=4.2.0 -->
+  <!-- Legacy governance safety marker: Approvals never equal execution. -->
+  <!-- Legacy governance safety marker: Governance decision is authoritative. -->
+  <!-- Legacy governance safety marker: does not auto-retry unknown outcomes -->
+  <!-- Legacy regression marker: UI Console v4.0.0 -->
+  <!-- Legacy regression marker: UI Console v4.1.0 -->
+  <!-- Legacy regression marker: O41 · UI Console v1.7.1 -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Master OS — Console</title>
+  <link rel="stylesheet" href="styles.css?v=5.1.0" />\n
+  <link rel="stylesheet" href="ux14_console.css?v=1.0.0" />
+  <!-- UI9 · Visual Experience Polish v5.1.0 -->
+  <meta name="aios-ui23-structural-repair" content="recovery-duplicate-removed" />
+  <meta name="aios-ui24-final-console" content="unified-final-surface" />
+  <link rel="stylesheet" href="ui24_console.css?v=24.0.0" />
+  <link rel="stylesheet" href="ui25_console.css?v=25.0.0" />
+    <link rel="stylesheet" href="ui19_console.css?v=19.0.0" />
+    <script src="ui19_console.js?v=19.0.0"></script>
+</head>
+<body>
+<!-- UI Console v4.1.0 compatibility marker retained -->
+<!-- UI Console v4.0.0 compatibility marker retained -->
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AI</div>
+        <div>
+          <div class="brand-name">MASTER OS</div>
+          <div class="brand-sub">Operations Console</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <div class="nav-group-label">WORKSPACE</div>
+        <button class="nav-item active" data-page="overview"><span>⌂</span><b data-i18n="nav.home">Executive Home</b></button>
+        <button class="nav-item" data-page="runs"><span>↗</span><b data-i18n="nav.command">Command Center</b></button>
+        <button class="nav-item" data-page="golden"><span>✦</span><b>Golden Experience</b></button>
+        <button class="nav-item" data-page="acceptance"><span>✓</span><b>Product Acceptance</b></button>
+        <button class="nav-item" data-page="goldenrun"><span>▶</span><b>Golden Run Control</b></button>
+
+        <div class="nav-group-label">INTELLIGENCE</div>
+        <button class="nav-item" data-page="decisions"><span>◇</span><b data-i18n="nav.decisions">Decisions</b></button>
+        <button class="nav-item" data-page="evidence"><span>◫</span><b data-i18n="nav.evidence">Evidence Explorer</b></button>
+        <button class="nav-item" data-page="experiments"><span>◌</span><b data-i18n="nav.experiments">Experiments</b></button>
+        <button class="nav-item" data-page="memory"><span>∞</span><b data-i18n="nav.memory">Learning & Memory</b></button>
+        <button class="nav-item" data-page="adaptation"><span>↻</span><b data-i18n="nav.adaptation">Adaptive Intelligence</b></button>
+
+        <div class="nav-group-label">GOVERNANCE</div>
+        <button class="nav-item" data-page="approvals"><span>✓</span><b data-i18n="nav.governance">Governance</b></button>
+        <button class="nav-item" data-page="policies"><span>⚖</span><b data-i18n="nav.policies">Policies</b></button>
+
+        <div class="nav-group-label">OPERATIONS</div>
+        <button class="nav-item" data-page="execution"><span>▶</span><b data-i18n="nav.execution">Execution</b></button>
+        <button class="nav-item" data-page="recovery"><span>↺</span><b data-i18n="nav.recovery">Recovery</b></button>
+        <button class="nav-item" data-page="audit"><span>≡</span><b data-i18n="nav.audit">Audit Log</b></button>
+
+        <details class="nav-collapsible">
+          <summary class="nav-group-toggle"><span class="nav-group-label">SYSTEM</span><span class="nav-chevron">⌄</span></summary>
+          <div class="nav-subgroup">
+            <button class="nav-item" data-page="health"><span>✦</span><b data-i18n="nav.health">System Health</b></button>
+            <button class="nav-item" data-page="operations"><span>⚙</span><b data-i18n="nav.operations">Operations</b></button>
+            <button class="nav-item" data-page="release"><span>◈</span><b data-i18n="nav.release">Release</b></button>
+            <button class="nav-item" data-page="settings"><span>⚙</span><b data-i18n="nav.settings">Settings</b></button>
+            <button class="nav-item" data-page="platform"><span>◉</span><b data-i18n="nav.platform">Platform</b></button>
+            <button class="nav-item" data-page="guide"><span>?</span><b data-i18n="nav.guide">How to Use</b></button>
+          </div>
+        </details>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="env-pill"><span class="dot"></span><span id="envLabel">LOCAL CONSOLE</span></div>
+        <div class="release-label">O46 · AI Master OS UI v5.0.0 · Integrated Intelligence</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
+          <div>
+            <div class="eyebrow" id="pageEyebrow">CONTROL CENTER</div>
+            <h1 id="pageTitle">Executive Home</h1>
+          </div>
+        </div>
+        <div class="topbar-actions" role="toolbar" aria-label="Console toolbar">
+          <div class="toolbar-group toolbar-status-group">
+            <div class="backend-state" id="backendState"><span class="status-dot"></span><span id="backendStateText">Runtime: checking…</span></div>
+            <label class="language-switcher" aria-label="Language"><span class="language-icon">文</span><select id="languageSelect"><option value="en">English</option><option value="ar">العربية</option></select></label>
+          </div>
+          <span class="toolbar-divider" aria-hidden="true"></span>
+          <div class="toolbar-group toolbar-actions-group">
+            <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Alerts"><span class="notification-glyph" aria-hidden="true">!</span><i id="notificationCount" class="notify-dot hidden">0</i></button>
+            <button class="user-chip" id="authBtn">Session</button>
+          </div>
+          <button class="search-trigger legacy-hidden-control" id="commandTrigger" aria-hidden="true" tabindex="-1"><span>⌘</span><span>Search AI Master OS…</span><kbd>Ctrl K</kbd></button>
+          <button class="ghost-btn legacy-hidden-control" id="refreshBtn" aria-hidden="true" tabindex="-1">Refresh</button>
+        </div>
+      </header>
+
+      <section class="page" id="page-overview">
+        <section class="experience-shell" id="o46ExperienceShell">
+          <div class="experience-hero">
+            <div><div class="eyebrow">O46 · INTELLIGENCE EXPERIENCE</div><h2 id="experienceHeadline">Your AI operating story, in one place.</h2><p id="experienceSubline">Research, decision, governance, execution, outcome and learning—connected as one user journey.</p></div>
+            <div class="experience-hero-side"><span class="experience-live-dot"></span><span id="experienceSource">Waiting for a run</span><button class="ghost-btn" id="experienceRefresh" type="button">Refresh journey</button></div>
+          </div>
+          <div class="journey-rail" id="experienceJourneyRail"></div>
+          <section class="run-story-card card" id="o46RunStory" aria-label="O46 Run Story"></section>
+          <div class="executive-dashboard" id="o46ExecutiveDashboard">
+            <section class="executive-recommendation card">
+              <div class="executive-recommendation-main">
+                <div class="eyebrow">LEADING HYPOTHESIS</div>
+                <h3 id="executiveRecommendation">Waiting for a decision</h3>
+                <p id="executiveWhy">Run a governed request to turn research into a clear, explainable recommendation.</p>
+                <div class="executive-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="decision">Why this result?</button>
+                  <button class="primary-btn" id="executiveEvidenceBtn" type="button" data-page-jump="evidence">Explore evidence</button>
+                  <button class="ghost-btn" id="executiveDecisionBtn" type="button">Why this?</button>
+                </div>
+              </div>
+              <div class="executive-score-stack">
+                <div class="score-orbit"><span>CONFIDENCE</span><strong id="executiveConfidence">—</strong><small id="executiveConfidenceNote">Evidence strength</small></div>
+                <div class="score-mini-grid">
+                  <div><span>Opportunity</span><strong id="executiveOpportunity">—</strong></div>
+                  <div><span>Strategy</span><strong id="executiveStrategy">—</strong></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="executive-kpis" id="executiveKpis">
+              <div class="executive-kpi"><span>Evidence</span><strong id="executiveEvidenceCount">—</strong><small>usable signals</small></div>
+              <div class="executive-kpi"><span>Sources</span><strong id="executiveSourceCount">—</strong><small>researched</small></div>
+              <div class="executive-kpi"><span>Conflicts</span><strong id="executiveConflictCount">—</strong><small>needs context</small></div>
+              <div class="executive-kpi"><span>Governance</span><strong id="executiveGovernanceState">—</strong><small id="executiveGovernanceNote">policy state</small></div>
+            </section>
+
+            <section class="executive-next card">
+              <div class="executive-next-icon">→</div>
+              <div class="executive-next-copy">
+                <div class="eyebrow">WHAT HAPPENS NEXT</div>
+                <h3 id="executiveNextAction">Waiting for the next step</h3>
+                <p id="executiveNextReason">The system will surface the cheapest useful next move when the decision is ready.</p>
+              </div>
+              <div class="executive-next-meta">
+                <span class="status-pill" id="executiveRunState">WAITING</span>
+                <span class="tiny-note" id="executiveRunMeta">No active run</span>
+              </div>
+            </section>
+          </div>
+          <div class="experience-grid">
+            <section class="card experience-card experience-result-card">
+              <div class="card-head"><div><div class="eyebrow">DECISION SURFACE</div><h3 id="experienceDecisionTitle">No decision yet</h3></div><span class="status-pill" id="experienceDecisionStatus">WAITING</span></div>
+              <p class="experience-lead" id="experienceDecisionWhy">Run a governed request and the leading hypothesis will appear here.</p>
+              <div class="experience-stat-grid" id="experienceDecisionStats"></div>
+              <div class="experience-detail-row"><span>Next action</span><strong id="experienceNextAction">—</strong></div>
+              <div class="experience-detail-row"><span>Decision rule</span><strong id="experienceDecisionRule">—</strong></div>
+            </section>
+            <section class="card experience-card">
+              <div class="card-head"><div><div class="eyebrow">EVIDENCE</div><h3>What supports the decision</h3></div><div class="explain-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="evidence">Explain evidence</button><button class="text-btn" data-page-jump="evidence">Explore</button></div></div>
+              <div class="evidence-meter"><div class="meter-track"><i id="experienceEvidenceFill"></i></div><strong id="experienceEvidenceScore">—</strong></div>
+              <div class="evidence-mini-grid" id="experienceEvidenceMini"></div>
+              <div class="experience-list" id="experienceEvidenceList"></div>
+            </section>
+            <section class="card experience-card">
+              <div class="card-head"><div><div class="eyebrow">GOVERNANCE</div><h3 id="experienceGovernanceTitle">No governance decision yet</h3></div><div class="explain-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="governance">Why this gate?</button><span class="status-pill" id="experienceGovernanceStatus">WAITING</span></div></div>
+              <div class="governance-visual"><div class="governance-icon" id="experienceGovernanceIcon">○</div><div><strong id="experienceGovernanceAction">—</strong><p id="experienceGovernanceReason">The governance layer will explain why an action is allowed, reviewed or blocked.</p></div></div>
+              <div class="governance-facts" id="experienceGovernanceFacts"></div>
+              <button class="primary-btn hidden" id="experienceApprovalBtn" type="button">Review approval</button>
+            </section>
+            <section class="card experience-card">
+              <div class="card-head"><div><div class="eyebrow">OUTCOME & LEARNING</div><h3 id="experienceOutcomeTitle">Waiting for outcome</h3></div><div class="explain-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="outcome">Explain outcome</button><button class="text-btn" data-page-jump="memory">Open learning</button></div></div>
+              <div class="outcome-summary" id="experienceOutcomeSummary">Once evidence from execution is available, the result and lesson will appear here.</div>
+              <div class="experience-detail-row"><span>Learning signal</span><strong id="experienceLearningSignal">—</strong></div>
+              <div class="experience-detail-row"><span>Next decision</span><strong id="experienceNextDecision">—</strong></div>
+            </section>
+          </div>
+          <section class="card experience-trace-card">
+            <div class="card-head"><div><div class="eyebrow">EXPLAINABILITY</div><h3>Trace the reasoning without the noise</h3></div><button class="text-btn" id="experienceExplainBtn" type="button">Explain this run</button></div>
+            <div class="trace-chip-grid" id="experienceTraceChips"></div>
+            <pre class="experience-json hidden" id="experienceJson"></pre>
+          </section>
+        </section>
+        <div class="hero-v3">
+          <div class="hero-copy">
+            <div class="eyebrow">AI MASTER OS · CONTROL CENTER</div>
+            <h2>Run governed decisions through one AI operating system.</h2>
+            <p>See what is running, what needs your attention, what the system decided, and what happens next.</p>
+            <div class="hero-actions"><button class="primary-btn" data-page-jump="runs">Start a governed run</button><button class="secondary-btn" data-page-jump="execution">Open execution</button></div>
+          </div>
+          <div class="hero-brief">
+            
+            <div class="hero-next">
+              <span class="eyebrow">NEXT REQUIRED ACTION</span>
+              <strong id="nextActionText">Review the current operating state</strong>
+              <small>Human control remains active for consequential actions.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="executive-strip" id="executiveStrip">
+          <div class="exec-stat"><span>ACTIVE RUNS</span><strong id="execActive">0</strong><small>queued + running</small></div>
+          <div class="exec-stat"><span>HUMAN REVIEW</span><strong id="execReview">0</strong><small>local review signals</small></div>
+          <div class="exec-stat"><span>FAILED</span><strong id="execFailed">0</strong><small>operator attention</small></div>
+          <div class="exec-stat"><span>RECOVERY</span><strong id="execRecovery">0</strong><small>reconciliation required</small></div>
+          <div class="exec-stat"><span>COMPLETED</span><strong id="execCompleted">0</strong><small>browser-local index</small></div>
+          <div class="exec-stat"><span>LAST CHECK</span><strong id="execChecked">—</strong><small>runtime health</small></div>
+        </div>
+
+        <div class="attention-grid">
+          <section class="card attention-card attention-primary">
+            <div class="card-head"><div><div class="eyebrow">DECISION</div><h3>Latest operating signal</h3></div><span class="status-pill" id="governancePosture">OBSERVING</span></div>
+            <div class="decision-focus"><div class="decision-ring"><div class="ring-core"><strong id="governanceScore">—</strong><small>confidence</small></div></div><div><span class="label">Governance posture</span><strong id="decisionHeadline">No decision-driving state yet</strong><p id="decisionWhy">The system will show the strongest local decision signal as runs are indexed.</p><div id="governanceNotes" class="stack compact-stack"></div></div></div>
+          </section>
+          <section class="card attention-card">
+            <div class="card-head"><div><div class="eyebrow">ATTENTION</div><h3>What needs you</h3></div><button class="text-btn" data-page-jump="recovery">Open recovery</button></div>
+            <div id="attentionQueue" class="attention-list"><div class="attention-empty">No active operator items indexed.</div></div>
+          </section>
+        </div>
+
+        <div class="dashboard-grid v3-grid">
+          <section class="card dashboard-card dashboard-wide">
+            <div class="card-head"><div><div class="eyebrow">OPERATING PULSE</div><h3>What is happening now</h3></div><button class="text-btn" data-page-jump="runs">Open Command Center</button></div>
+            <div class="pulse-grid" id="operatingPulse"></div>
+          </section>
+          <section class="card dashboard-card">
+            <div class="card-head"><div><div class="eyebrow">EXECUTION</div><h3>Current flow</h3></div><button class="text-btn" data-page-jump="execution">Inspect</button></div>
+            <div id="currentFlow" class="flow-list"><div class="flow-step active"><span>01</span><div><b>Decision</b><small>Plan the next governed action.</small></div></div><div class="flow-step"><span>02</span><div><b>Governance</b><small>Apply policy and approval boundaries.</small></div></div><div class="flow-step"><span>03</span><div><b>Execution</b><small>Run only when the gate is satisfied.</small></div></div><div class="flow-step"><span>04</span><div><b>Learning</b><small>Capture evidence and update context.</small></div></div></div>
+          </section>
+        </div>
+
+        <section class="card dashboard-card timeline-card-v3">
+          <div class="card-head"><div><div class="eyebrow">SYSTEM TIMELINE</div><h3>Latest runtime events</h3></div><span class="tiny-note" id="timelineSource">Live where the API exposes state</span></div>
+          <div class="timeline-rail" id="systemTimeline"></div>
+        </section>
+
+        <section class="quick-start-grid">
+          <section class="card quick-run-card">
+            <div class="card-head"><div><div class="eyebrow">NEW RUN</div><h3>Start with intent, not complexity.</h3></div><div class="tiny-note">Requires <code>run:submit</code></div></div>
+            <div class="template-grid" id="runTemplates">
+              <button type="button" class="template-card" data-template="business"><span>01</span><b>Validate a business idea</b><small>Research the market, identify the strongest hypothesis and define the cheapest test.</small></button>
+              <button type="button" class="template-card" data-template="market"><span>02</span><b>Research a market</b><small>Find current evidence, gaps, local signals and actionable opportunity areas.</small></button>
+              <button type="button" class="template-card" data-template="strategy"><span>03</span><b>Build a strategy</b><small>Turn a known opportunity into a focused operating plan.</small></button>
+              <button type="button" class="template-card" data-template="custom"><span>04</span><b>Custom goal</b><small>Start from a blank governed request and define the context yourself.</small></button>
+            </div>
+          </section>
+        </section>
+
+        <div class="content-grid v3-new-run">
+          <section class="card span-2">
+            <div class="card-head"><div><div class="eyebrow">GOVERNED RUN</div><h3>Describe the outcome</h3><p class="run-form-intro">Start with the goal. The OS structures the request, evidence needs and governance path for you.</p></div><button class="text-btn" data-page-jump="runs">Open Command Center</button></div>
+            <form id="runForm" class="run-form">
+              <label class="wide">Request<textarea id="request" required rows="4" placeholder="Example: Research low-cost AI opportunities for small businesses in Egypt and recommend the most practical one to test."></textarea></label>
+              <div class="form-row"><label>Audience<input id="audience" value="small businesses using AI tools" /></label><label>Goal<input id="goal" value="validate a lean business opportunity" /></label></div>
+              <details class="advanced-context"><summary>Advanced context</summary><div class="advanced-context-grid"><label>Project ID<input id="projectId" required value="PROJ-001" /></label><label>Result language<select id="language"><option value="ar">العربية</option><option value="en">English</option></select></label><label class="wide">Constraints<textarea id="constraints" rows="2" placeholder="Optional: budget, geography, timing, exclusions, evidence requirements…"></textarea></label></div></details>
+              <div class="form-actions"><button class="primary-btn" type="submit">Start Run</button><span id="runFormMsg" class="form-msg"></span></div>
+            </form>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><div class="eyebrow">LAST RUNS</div><h3>Recent activity</h3></div><button class="text-btn" data-page-jump="runs">Open Run Center</button></div>
+            <div id="recentRuns" class="stack"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-runs">
+        <div class="section-head">
+          <div><div class="eyebrow">EXECUTION</div><h2>Run Center</h2><p>Create, monitor and inspect real O40 runs. Submission uses <code>run:submit</code>; status uses <code>run:read</code>.</p></div>
+          <div class="section-actions"><button class="secondary-btn" id="reloadRuns">Reload</button><button class="primary-btn" id="newRunJump">New run</button></div>
+        </div>
+        <div class="card run-center-create" id="runCenterCreate">
+          <div class="card-head"><div><div class="eyebrow">NEW RUN</div><h3>Start a governed run</h3></div><div id="runCenterAuthNote" class="tiny-note">Authentication required</div></div>
+          <form id="runCenterForm" class="run-form">
+            <label>Project ID<input id="runCenterProjectId" required value="PROJ-001" /></label>
+            <label>Request<textarea id="runCenterRequest" required rows="3" placeholder="What should AI Master OS do?"></textarea></label>
+            <div class="form-row">
+              <label>Audience<input id="runCenterAudience" value="small businesses using AI tools" /></label>
+              <label>Goal<input id="runCenterGoal" value="validate a lean business opportunity" /></label>
+            </div>
+            <label>Constraints<textarea id="runCenterConstraints" rows="2" placeholder="Optional constraints"></textarea></label>
+            <label>Result language<select id="runCenterLanguage"><option value="ar">العربية</option><option value="en">English</option></select></label>
+            <div class="form-actions"><button class="primary-btn" type="submit">Create Run</button><span id="runCenterMsg" class="form-msg"></span></div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><div class="eyebrow" data-i18n="runHistory.eyebrow">RUN HISTORY</div><h3 data-i18n="runHistory.title">Recent runs</h3></div><div class="section-actions"><span class="tiny-note" id="runHistorySourceState" data-i18n="runHistory.source">Live backend history with local fallback</span><button class="secondary-btn" id="reloadRunsTable" type="button" data-i18n="runHistory.refresh">Sync from backend</button><button class="danger-outline-btn" id="clearHistoryBtn" type="button" data-i18n="runHistory.clear">Clear history</button></div></div>
+          <div class="run-history-toolbar">
+            <label class="run-history-search"><span class="sr-only">Search runs</span><input id="runHistorySearch" type="search" data-i18n-placeholder="runHistory.search" placeholder="Search runs…" autocomplete="off" /></label>
+            <label class="run-history-filter"><span class="sr-only">Filter by status</span><select id="runStatusFilter"><option value="ALL" data-i18n="runHistory.all">All statuses</option><option value="QUEUED">QUEUED</option><option value="RUNNING">RUNNING</option><option value="COMPLETE">COMPLETE</option><option value="FAILED">FAILED</option><option value="CANCELLED">CANCELLED</option></select></label>
+            <button class="ghost-btn" id="clearRunFilters" type="button" data-i18n="runHistory.reset">Reset filters</button><span class="tiny-note"><span data-i18n="runHistory.count">Showing</span> <strong id="runHistoryCountLive">0</strong></span>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Run ID</th><th>Project</th><th>Status</th><th>Created</th><th></th></tr></thead><tbody id="runsTable"></tbody></table></div>
+        </div>
+        <div class="card hidden" id="runDetailCard">
+          <div class="card-head"><div><div class="eyebrow">RUN INSPECTOR</div><h3 id="detailTitle">Run detail</h3></div><button class="text-btn" id="closeDetail">Close</button></div>
+          <div id="runActions" class="detail-actions"></div>
+          <div id="runSummary" class="detail-summary"></div><div id="liveRunNotice" class="tiny-note run-live-notice">Live execution state is read from the authenticated O40 API.</div>
+          <div id="runTrace" class="trace"></div>
+          <section class="trace-section">
+            <div class="card-head"><div><div class="eyebrow">ENGINE TRACE</div><h3>Runtime engine outputs</h3></div><div class="tiny-note">Click a node to inspect its structured payload.</div></div>
+            <div id="engineTrace" class="engine-grid"></div>
+          </section>
+          <section class="trace-section">
+            <div class="card-head"><div><div class="eyebrow">HANDOFF QUALITY</div><h3>Semantic handoffs</h3></div><div class="tiny-note"><span id="handoffQualityNote">Semantic contract health is evaluated from the live handoff QA state.</span></div></div>
+            <div id="handoffTrace" class="handoff-list"></div>
+          </section>
+          <details class="raw-details"><summary>Raw run response</summary><pre id="runJson" class="json-block"></pre></details>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-approvals">
+        <div class="section-head"><div><div class="eyebrow" data-i18n="gov.eyebrow">GOVERNANCE</div><h2 data-i18n="gov.title">Approval Center</h2><p data-i18n="gov.desc">Review real backend approval requests. Decisions remain subject to authentication, authorization and audit.</p></div><div class="section-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="governance">Explain governance</button><button class="secondary-btn" id="approvalsRefresh" data-i18n="common.refresh">Refresh</button></div></div>
+        <div class="governance-experience-hero card">
+          <div class="governance-hero-copy">
+            <div class="eyebrow">O46 · GOVERNANCE CONTROL</div>
+            <h3>Human control, explained before action.</h3>
+            <p>Review risk, external impact, policy, request binding and the exact consequence before approving or rejecting anything.</p>
+          </div>
+          <div class="governance-hero-state"><span class="governance-state-orb">✓</span><div><span class="eyebrow">BOUNDARY</span><strong>AWAITING HUMAN DECISION</strong><small>Backend-authoritative · fail-closed</small></div></div>
+        </div>
+        <div class="metric-grid" id="approvalKpis"></div>
+        <div class="governance-banner"><div><span class="eyebrow" data-i18n="gov.safety">HUMAN CONTROL</span><strong data-i18n="gov.safetyTitle">Consequential actions stay behind an explicit human gate.</strong><small data-i18n="gov.safetyDesc">The UI is not the policy authority and cannot approve without the backend approval contract.</small></div><span class="source-badge" data-i18n="gov.source">LIVE API</span></div>
+        <div class="content-grid">
+          <section class="card span-2"><div class="card-head"><div><div class="eyebrow" data-i18n="gov.pendingEyebrow">PENDING APPROVALS</div><h3 data-i18n="gov.pendingTitle">Awaiting human decision</h3></div><div class="tiny-note" id="approvalSourceNote"></div></div><div id="approvalList" class="approval-list"></div></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow" data-i18n="gov.riskEyebrow">RISK INSPECTOR</div><h3 data-i18n="gov.riskTitle">Selected request</h3></div></div><div id="approvalInspector" class="approval-inspector"><div class="tiny-note" data-i18n="gov.selectHint">Select an approval to inspect its action, risk, policy and approval binding.</div></div></section>
+        </div>
+        <div class="card"><div class="card-head"><div><div class="eyebrow" data-i18n="gov.historyEyebrow">RECENT GOVERNANCE DECISIONS</div><h3 data-i18n="gov.historyTitle">Decision history</h3></div><span class="source-badge" data-i18n="gov.source">LIVE API</span></div><div id="governanceDecisionList" class="governance-decision-list"></div></div>
+      </section>
+
+      <section class="page hidden" id="page-memory">
+        <div class="section-head"><div><div class="eyebrow">OUTCOME · LEARNING · ADAPTATION</div><h2>Outcome & Learning Center</h2><p>See what happened, what the system learned, how strategy changed, and what the next governed decision should be.</p></div><div class="section-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="outcome">Explain the loop</button><span class="source-badge" id="outcomeLearningSourceBadge">BACKEND / DERIVED</span><button class="secondary-btn" id="outcomeLearningRefresh" type="button">Refresh</button></div></div>
+
+        <section class="card outcome-learning-hero">
+          <div class="outcome-learning-copy">
+            <div class="eyebrow">CLOSED LOOP</div>
+            <h3 id="olHeroTitle">From outcome to the next decision.</h3>
+            <p id="olHeroSummary">The system connects the observed result to learning context and a bounded next step.</p>
+            <div class="outcome-learning-actions"><button class="primary-btn" id="olOpenRunStory" type="button" data-page-jump="overview">Back to run story</button><button class="ghost-btn" id="olExplainBtn" type="button">Explain what changed</button></div>
+          </div>
+          <div class="outcome-learning-status">
+            <span class="status-orb" id="olStatusOrb">●</span>
+            <strong id="olOutcomeStatus">WAITING</strong>
+            <small id="olOutcomeMeta">No completed outcome loaded</small>
+          </div>
+        </section>
+
+        <section class="outcome-learning-kpis" id="outcomeLearningKpis"></section>
+
+        <section class="outcome-learning-grid">
+          <article class="card outcome-card">
+            <div class="card-head"><div><div class="eyebrow">OBSERVED OUTCOME</div><h3 id="olOutcomeTitle">Waiting for outcome</h3></div><span class="source-badge">LIVE / DERIVED</span></div>
+            <p id="olOutcomeSummary" class="outcome-summary-copy">Once execution evidence is available, the observed result will appear here.</p>
+            <div class="outcome-facts" id="olOutcomeFacts"></div>
+          </article>
+
+          <article class="card learning-card">
+            <div class="card-head"><div><div class="eyebrow">LEARNING SIGNAL</div><h3>What changed</h3></div><span class="source-badge" id="olLearningBadge">LEARNING API</span></div>
+            <div id="olLearningSignals" class="learning-signal-list"></div>
+          </article>
+
+          <article class="card adaptation-card">
+            <div class="card-head"><div><div class="eyebrow">STRATEGY ADAPTATION</div><h3 id="olAdaptationTitle">Waiting for adaptation</h3></div><span class="status-pill" id="olAdaptationState">WAITING</span></div>
+            <div class="adaptation-visual"><div class="adaptation-node previous" id="olPreviousStrategy">Previous strategy</div><div class="adaptation-arrow">→</div><div class="adaptation-node current" id="olCurrentStrategy">Current strategy</div></div>
+            <p id="olAdaptationReason">The adaptation layer will explain whether evidence supports maintaining, refining, or changing the strategy.</p>
+          </article>
+
+          <article class="card next-decision-card">
+            <div class="card-head"><div><div class="eyebrow">NEXT DECISION</div><h3 id="olNextDecisionTitle">Waiting for next route</h3></div><span class="source-badge">GOVERNED</span></div>
+            <div class="next-decision-hero"><span>→</span><strong id="olNextDecision">—</strong></div>
+            <p id="olNextDecisionReason">The system will propose the cheapest useful next move supported by current evidence.</p>
+            <div class="next-decision-meta" id="olNextDecisionMeta"></div>
+          </article>
+        </section>
+
+        <section class="card learning-timeline-card">
+          <div class="card-head"><div><div class="eyebrow">LEARNING TIMELINE</div><h3>How the loop evolved</h3></div><span class="tiny-note" id="olTimelineSource">Backend-backed when exposed</span></div>
+          <div class="learning-timeline" id="olLearningTimeline"></div>
+        </section>
+
+        <section class="card outcome-explain-card hidden" id="olExplainPanel">
+          <div class="card-head"><div><div class="eyebrow">EXPLAINABILITY</div><h3>Why the next decision changed</h3></div><button class="text-btn" id="olExplainClose" type="button">Close</button></div>
+          <div class="explain-grid" id="olExplainGrid"></div>
+        </section>
+
+        <div class="card"><div class="card-head"><div><div class="eyebrow">PERSISTENT CONTEXT</div><h3>Project learning context</h3></div><span class="source-badge" id="learningSourceBadge">LEARNING API</span></div><div id="learningContextPanel" class="learning-context-panel"><div class="availability-state neutral"><div class="availability-icon">∞</div><div><span class="availability-kicker">LEARNING STATE</span><h3>Awaiting project context</h3><p>Open a project-backed decision or run to load learning context.</p></div></div></div></div>
+      </section>
+
+      <section class="page hidden" id="page-audit">
+        <div class="section-head"><div><div class="eyebrow">TRACEABILITY</div><h2>Audit Log</h2><p>Auditability stays first-class: actor, scope, action, approval, QA and result remain traceable.</p></div></div>
+        <div class="card empty-state"><div class="empty-icon">≡</div><h3>Audit viewer shell is ready</h3><p>The persistent audit store is active, but the current HTTP surface does not expose a read endpoint yet.</p><div class="callout">Policy: no silent failure, no hidden autonomy, explicit governance.</div></div>
+      </section>
+
+      <section class="page hidden" id="page-execution">
+        <div class="section-head"><div><div class="eyebrow" data-i18n="exec.eyebrow">EXECUTION PLANE</div><h2 data-i18n="exec.title">Execution Center</h2><p data-i18n="exec.desc">Inspect backend-backed execution state, receipts and guardrails without bypassing governance or execution gates.</p></div><div class="section-actions"><span class="source-badge" id="executionSourceBadge" data-i18n="exec.source">BACKEND</span><button class="secondary-btn" id="executionRefresh" data-i18n="common.refresh">Refresh</button></div></div>
+        <div class="metric-grid" id="executionCards"></div>
+        <div class="content-grid">
+          <section class="card span-2"><div class="card-head"><div><div class="eyebrow" data-i18n="exec.active">EXECUTION INVENTORY</div><h3 data-i18n="exec.state">Execution state</h3></div><div class="tiny-note" id="executionSourceNote"></div></div><div id="executionList" class="execution-list"></div></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow" data-i18n="exec.guardEyebrow">SAFETY</div><h3 data-i18n="exec.guardTitle">Execution guardrails</h3></div></div><div class="stack"><div class="callout" data-i18n="exec.guard1">Governance decision is authoritative.</div><div class="callout" data-i18n="exec.guard2">Approval never equals execution.</div><div class="callout" data-i18n="exec.guard3">Idempotency prevents duplicate side effects.</div><div class="callout" data-i18n="exec.guard4">Unknown state routes to recovery, not blind retry.</div></div></section>
+        </div>
+        <section class="card execution-inspector-card"><div class="card-head"><div><div class="eyebrow" data-i18n="exec.detailEyebrow">EXECUTION DETAIL</div><h3 id="executionInspectorTitle" data-i18n="exec.noSelection">Select an execution</h3></div><span class="source-badge" id="executionInspectorSource">—</span></div><div id="executionInspector" class="execution-inspector"><div class="tiny-note" data-i18n="exec.detailHint">Select a run to inspect tool, action, request hash, idempotency, governance, lease, receipt and audit data exposed by the backend.</div></div></section>
+      </section>
+
+      <section class="page hidden" id="page-recovery">
+        <div class="section-head"><div><div class="eyebrow" data-i18n="recovery.eyebrow">INCIDENT CONTROL</div><h2 data-i18n="recovery.title">Recovery Center</h2><p data-i18n="recovery.desc">Reconciliation-first handling for uncertain external side effects. The console never auto-retries an unknown outcome.</p></div><div class="section-actions"><span class="source-badge" id="recoverySourceBadge" data-i18n="recovery.source">BACKEND / DERIVED</span><button class="secondary-btn" id="recoveryRefresh" data-i18n="common.refresh">Refresh</button></div></div>
+        <div class="card recovery-banner"><div><span class="eyebrow" data-i18n="recovery.required">RECOVERY REQUIRED</span><h3 id="recoveryHeadline" data-i18n="recovery.none">No active recovery items</h3><p id="recoverySubhead" data-i18n="recovery.safe">When execution outcome is uncertain, the system stops safely and asks for reconciliation.</p></div><div class="recovery-badge" id="recoveryBadge">CLEAR</div></div>
+        <div class="content-grid">
+          <section class="card span-2"><div class="card-head"><div><div class="eyebrow" data-i18n="recovery.queueEyebrow">EXCEPTION QUEUE</div><h3 data-i18n="recovery.queueTitle">Operator attention</h3></div><div class="tiny-note" id="recoverySourceNote"></div></div><div id="recoveryList" class="recovery-list"></div></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow" data-i18n="recovery.playbookEyebrow">RECONCILIATION PLAYBOOK</div><h3 data-i18n="recovery.playbookTitle">Safe response</h3></div></div><div class="stack"><div class="guide-step mini"><span>1</span><div><b data-i18n="recovery.step1">Inspect receipt</b><small data-i18n="recovery.step1d">Confirm exact action, request hash and lease state.</small></div></div><div class="guide-step mini"><span>2</span><div><b data-i18n="recovery.step2">Check external system</b><small data-i18n="recovery.step2d">Determine whether the side effect actually happened.</small></div></div><div class="guide-step mini"><span>3</span><div><b data-i18n="recovery.step3">Reconcile</b><small data-i18n="recovery.step3d">Record the observed outcome before any retry decision.</small></div></div></div></section>
+        </div>
+        <section class="card recovery-inspector-card"><div class="card-head"><div><div class="eyebrow" data-i18n="recovery.detailEyebrow">RECOVERY DETAIL</div><h3 id="recoveryInspectorTitle" data-i18n="recovery.noSelection">Select a recovery item</h3></div><span class="source-badge" id="recoveryInspectorSource">—</span></div><div id="recoveryInspector" class="recovery-inspector"><div class="tiny-note" data-i18n="recovery.detailHint">Select a recovery item to inspect the authoritative run state and available reconciliation evidence.</div></div></section>
+      </section>
+      </section>
+
+      <section class="page hidden" id="page-health">
+        <div class="section-head"><div><div class="eyebrow">OBSERVABILITY</div><h2>System Health</h2><p>Live health and readiness checks from the O40 API. The page refreshes automatically every 15 seconds.</p></div><button class="secondary-btn" id="healthRefresh">Refresh health</button></div>
+        <div class="health-layout">
+          <div class="card"><div class="card-head"><div><div class="eyebrow">HEALTH</div><h3>API</h3></div><div id="apiHealthBadge" class="badge">UNKNOWN</div></div><pre id="healthRaw" class="json-block compact"></pre></div>
+          <div class="card"><div class="card-head"><div><div class="eyebrow">READINESS</div><h3>Runtime</h3></div><div id="readyBadge" class="badge">UNKNOWN</div></div><div id="readinessList" class="health-list"></div></div>
+        </div>
+      </section>
+
+
+      <section class="page hidden" id="page-operations">
+        <div class="section-head"><div><div class="eyebrow">OPERATIONS</div><h2>Production Operations</h2><p>Read-only operator view for release state, local service health and freeze discipline.</p></div><button class="secondary-btn" id="opsRefresh">Refresh</button></div>
+        <div class="metric-grid" id="opsCards"></div>
+        <div class="content-grid">
+          <section class="card span-2">
+            <div class="card-head"><div><div class="eyebrow">RELEASE</div><h3>Frozen candidate</h3></div><div class="badge" id="opsReleaseBadge">O40-v1.0.0</div></div>
+            <div class="release-grid"><div><div class="eyebrow">Runtime</div><strong>O40-v1.0.0</strong></div><div><div class="eyebrow">Console</div><strong>UI v1.4.0</strong></div><div><div class="eyebrow">Mode</div><strong>Production operations</strong></div></div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><div class="eyebrow">CHECKLIST</div><h3>Operator discipline</h3></div></div>
+            <div class="stack"><div class="callout">Keep the previous known-good artifact.</div><div class="callout">Verify backups before upgrades.</div><div class="callout">Do not bypass approval gates.</div><div class="callout">Do not edit SQLite manually during incidents.</div></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-guide">
+        <div class="section-head"><div><div class="eyebrow">OPERATOR GUIDE</div><h2>How to Use AI Master OS</h2><p>Use this page as the simple operating manual: what to enter, what the system does, and where to read the answer.</p></div></div>
+        <div class="guide-grid">
+          <section class="card guide-main">
+            <div class="eyebrow">STEP-BY-STEP</div>
+            <div class="guide-step"><span>1</span><div><h3>Define the job</h3><p>Write one business goal. Add the audience, the success goal and the constraints that matter.</p><code>Example: Research low-cost AI tools for small businesses in Egypt and recommend the most practical approach.</code></div></div>
+            <div class="guide-step"><span>2</span><div><h3>Create the run</h3><p>Go to <b>Run Center → New Run</b>. Keep the project ID stable when the work belongs to the same project.</p></div></div>
+            <div class="guide-step"><span>3</span><div><h3>Execute once</h3><p>Press <b>Execute now</b> once. The runtime moves through the governed pipeline asynchronously.</p></div></div>
+            <div class="guide-step"><span>4</span><div><h3>Read the result first</h3><p>When the run is <b>COMPLETE</b>, start at <b>Run Result</b>. That section is the executive summary of what the system actually produced.</p></div></div>
+            <div class="guide-step"><span>5</span><div><h3>Drill down only when needed</h3><p>Use <b>Engine Trace</b> to inspect each engine, <b>Semantic Handoffs</b> to inspect what moved between engines, and <b>Raw run response</b> only for deep debugging.</p></div></div>
+            <div class="guide-step"><span>6</span><div><h3>Respect the human gate</h3><p>If approval is <b>PENDING</b>, the runtime has prepared the work but has intentionally blocked the consequential external action.</p></div></div>
+          </section>
+          <section class="card guide-side">
+            <div class="eyebrow">WHAT THE RESULT LOOKS LIKE</div>
+            <div class="output-card"><span>Market</span><strong>Sources + evidence</strong><small>What the system found and how fresh/traceable it is.</small></div>
+            <div class="output-card"><span>Ideas</span><strong>Ranked hypotheses</strong><small>Potential opportunities, not assumed facts.</small></div>
+            <div class="output-card"><span>Strategy</span><strong>Decision + rationale</strong><small>Which direction to validate and why.</small></div>
+            <div class="output-card"><span>Product</span><strong>Problem + promise + scope</strong><small>A cleaner definition of what should be built.</small></div>
+            <div class="output-card"><span>Governance</span><strong>QA + approval + provenance</strong><small>What passed, what is traceable, and what still needs human approval.</small></div>
+            <div class="callout success-callout"><b>Golden rule:</b> read the business result first. The detailed trace is evidence, not the answer itself.</div>
+          </section>
+        </div>
+      </section>
+
+
+      <section class="page hidden" id="page-decisions">
+        <div class="section-head"><div><div class="eyebrow">INTELLIGENCE</div><h2 data-i18n="page.decisions.title">Decision Intelligence</h2><p data-i18n="page.decisions.desc">One explainable decision surface: why this direction, what supports it, what could invalidate it, and what happens next.</p></div><div class="section-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="decision">Why this decision?</button><button class="secondary-btn" id="decisionsRefresh" data-i18n="common.refresh">Refresh</button></div></div>
+        <section class="decision-intel-hero card">
+          <div class="decision-intel-copy">
+            <div class="eyebrow">LEADING HYPOTHESIS</div>
+            <h3 id="decisionHeroTitle">No decision loaded</h3>
+            <p id="decisionHeroWhy">Run a governed request to turn current evidence into an explainable direction.</p>
+            <div class="decision-hero-actions"><span class="source-badge" id="decisionSourceBadge">BACKEND / DERIVED</span><span class="status-pill" id="decisionHeroStatus">WAITING</span></div>
+          </div>
+          <div class="decision-hero-score" id="decisionHeroScore"><div class="decision-score-ring"><strong id="decisionHeroConfidence">—</strong><span>confidence</span></div></div>
+        </section>
+        <div class="decision-kpi-grid" id="decisionKpis"></div>
+        <div class="decision-intel-grid">
+          <section class="card decision-story-card">
+            <div class="card-head"><div><div class="eyebrow">WHY THIS DIRECTION</div><h3>Decision story</h3></div><span class="source-badge">DERIVED</span></div>
+            <div id="decisionStory" class="decision-story"></div>
+          </section>
+          <section class="card decision-next-card">
+            <div class="card-head"><div><div class="eyebrow">WHAT HAPPENS NEXT</div><h3 id="decisionNextTitle">Next action</h3></div></div>
+            <div id="decisionNextBody" class="decision-next-body"></div>
+          </section>
+        </div>
+        <div class="content-grid">
+          <section class="card span-2"><div class="card-head"><div><div class="eyebrow">CANONICAL DECISION SURFACE</div><h3 id="decisionSurfaceTitle">No decision loaded</h3></div><span class="source-badge">BACKEND RESULT</span></div><div id="decisionSurface" class="decision-surface"></div><div class="decision-inspector" id="decisionInspector"><div class="tiny-note">Select a decision node to inspect its backend-derived context.</div></div></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow">DECISION GRAPH</div><h3>Decision flow</h3></div></div><div id="decisionGraph" class="decision-graph"></div></section>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-evidence">
+        <div class="section-head"><div><div class="eyebrow">INTELLIGENCE</div><h2 data-i18n="page.evidence.title">Evidence Explorer</h2><p data-i18n="page.evidence.desc">Trace evidence from experiments and runtime results without inventing source state.</p></div><div class="section-actions"><button class="text-btn explain-trigger" type="button" data-explain-section="evidence">How does evidence affect this?</button><button class="secondary-btn" id="evidenceRefresh" data-i18n="common.refresh">Refresh</button></div></div>
+        <div class="metric-grid" id="evidenceKpis"></div>
+        <section class="card evidence-map-card">
+          <div class="card-head"><div><div class="eyebrow">EVIDENCE MAP</div><h3>Claims → Sources → Decision</h3><p class="tiny-note">See how backend-derived evidence connects to the current decision without inventing source state.</p></div><span class="source-badge" id="evidenceMapSource">LIVE / DERIVED</span></div>
+          <div id="evidenceMap" class="evidence-map"></div>
+          <div id="evidenceMapInspector" class="evidence-map-inspector"><div class="tiny-note">Select a claim, source or decision node to trace its connection.</div></div>
+        </section>
+        <div class="content-grid evidence-lower-grid">
+          <section class="card"><div class="card-head"><div><div class="eyebrow">EXPERIMENT REGISTRY</div><h3>Backend-backed evidence</h3></div><span class="source-badge">LIVE API</span></div><div id="evidenceList" class="registry-list"></div></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow">TRACE INSPECTOR</div><h3>Evidence detail</h3></div><span class="source-badge">BACKEND DERIVED</span></div><div class="evidence-inspector" id="evidenceInspector"><div class="tiny-note">Select an evidence-bearing experiment to inspect refs, metrics and decision context.</div></div></section>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-experiments">
+        <div class="section-head"><div><div class="eyebrow">VALIDATION</div><h2 data-i18n="page.experiments.title">Experiments</h2><p data-i18n="page.experiments.desc">Persistent validation records, evidence refs, evaluation and deterministic decisions.</p></div><button class="secondary-btn" id="experimentsRefresh" data-i18n="common.refresh">Refresh</button></div>
+        <div class="metric-grid" id="experimentKpis"></div>
+        <div class="card"><div class="card-head"><div><div class="eyebrow">EXPERIMENTS</div><h3>Registry</h3></div><span class="source-badge">LIVE API</span></div><div id="experimentList" class="registry-list"></div><div class="experiment-inspector" id="experimentInspector"><div class="tiny-note">Select an experiment to inspect its hypothesis, evidence, metrics and deterministic decision.</div></div></div>
+      </section>
+
+      <section class="page hidden" id="page-policies">
+        <div class="section-head"><div><div class="eyebrow">GOVERNANCE</div><h2 data-i18n="page.policies.title">Policy Center</h2><p data-i18n="page.policies.desc">Inspect the active governance policy surface. Policy changes remain backend-controlled and audited.</p></div><button class="secondary-btn" id="policiesRefresh" data-i18n="common.refresh">Refresh</button></div>
+        <div class="policy-banner"><div><span class="eyebrow" data-i18n="policy.safety">SAFETY BOUNDARY</span><strong data-i18n="policy.authority">UI never becomes the policy authority.</strong><small data-i18n="policy.change">Changes require an authenticated backend control-plane contract.</small></div><span class="source-badge" data-i18n="policy.source">BACKEND AUTHORITY</span></div>
+        <div class="card"><div class="card-head"><div><div class="eyebrow">ACTIVE POLICY</div><h3>Current governance rules</h3></div><span class="source-badge">LIVE API</span></div><div id="policyList" class="policy-list"></div></div>
+      </section>
+
+
+      <div class="o46-explain-overlay hidden" id="o46ExplainOverlay" aria-hidden="true">
+        <aside class="o46-explain-drawer" id="o46ExplainDrawer" role="dialog" aria-modal="true" aria-labelledby="o46ExplainTitle">
+          <div class="o46-explain-drawer-head">
+            <div><div class="eyebrow">O46 · EXPLAINABILITY</div><h3 id="o46ExplainTitle">Why did AI OS do this?</h3><p id="o46ExplainSubtitle">Backend-derived context, translated into a human-readable explanation.</p></div>
+            <button class="icon-btn" id="o46ExplainClose" type="button" aria-label="Close explanation">×</button>
+          </div>
+          <div class="o46-explain-meta" id="o46ExplainMeta"></div>
+          <div class="o46-explain-grid-v2" id="o46ExplainGrid"></div>
+          <div class="o46-explain-source" id="o46ExplainSource"></div>
+        </aside>
+      </div>
+
+      <section class="page hidden" id="page-platform">
+        <div class="section-head"><div><div class="eyebrow">PLATFORM</div><h2 data-i18n="page.platform.title">Platform</h2><p data-i18n="page.platform.desc">Identity, tenant context, roles, project scope and usage boundaries from the authenticated backend.</p></div><button class="secondary-btn" id="platformRefresh" data-i18n="common.refresh">Refresh</button></div>
+        <div class="platform-banner">
+          <div><span class="eyebrow" data-i18n="platform.authorityEyebrow">BACKEND AUTHORITY</span><strong data-i18n="platform.authorityTitle">The backend remains the source of truth for identity and tenant scope.</strong><small data-i18n="platform.authorityDesc">The console never manufactures tenant, role, permission or usage state.</small></div>
+          <span class="source-badge" id="platformSourceBadge" data-i18n="platform.sourceUnavailable">UNAVAILABLE</span>
+        </div>
+        <div class="platform-grid">
+          <section class="card platform-card"><div class="card-head"><div><div class="eyebrow">IDENTITY</div><h3 data-i18n="platform.identity.title">Current session</h3></div><span class="source-badge" id="platformIdentitySource">/identity/me</span></div><div id="platformIdentity" class="platform-details"></div></section>
+          <section class="card platform-card"><div class="card-head"><div><div class="eyebrow">TENANT CONTEXT</div><h3 data-i18n="platform.tenant.title">Organization & tenant</h3></div><span class="source-badge">BACKEND</span></div><div id="platformTenant" class="platform-details"></div></section>
+          <section class="card platform-card"><div class="card-head"><div><div class="eyebrow">ROLES & SCOPES</div><h3 data-i18n="platform.roles.title">Access context</h3></div></div><div id="platformRoles" class="platform-details"></div></section>
+          <section class="card platform-card"><div class="card-head"><div><div class="eyebrow">PROJECT SCOPE</div><h3 data-i18n="platform.projects.title">Projects</h3></div><span class="source-badge" id="platformProjectsSource">BACKEND</span></div><div id="platformProjects" class="platform-details"></div></section>
+          <section class="card platform-card span-2"><div class="card-head"><div><div class="eyebrow">USAGE & LIMITS</div><h3 data-i18n="platform.usage.title">Resource posture</h3></div><span class="source-badge" id="platformUsageSource">BACKEND</span></div><div id="platformUsage" class="platform-details"></div></section>
+        </div>
+      </section>
+
+      <section class="page hidden" id="page-adaptation">
+        <div class="section-head">
+          <div><div class="eyebrow" data-i18n="page.adaptation.eyebrow">ADAPTIVE INTELLIGENCE</div><h2 data-i18n="page.adaptation.title">Adaptive Intelligence</h2><p data-i18n="page.adaptation.desc">See how decisions, outcomes, feedback and strategy adaptation connect into one governed learning loop.</p></div>
+          <div class="section-actions"><span class="source-badge" id="adaptationSourceBadge">BACKEND / DERIVED</span><button class="secondary-btn" id="adaptationRefresh" type="button">Refresh</button></div>
+        </div>
+
+        <section class="adaptive-hero card">
+          <div class="adaptive-hero-copy">
+            <div class="eyebrow" data-i18n="adaptation.hero.eyebrow">STRATEGY LOOP</div>
+            <h3 id="adaptationHeadline">Feedback becomes strategy context.</h3>
+            <p id="adaptationSummary">The console will show the current strategy posture only when the backend exposes evidence-backed feedback and adaptation state.</p>
+            <div class="adaptive-badges" id="adaptationBadges"></div>
+          </div>
+          <div class="adaptive-score-orbit">
+            <div class="orbit-ring"><span class="orbit-glow"></span><div><strong id="adaptationConfidence">—</strong><small>confidence</small></div></div>
+          </div>
+        </section>
+
+        <section class="adaptive-loop card">
+          <div class="card-head"><div><div class="eyebrow">GOVERNED LOOP</div><h3 data-i18n="adaptation.loop.title">Decision → Outcome → Feedback → Adaptation</h3></div><span class="tiny-note" id="adaptationLoopNote">Backend-authoritative where exposed</span></div>
+          <div class="adaptive-flow" id="adaptiveFlow">
+            <div class="adaptive-node done"><span>01</span><b>Decision</b><small>What strategy was selected?</small></div>
+            <div class="adaptive-connector">→</div>
+            <div class="adaptive-node"><span>02</span><b>Outcome</b><small>What actually happened?</small></div>
+            <div class="adaptive-connector">→</div>
+            <div class="adaptive-node"><span>03</span><b>Feedback</b><small>Was the strategy supported?</small></div>
+            <div class="adaptive-connector">→</div>
+            <div class="adaptive-node highlight"><span>04</span><b>Adaptation</b><small>Maintain, refine, explore or collect evidence.</small></div>
+            <div class="adaptive-connector loop-back">↺</div>
+            <div class="adaptive-node"><span>05</span><b>Next Decision</b><small>Use context without lowering governance.</small></div>
+          </div>
+        </section>
+
+        <div class="adaptive-metrics" id="adaptationMetrics">
+          <div class="metric-card"><span>SELECTED STRATEGY</span><strong id="adaptationStrategy">—</strong><small id="adaptationStrategyMeta">Waiting for backend evidence</small></div>
+          <div class="metric-card"><span>FEEDBACK SAMPLE</span><strong id="adaptationSample">—</strong><small id="adaptationFeedbackMeta">Attributable strategy feedback only</small></div>
+          <div class="metric-card"><span>EVIDENCE SUFFICIENCY</span><strong id="adaptationEvidence">—</strong><small>Descriptive gate, not probability</small></div>
+          <div class="metric-card"><span>OBSERVED SUCCESS</span><strong id="adaptationSuccess">—</strong><small>Historical frequency only</small></div>
+          <div class="metric-card"><span>ADAPTIVE POSTURE</span><strong id="adaptationPosture">—</strong><small>Safety posture from available context</small></div>
+          <div class="metric-card accent"><span>RECOMMENDATION</span><strong id="adaptationRecommendation">—</strong><small id="adaptationRecommendationMeta">Advisory only</small></div>
+        </div>
+
+        <div class="adaptive-columns">
+          <section class="card">
+            <div class="card-head"><div><div class="eyebrow">FEEDBACK PROFILE</div><h3>What the strategy history says</h3></div><span class="tiny-note">v1.9 → v2.0</span></div>
+            <div class="feedback-bars" id="adaptationFeedbackBars"></div>
+            <div class="adaptive-callout" id="adaptationCallout"><strong>Waiting for feedback history.</strong><span>No strategy adaptation will be invented locally.</span></div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><div class="eyebrow">GOVERNANCE BOUNDARY</div><h3>What the UI will never do</h3></div><span class="status-pill good">ACTIVE</span></div>
+            <div class="boundary-list">
+              <div><span class="boundary-mark">✓</span><b>Governance stays authoritative.</b><small>Adaptation cannot downgrade a required review.</small></div>
+              <div><span class="boundary-mark">✓</span><b>No external action from adaptation.</b><small>This screen observes and explains; it does not execute.</small></div>
+              <div><span class="boundary-mark">✓</span><b>No silent O43 mutation.</b><small>Learning remains an explicit backend-controlled boundary.</small></div>
+              <div><span class="boundary-mark">✓</span><b>Weak evidence stays visible.</b><small>Small samples route to more evidence, not confident adaptation.</small></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="card adaptive-detail">
+          <div class="card-head"><div><div class="eyebrow">ADAPTATION RECORD</div><h3>Canonical context</h3></div><span class="tiny-note" id="adaptationRecordId">No record loaded</span></div>
+          <div class="inspector-grid">
+            <div><span>Project</span><strong id="adaptationProject">—</strong></div>
+            <div><span>Strategy</span><strong id="adaptationStrategyDetail">—</strong></div>
+            <div><span>Positive</span><strong id="adaptationPositive">—</strong></div>
+            <div><span>Negative</span><strong id="adaptationNegative">—</strong></div>
+            <div><span>Refine</span><strong id="adaptationRefine">—</strong></div>
+            <div><span>Governance authoritative</span><strong id="adaptationGovernance">—</strong></div>
+          </div>
+          <details class="inspector-details"><summary>View reasons and provenance</summary><pre id="adaptationReasons" class="learning-json">No adaptation context loaded.</pre></details>
+        </section>
+      </section>
+
+      <section class="page hidden" id="page-settings">
+        <div class="section-head"><div><div class="eyebrow">SYSTEM</div><h2 data-i18n="page.settings.title">Settings</h2><p data-i18n="page.settings.desc">Console preferences and connection settings. Secret material stays local to the session.</p></div></div>
+        <div class="content-grid">
+          <section class="card"><div class="card-head"><div><div class="eyebrow">LANGUAGE</div><h3>Interface language</h3></div></div><p class="settings-note">Choose English or العربية. Arabic switches the interface to RTL and persists for this console.</p><label>Language<select id="settingsLanguageSelect"><option value="en">English</option><option value="ar">العربية</option></select></label></section>
+          <section class="card"><div class="card-head"><div><div class="eyebrow">DATA LIFECYCLE</div><h3>Local console history</h3></div></div><p class="settings-note">Clear History only removes the browser-local run index. Backend jobs, audit records, experiments and memory are not deleted.</p><button class="danger-outline-btn" id="settingsClearHistory" type="button">Clear local history</button></section>
+          <section class="card span-2"><div class="card-head"><div><div class="eyebrow">BACKEND CONNECTION</div><h3>Authenticated API boundary</h3></div><span class="source-badge">/api PROXY</span></div><div class="settings-connection-grid"><div><span class="label">API Base</span><strong id="settingsApiBase">/api</strong></div><div><span class="label">Runtime authority</span><strong>Backend</strong></div><div><span class="label">Local cache</span><strong>Session + browser index</strong></div></div><button class="secondary-btn" id="settingsSessionBtn">Open session settings</button></section>
+        </div>
+      </section>
+
+      <footer class="footer-note">AI Master OS Console v4.6.0 FINAL · UI reads/writes through the existing authenticated API boundary.</footer>
+    
+<section class="page hidden" id="page-release">
+  <div class="section-head"><div><h2>Release</h2><p>Frozen release evidence and target-environment readiness.</p></div><span id="release-status" class="status-pill">CHECKING</span></div>
+  <div class="kpi-grid">
+    <div class="card"><span class="label">Backend</span><strong>O40-v1.0.0</strong><small>Final release candidate</small></div>
+    <div class="card"><span class="label">UI</span><strong>v1.0.0</strong><small>Release Control Plane</small></div>
+    <div class="card"><span class="label">Local Gate</span><strong id="release-local-gate">READY</strong><small>No provider calls</small></div>
+    <div class="card"><span class="label">Target Evidence</span><strong id="release-target-evidence">MANUAL</strong><small>Firewall · TLS · Backup · Rollback</small></div>
+  </div>
+  <div class="card release-note"><h3>Release discipline</h3><p data-i18n="release.disciplineText">The local package can be frozen only after the automated gate passes. Internet-facing production still requires target-environment evidence. This screen never executes external actions.</p></div>
+  <section class="card final-readiness-card"><div class="card-head"><div><div class="eyebrow" data-i18n="release.readinessEyebrow">FINAL READINESS</div><h3 data-i18n="release.readinessTitle">V4 Release Candidate checklist</h3></div><span id="finalReadinessStatus" class="status-pill">CHECKING</span></div><div id="finalReadinessGrid" class="readiness-grid"></div><div class="release-note subtle" data-i18n="release.rcBoundary">This candidate freezes the UI contract; it does not claim target-environment production evidence that has not been supplied.</div></section>
+</section>
+
+      <section class="page hidden" id="page-acceptance">
+        <section class="acceptance-console" id="productAcceptance">
+          <div class="acceptance-header">
+            <div>
+              <div class="eyebrow">O46 · PRODUCT ACCEPTANCE</div>
+              <h2>Is the experience ready to show?</h2>
+              <p>One read-only acceptance surface for the full O46 journey. It compares the live backend-derived experience against the user-facing product contract.</p>
+            </div>
+            <div class="acceptance-header-actions">
+              <span class="golden-readonly">GET-ONLY · NO SIDE EFFECTS</span>
+              <button class="secondary-btn" id="acceptanceRefresh" type="button">Run acceptance check</button>
+              <button class="ghost-btn" id="acceptanceOpenGolden" type="button">Open Golden Experience</button>
+            </div>
+          </div>
+          <section class="card acceptance-hero" id="acceptanceHero">
+            <div class="acceptance-score">
+              <span class="eyebrow">EXPERIENCE READINESS</span>
+              <strong id="acceptanceScore">—</strong>
+              <small id="acceptanceScoreNote">Waiting for a live run inspection.</small>
+            </div>
+            <div class="acceptance-hero-copy">
+              <div class="status-pill" id="acceptanceStatus">NOT CHECKED</div>
+              <h3 id="acceptanceHeadline">Select a live run to evaluate the product journey.</h3>
+              <p id="acceptanceSummary">Acceptance is based on backend-derived state only. Missing or unavailable data is surfaced rather than invented.</p>
+            </div>
+          </section>
+          <section class="acceptance-runbar card">
+            <label><span class="tiny-note">Live backend run</span><select id="acceptanceRunSelect"><option value="">Latest run</option></select></label>
+            <div class="golden-run-meta" id="acceptanceRunMeta"><span class="tiny-note">No run inspected yet.</span></div>
+          </section>
+          <section class="acceptance-grid" id="acceptanceGrid"></section>
+          <section class="acceptance-bottom-grid">
+            <div class="card acceptance-findings" id="acceptanceFindings"></div>
+            <div class="card acceptance-boundary" id="acceptanceBoundary"></div>
+          </section>
+        </section>
+      </section>
+
+      <section class="page hidden" id="page-goldenrun">
+        <section class="golden-run-control" id="goldenRunControl">
+          <div class="golden-control-header">
+            <div>
+              <div class="eyebrow">O46 · GOLDEN RUN CONTROL</div>
+              <h2>Run the full product journey from the console.</h2>
+              <p>Create a controlled Golden Run from a predefined, traceable objective, then explicitly start governed execution. The UI never auto-executes.</p>
+            </div>
+            <div class="golden-control-badges">
+              <span class="golden-readonly">USER-INITIATED</span>
+              <span class="golden-readonly">GOVERNED</span>
+            </div>
+          </div>
+          <section class="card golden-control-hero">
+            <div class="golden-control-hero-copy">
+              <div class="eyebrow">GOLDEN SCENARIO</div>
+              <h3>Find the strongest low-cost AI business opportunity and define the cheapest useful validation test.</h3>
+              <p>Designed to exercise the visible O46 path: research → evidence → decision → governance → approval state → execution → outcome → learning → next decision.</p>
+              <div class="golden-chip-row"><span>Real Provider</span><span>Traceable Evidence</span><span>Human Gate Preserved</span><span>Read-only UI State</span></div>
+            </div>
+            <div class="golden-control-actions">
+              <button class="primary-btn" id="goldenCreateBtn" type="button">Create Golden Run</button>
+              <button class="secondary-btn hidden" id="goldenExecuteBtn" type="button">Start Governed Execution</button>
+              <button class="ghost-btn" id="goldenInspectBtn" type="button">Inspect Latest Run</button>
+            </div>
+          </section>
+          <section class="golden-control-status card" id="goldenControlStatus">
+            <div><div class="eyebrow">CURRENT STATE</div><strong id="goldenControlHeadline">No Golden Run created yet.</strong><p id="goldenControlMeta">Create a run to begin the end-to-end product journey.</p></div>
+            <span class="status-pill" id="goldenControlBadge">IDLE</span>
+          </section>
+          <section class="golden-control-grid">
+            <div class="card"><div class="eyebrow">RUN ID</div><strong id="goldenControlRunId">—</strong><small id="goldenControlProject">—</small></div>
+            <div class="card"><div class="eyebrow">BACKEND STATUS</div><strong id="goldenControlRunStatus">—</strong><small>Live status from O40 API</small></div>
+            <div class="card"><div class="eyebrow">GOVERNANCE</div><strong id="goldenControlGovernance">—</strong><small>Displayed from O46 experience view</small></div>
+            <div class="card"><div class="eyebrow">NEXT STEP</div><strong id="goldenControlNext">—</strong><small>Derived from current run state</small></div>
+          </section>
+          <section class="card golden-control-journey">
+            <div class="card-head"><div><div class="eyebrow">LIVE JOURNEY</div><h3>Follow the same run all the way through</h3></div><button class="text-btn" id="goldenOpenExperience" type="button">Open Golden Experience</button></div>
+            <div class="golden-control-steps" id="goldenControlSteps"></div>
+          </section>
+          <section class="card golden-control-boundary"><div class="eyebrow">SAFETY BOUNDARY</div><h3>Nothing happens without an explicit user action.</h3><p>Creating a run is a user-initiated backend request. Starting execution requires a separate click. Approval remains governed by the backend human gate; this screen never grants approval automatically.</p></section>
+        </section>
+      </section>
+
+      <section class="page hidden" id="page-golden">
+        <section class="golden-experience" id="goldenExperience">
+          <div class="golden-header">
+            <div>
+              <div class="eyebrow">O46 · GOLDEN EXPERIENCE</div>
+              <h2>See the whole intelligence journey.</h2>
+              <p>One connected experience from your goal to the next decision, using the current backend-derived O46 view.</p>
+            </div>
+            <div class="golden-header-actions">
+              <span class="golden-readonly">READ-ONLY EXPERIENCE QA</span>
+              <button class="primary-btn" id="goldenRefresh" type="button">Refresh journey</button>
+            </div>
+          </div>
+          <div class="golden-status card" id="goldenStatus"></div>
+          <div class="golden-journey" id="goldenJourney"></div>
+          <section class="golden-summary-grid">
+            <div class="card" id="goldenIntent"></div>
+            <div class="card" id="goldenDecision"></div>
+            <div class="card" id="goldenGovernance"></div>
+            <div class="card" id="goldenOutcome"></div>
+          </section>
+          <section class="card golden-next" id="goldenNext"></section>
+          <section class="golden-live-inspector" id="goldenLiveInspector">
+            <div class="card-head"><div><div class="eyebrow">LIVE GOLDEN RUN INSPECTOR</div><h3>Validate the product experience against the real run</h3><p class="section-subline">Select a backend run and inspect whether every O46 stage has a matching user-facing state.</p></div><div class="golden-inspector-actions"><span class="source-badge">GET-ONLY QA</span><button class="secondary-btn" id="goldenInspectRefresh" type="button">Refresh runs</button></div></div>
+            <div class="golden-inspector-toolbar">
+              <label><span class="tiny-note">Backend run</span><select id="goldenRunSelect"><option value="">Latest run</option></select></label>
+              <div class="golden-run-meta" id="goldenRunMeta"><span class="tiny-note">No run inspected yet.</span></div>
+            </div>
+            <div class="golden-validation-grid" id="goldenValidationGrid"></div>
+            <div class="golden-integrity-banner" id="goldenIntegrityBanner"><span class="status-dot"></span><div><strong>Waiting for inspection</strong><small>Select a run to compare backend state with the O46 experience contract.</small></div></div>
+          </section>
+      </section>
+
+</main>
+  </div>
+
+  <div class="drawer-overlay hidden" id="payloadDrawerOverlay">
+    <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="enginePayloadTitle">
+      <div class="drawer-head"><div><div class="eyebrow">ENGINE PAYLOAD</div><div class="drawer-title" id="enginePayloadTitle">Engine payload</div></div><div class="drawer-actions"><button class="secondary-btn" id="enginePayloadDownload" type="button">Download JSON</button><button class="text-btn" id="closeEnginePayload" type="button">Close</button></div></div>
+      <div id="enginePayloadSummary" class="payload-summary"></div>
+      <div class="drawer-section-title">Structured payload</div>
+      <pre id="enginePayloadJson" class="json-block"></pre>
+    </aside>
+  </div>
+
+  <div class="modal hidden" id="sessionModal" role="dialog" aria-modal="true" aria-labelledby="sessionTitle">
+    <div class="modal-card">
+      <div class="card-head"><div><div class="eyebrow">AUTHENTICATION</div><h3 id="sessionTitle">Console session</h3></div><button class="text-btn" id="closeModal">Close</button></div>
+      <p class="modal-copy">Enter the signed bearer token issued by your O36 identity boundary. The console normalizes an optional <code>Bearer </code> prefix, stores the token in <code>sessionStorage</code>, and can test the token against O38 without creating a run.</p>
+      <label>API Base URL<input id="apiBase" value="/api" /></label>
+      <label>Bearer token<input id="bearerToken" type="password" placeholder="Paste token locally — never share it in chat" /></label>
+      <div class="form-actions"><button class="primary-btn" id="saveSession">Save session</button><button class="secondary-btn" id="testSession">Test session</button><button class="ghost-btn" id="clearSession">Clear</button></div>
+      <div id="sessionMsg" class="form-msg"></div>
+    </div>
+  </div>
+  <div class="command-overlay hidden" id="commandPalette" role="dialog" aria-modal="true" aria-labelledby="commandTitle">
+    <div class="command-panel">
+      <div class="command-head"><div><div class="eyebrow">CONTROL CENTER</div><h3 id="commandTitle">Find anything in AI Master OS</h3></div><button class="text-btn" id="commandClose">Esc</button></div>
+      <input id="commandSearch" class="command-input" autocomplete="off" placeholder="Search pages, jobs, projects, actions…" />
+      <div id="commandResults" class="command-results"></div>
+      <div class="command-foot"><span>↑↓ navigate</span><span>Enter open</span><span>Ctrl K close</span></div>
+    </div>
+  </div>
+
+  <div class="notification-panel hidden" id="notificationPanel">
+    <div class="notification-card"><div class="card-head"><div><div class="eyebrow">ALERTS</div><h3>What needs attention</h3></div><button class="text-btn" id="notificationClose">Close</button></div><div id="notificationList" class="notification-list"></div></div>
+  </div>
+
+
+  <div class="modal hidden" id="clearHistoryModal" role="dialog" aria-modal="true" aria-labelledby="clearHistoryTitle">
+    <div class="modal-card danger-modal">
+      <div class="card-head"><div><div class="eyebrow" data-i18n="historyModal.eyebrow">DATA LIFECYCLE</div><h3 id="clearHistoryTitle" data-i18n="historyModal.title">Clear run history?</h3></div><button class="text-btn" id="clearHistoryClose" type="button" data-i18n="common.cancel">Cancel</button></div>
+      <p class="modal-copy" id="clearHistoryCopy">This clears the run history stored by this browser console. Your backend jobs, audit log, experiments and learning memory remain untouched.</p>
+      <div class="callout danger-callout" id="clearHistoryScope">Local console history only · <strong id="clearHistoryCount">0</strong> indexed runs.</div>
+      <div class="form-actions"><button class="ghost-btn" id="clearHistoryCancel" type="button" data-i18n="common.cancel">Cancel</button><button class="danger-btn" id="clearHistoryConfirm" type="button" data-i18n="historyModal.confirm">Clear local history</button></div>
+      <div id="clearHistoryMsg" class="form-msg"></div>
+    </div>
+  </div>
+
+  <script src="experience.js?v=1.0.0"></script>
+  <script src="app.js?v=4.6.0"></script>
+  <script src="ux14_console.js?v=1.0.0"></script>
+  <script src="ux16_experience.js?v=1.0.0"></script>
+  <script src="o46_navigation_recovery.js?v=1.0.0"></script>
+  <script src="o46_session_modal_recovery.js?v=1.0.0"></script>
+  <script src="o46_session_actions_recovery.js?v=1.0.0"></script>
+  <script src="o46_golden_control_fix.js?v=1.0.0"></script>\n  <script src="ui24_console.js?v=24.0.0"></script>
+  <script src="ui25_console.js?v=25.0.0"></script>
+</body>
+</html>
+<!-- UI9 · O46 Visual Experience Polish v5.1.0 -->

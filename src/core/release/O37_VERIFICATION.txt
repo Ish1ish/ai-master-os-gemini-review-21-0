@@ -1,0 +1,11 @@
+O37-v1.0.1 verification
+- Unit/regression: 11/11 PASS
+- O37 smoke: PASS
+- O33 cumulative smoke: PASS
+- O34 cumulative smoke: PASS
+- O35 cumulative smoke: PASS
+- Deployment smoke: PASS
+- ResourceWarning: CLEAN
+- compileall: PASS
+- Manifest: O37-v1.0.1
+- Production env: NOT_CONFIGURED in local developer environment; no live credentials bundled.

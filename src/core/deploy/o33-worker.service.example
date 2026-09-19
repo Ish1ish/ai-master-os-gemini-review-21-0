@@ -1,0 +1,11 @@
+[Unit]
+Description=AI Master OS O33 Worker Daemon
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/ai-master-os
+ExecStart=/usr/bin/python3 -m src.worker_daemon
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

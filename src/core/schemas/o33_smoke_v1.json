@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS O33 Shared Deployment Smoke v1",
+  "type": "object",
+  "required": [
+    "api_health",
+    "job_created",
+    "worker_result",
+    "queue_status",
+    "worker_shutdown",
+    "shared_store",
+    "qa",
+    "status"
+  ],
+  "properties": {
+    "api_health": {
+      "type": "object"
+    },
+    "job_created": {
+      "type": "object"
+    },
+    "worker_result": {
+      "type": "object"
+    },
+    "queue_status": {
+      "type": "string"
+    },
+    "worker_shutdown": {
+      "type": "object"
+    },
+    "shared_store": {
+      "type": "object"
+    },
+    "qa": {
+      "type": "object"
+    },
+    "status": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

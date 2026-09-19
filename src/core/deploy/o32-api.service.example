@@ -1,0 +1,11 @@
+[Unit]
+Description=AI Master OS O32 API (legacy/internal)
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/ai-master-os
+ExecStart=/usr/bin/python3 -m src.server --host 127.0.0.1 --port 8080 --db /opt/ai-master-os/data/jobs.sqlite3
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

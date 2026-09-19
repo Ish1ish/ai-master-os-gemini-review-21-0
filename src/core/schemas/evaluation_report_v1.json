@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS O29 Evaluation Report v1",
+  "type": "object",
+  "required": ["summary", "checks", "release_gate"],
+  "properties": {
+    "summary": {"type": "object"},
+    "checks": {"type": "array"},
+    "release_gate": {"type": "object"}
+  },
+  "additionalProperties": false
+}

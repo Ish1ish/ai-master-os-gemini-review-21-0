@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Master OS O37 Tenant Isolation v1",
+  "type": "object",
+  "required": [
+    "tenant_id",
+    "project_id",
+    "owner_principal_id"
+  ],
+  "properties": {
+    "tenant_id": { "type": "string", "minLength": 1 },
+    "project_id": { "type": "string", "minLength": 1 },
+    "owner_principal_id": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,22 @@
+{
+  "release": "O39-S41",
+  "status": "PASS",
+  "checks": {
+    "recovery_module_imported": true,
+    "crash_reconciliation_api": true,
+    "interrupted_run_detected": true,
+    "restart_reconciliation": true,
+    "resume_to_terminal_state": true,
+    "idempotent_close": true,
+    "application_service_present": true,
+    "application_service_lifecycle_present": true,
+    "worker_recovery_markers_present": true,
+    "targeted_tests": true
+  },
+  "worker_recovery_marker_file_count": 40,
+  "targeted_test_output": "S41_TARGETED_TESTS_PASS 6/6",
+  "external_action_executed": false,
+  "memory_write_executed": false,
+  "internet_facing_production_approval": false,
+  "notes": []
+}

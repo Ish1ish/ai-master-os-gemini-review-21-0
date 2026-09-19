@@ -1,0 +1,38 @@
+{
+  "items": [
+    {
+      "knowledge_id": "ST-01",
+      "title": "Strategy Decision Principle",
+      "content": "Strategy should compare models, niches, offers, validation requirements, resources, risks, and next tests instead of treating an idea as proven.",
+      "source_refs": [
+        "Strategy Engine v1.0"
+      ],
+      "tags": [
+        "strategy",
+        "business-model",
+        "validation"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    },
+    {
+      "knowledge_id": "ST-02",
+      "title": "Opportunity Score Boundary",
+      "content": "Opportunity scores are decision aids; they are not proof of profitability.",
+      "source_refs": [
+        "Strategy Engine v1.0"
+      ],
+      "tags": [
+        "strategy",
+        "scoring",
+        "guardrail"
+      ],
+      "confidence": "high",
+      "freshness": "static",
+      "scope": "global",
+      "status": "active"
+    }
+  ]
+}
