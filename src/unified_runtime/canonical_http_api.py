@@ -40,7 +40,7 @@ class CanonicalHTTPAPI:
         scope: str,
     ) -> dict[str, Any] | None:
         principal = self._principal(principal)
-        if principal.get("authenticated") is False:
+        if principal.get("authenticated") is not True:
             return {
                 "status": "UNAUTHORIZED",
                 "reason": "principal_not_authenticated",
@@ -144,8 +144,11 @@ class CanonicalHTTPAPI:
             and route.endswith("/decision")
         ):
             approval_id = route[len("/api/approvals/") : -len("/decision")].strip("/")
-            if not approval_id:
-                result = {"status": "BAD_REQUEST", "reason": "approval_id_required"}
+            if not approval_id or "/" in approval_id:
+                result = {
+                    "status": "NOT_FOUND",
+                    "reason": "canonical_route_not_found",
+                }
                 return self._http_status(result), result
             denied = self._authorize(principal, "approval:decide")
             if denied:
