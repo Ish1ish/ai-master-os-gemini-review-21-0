@@ -1,4 +1,4 @@
-from src.handoff_contracts import semantic_core, compact_semantic_text
+from core.src.handoff_contracts import semantic_core, compact_semantic_text
 
 class ProductDefinitionBuilder:
     def build(self, strategy, idea, audience="", constraints=None):

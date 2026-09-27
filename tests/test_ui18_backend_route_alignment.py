@@ -7,8 +7,6 @@ import sys
 from pathlib import Path
 from http.client import HTTPConnection
 
-CORE_SRC = Path(__file__).resolve().parents[1] / "src" / "core"
-sys.path.insert(0, str(CORE_SRC))
 
 from core.src.api_adapter import O32APIAdapter
 from core.src.http_server import O32HTTPServer

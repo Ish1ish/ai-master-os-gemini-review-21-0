@@ -5,7 +5,7 @@ from .mvp import MVPPlanner
 from .decision import build_strategy_score, select_strategy
 from .plan import build_90_day_plan
 from .qa import validate_strategy_output
-from src.handoff_contracts import (
+from core.src.handoff_contracts import (
     build_strategy_to_product_handoff,
     build_idea_to_strategy_handoff,
     validate_semantic_handoff,

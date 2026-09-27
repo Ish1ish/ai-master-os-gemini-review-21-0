@@ -1,4 +1,4 @@
-from src.handoff_contracts import validate_semantic_handoff
+from core.src.handoff_contracts import validate_semantic_handoff
 def validate_strategy_output(out):
     issues=[]
     if not out.get("business_model_options"): issues.append({"type":"missing_business_model_options"})

@@ -5,7 +5,7 @@ from .generator import IdeaGenerator
 from .scorer import IdeaScorer
 from .validator import IdeaValidator
 from .qa import validate_idea_output
-from src.handoff_contracts import build_idea_to_strategy_handoff, validate_semantic_handoff
+from core.src.handoff_contracts import build_idea_to_strategy_handoff, validate_semantic_handoff
 
 
 class RealIdeaEngine:
