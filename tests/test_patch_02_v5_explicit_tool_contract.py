@@ -1,6 +1,6 @@
 import unittest
 
-from src.execution_intent_planner import ExecutionIntentPlanner
+from core.src.execution_intent_planner import ExecutionIntentPlanner
 
 
 class TestPatch02V5ExplicitToolContract(unittest.TestCase):

@@ -1,4 +1,4 @@
-from src.handoff_contracts import semantic_core, compact_semantic_text
+from core.src.handoff_contracts import semantic_core, compact_semantic_text
 
 def build_positioning(idea, market_report=None):
     market_report = market_report or {}

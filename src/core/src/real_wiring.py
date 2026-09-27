@@ -1,7 +1,5 @@
-import os, sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import os
-from engines.o3.src.runtime import O3Runtime
+from core.engines.o3.src.runtime import O3Runtime
 from .jobs import normalize_constraints
 from .handoff_contracts import (
     build_market_to_idea_handoff,
@@ -20,21 +18,21 @@ from .handoff_contracts import (
     validate_semantic_handoff,
     validate_handoff_chain,
 )
-from engines.o10.src.engine import RealPromptEngine
-from engines.o11.src.engine import RealMarketIntelligenceEngine
-from engines.o12.src.engine import RealIdeaEngine
-from engines.o13.src.engine import RealStrategyEngine
-from engines.o14.src.engine import RealProductEngine
-from engines.o15.src.engine import RealBrandEngine
-from engines.o16.src.engine import RealContentEngine
-from engines.o17.src.engine import RealVisualDesignEngine
-from engines.o18.src.engine import RealMarketingEngine
-from engines.o19.src.engine import RealSalesEngine
-from engines.o20.src.engine import RealAutomationEngine
-from engines.o21.src.engine import RealAnalyticsEngine
-from engines.o5.src.controller import ApprovalController
-from engines.o7.src.integration import MemoryLearningRuntime
-from engines.o8.src.runtime import O8Runtime
+from core.engines.o10.src.engine import RealPromptEngine
+from core.engines.o11.src.engine import RealMarketIntelligenceEngine
+from core.engines.o12.src.engine import RealIdeaEngine
+from core.engines.o13.src.engine import RealStrategyEngine
+from core.engines.o14.src.engine import RealProductEngine
+from core.engines.o15.src.engine import RealBrandEngine
+from core.engines.o16.src.engine import RealContentEngine
+from core.engines.o17.src.engine import RealVisualDesignEngine
+from core.engines.o18.src.engine import RealMarketingEngine
+from core.engines.o19.src.engine import RealSalesEngine
+from core.engines.o20.src.engine import RealAutomationEngine
+from core.engines.o21.src.engine import RealAnalyticsEngine
+from core.engines.o5.src.controller import ApprovalController
+from core.engines.o7.src.integration import MemoryLearningRuntime
+from core.engines.o8.src.runtime import O8Runtime
 from .providers import fake_model_provider, fake_search_provider
 from .localization import build_arabic_decision_summary, build_decision_surface
 
