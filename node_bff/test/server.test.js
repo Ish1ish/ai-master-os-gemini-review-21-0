@@ -262,3 +262,56 @@ test('readiness reports unavailable when Python S21 returns a server error', asy
     await closeServer(server);
   }
 });
+
+
+test('X-Request-ID is forwarded to the Python S21 backend', async () => {
+  let captured;
+  const app = createApp({
+    fetchImpl: async (url, init) => {
+      captured = { url, init };
+      return new Response(
+        JSON.stringify({ status: 'OK' }),
+        { status: 200, headers: { 'content-type': 'application/json' } },
+      );
+    },
+  });
+  const { server, port } = await startApp(app);
+
+  try {
+    const result = await request(
+      port,
+      'GET',
+      '/api/approvals',
+      { headers: { 'x-request-id': 'req-patch08-001' } },
+    );
+    assert.equal(result.status, 200);
+    assert.equal(captured.init.headers['x-request-id'], 'req-patch08-001');
+    assert.equal(captured.url, 'http://127.0.0.1:8091/api/approvals');
+  } finally {
+    await closeServer(server);
+  }
+});
+
+test('/health returns local liveness without contacting Python S21', async () => {
+  let called = false;
+  const app = createApp({
+    fetchImpl: async () => {
+      called = true;
+      throw new Error('health_should_not_probe_upstream');
+    },
+  });
+  const { server, port } = await startApp(app);
+
+  try {
+    const result = await request(port, 'GET', '/health');
+    assert.equal(result.status, 200);
+    assert.deepEqual(result.body, {
+      status: 'OK',
+      service: 'ai-master-os-node-bff',
+      authority: 'python-s21',
+    });
+    assert.equal(called, false);
+  } finally {
+    await closeServer(server);
+  }
+});
