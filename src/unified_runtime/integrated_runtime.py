@@ -15,8 +15,7 @@ import hashlib
 import json
 from typing import Any, Dict, Mapping, Optional
 
-import sys
-from pathlib import Path
+
 class _AuthenticatedScopeAuthorizer:
     """Authorization adapter over scopes already issued by S20/S19."""
 
@@ -82,16 +81,12 @@ class RealUnifiedRuntime:
         if self._o45_bundle is not None:
             return self._o45_bundle
 
-        core_root = str(Path(__file__).resolve().parents[1] / "core")
-        if core_root not in sys.path:
-            sys.path.insert(0, core_root)
-
-        from src.governance_intelligence import GovernanceIntelligence
-        from src.tool_registry import ToolRegistry
-        from src.receipt_store import ExecutionReceiptStore
-        from src.o45_execution_service import ExecutionService
-        from src.governed_execution_orchestrator import GovernedExecutionOrchestrator, GovernedExecutionStore
-        from src.execution_observability import ExecutionObservability, ExecutionObservabilityStore
+        from core.src.governance_intelligence import GovernanceIntelligence
+        from core.src.tool_registry import ToolRegistry
+        from core.src.receipt_store import ExecutionReceiptStore
+        from core.src.o45_execution_service import ExecutionService
+        from core.src.governed_execution_orchestrator import GovernedExecutionOrchestrator, GovernedExecutionStore
+        from core.src.execution_observability import ExecutionObservability, ExecutionObservabilityStore
 
         root = self.persistence.root / "o45"
         root.mkdir(parents=True, exist_ok=True)
@@ -284,11 +279,7 @@ class RealUnifiedRuntime:
             decision_surface.get("evidence_boundary"),
         )
 
-        core_root = str(Path(__file__).resolve().parents[1] / "core")
-        if core_root not in sys.path:
-            sys.path.insert(0, core_root)
-
-        from src.execution_intent_planner import ExecutionIntentPlanner
+        from core.src.execution_intent_planner import ExecutionIntentPlanner
 
         intent = ExecutionIntentPlanner.build_intent(
             decision_plan=dict(decision_stage),
