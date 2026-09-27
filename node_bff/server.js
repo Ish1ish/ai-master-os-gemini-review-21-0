@@ -1,9 +1,13 @@
 import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const HOST = process.env.AI_OS_BFF_HOST || '127.0.0.1';
 const PORT = Number.parseInt(process.env.AI_OS_BFF_PORT || '3001', 10);
 const PYTHON_BASE_URL = (process.env.AI_OS_PYTHON_URL || 'http://127.0.0.1:8091').replace(/\/+$/, '');
 const JSON_LIMIT = process.env.AI_OS_BFF_JSON_LIMIT || '1mb';
+const BFF_DIR = path.dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(BFF_DIR, 'public');
 
 const CANONICAL_ROUTE_PATTERNS = [
   { method: 'POST', pattern: /^\/api\/runs$/ },
@@ -14,9 +18,9 @@ const CANONICAL_ROUTE_PATTERNS = [
   { method: 'GET', pattern: /^\/api\/executions\/[^/]+$/ },
 ];
 
-function isCanonicalRoute(method, path) {
+function isCanonicalRoute(method, pathValue) {
   return CANONICAL_ROUTE_PATTERNS.some(
-    (entry) => entry.method === method && entry.pattern.test(path),
+    (entry) => entry.method === method && entry.pattern.test(pathValue),
   );
 }
 
@@ -61,7 +65,7 @@ async function proxyCanonicalRequest(req, res, fetchImpl = fetch) {
     res.status(upstream.status);
     res.set('content-type', contentType);
     res.send(text);
-  } catch (error) {
+  } catch {
     res.status(502).json({
       status: 'BAD_GATEWAY',
       reason: 'python_backend_unreachable',
@@ -75,12 +79,12 @@ async function checkPythonReadiness(authorization, fetchImpl = fetch) {
     if (authorization) {
       headers.authorization = authorization;
     }
+
     const upstream = await fetchImpl(`${PYTHON_BASE_URL}/api/approvals`, {
       method: 'GET',
       headers,
     });
-    // A protected canonical route may reject an anonymous readiness request.
-    // That still proves the Python S21 server is reachable and admitting HTTP.
+
     return upstream.status >= 100 && upstream.status < 500;
   } catch {
     return false;
@@ -110,6 +114,8 @@ export function createApp({ fetchImpl = fetch } = {}) {
       python_backend: pythonReady ? 'OK' : 'UNAVAILABLE',
     });
   });
+
+  app.use(express.static(PUBLIC_DIR, { fallthrough: true }));
 
   app.use(async (req, res, next) => {
     if (!req.path.startsWith('/api/')) {
