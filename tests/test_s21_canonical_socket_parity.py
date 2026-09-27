@@ -69,7 +69,7 @@ def build_test_security_config():
     return config
 
 
-def test_authenticator(token):
+def authenticator_for_token(token):
     value = TOKEN_PRINCIPALS.get(token)
     if value is None:
         return {
@@ -186,7 +186,7 @@ class TestS21CanonicalSocketParity(unittest.TestCase):
                 port=0,
                 tls_terminated=True,
             ),
-            authenticator=test_authenticator,
+            authenticator=authenticator_for_token,
             entrypoint=cls.entrypoint,
         )
         cls.address = cls.server.start()
