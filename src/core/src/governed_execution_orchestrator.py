@@ -8,9 +8,9 @@ import threading
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional
 
-from src.execution_intent_planner import ExecutionIntentPlanner
-from src.o45_execution_service import canonical_request, request_hash
-from src.execution_observability import ExecutionObservability
+from .execution_intent_planner import ExecutionIntentPlanner
+from .o45_execution_service import canonical_request, request_hash
+from .execution_observability import ExecutionObservability
 
 
 SCHEMA_VERSION = "GEO-v1.0"

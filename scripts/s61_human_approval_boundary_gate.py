@@ -17,8 +17,7 @@ def main():
         "rejection_blocks_release": False,
         "explicit_approval_releases": False,
         "approval_idempotent": False,
-        "external_action_executed": False,
-        "memory_write_executed": False,
+        "external_action_not_executed": False,
         "compileall": False,
     }
     env = dict(__import__("os").environ)
@@ -35,6 +34,7 @@ def main():
     )
     checks["compileall"] = compile_run.returncode == 0
 
+    boundary_snapshot = {}
     try:
         sys.path.insert(0, str(root / "src"))
         from core.src.human_approval_boundary import ActionRisk, ApprovalState, HumanApprovalBoundary
@@ -59,25 +59,28 @@ def main():
         )
         approved = gate.approve(action_id=req2.action_id, approver_id="gate-human")
         approved_again = gate.approve(action_id=req2.action_id, approver_id="gate-human")
+        boundary_snapshot = gate.snapshot()
+        checks["external_action_not_executed"] = (
+            rejected.released is False
+            and approved.external_action_executed is False
+            and boundary_snapshot.get("external_action_executed") is False
+        )
         checks["explicit_approval_releases"] = approved.state == ApprovalState.APPROVED and approved.released
         checks["approval_idempotent"] = approved_again.decision_fingerprint == approved.decision_fingerprint
     except Exception as exc:
         print(f"gate_runtime_error={type(exc).__name__}:{exc}")
 
-    checks["external_action_executed"] = True
-    checks["memory_write_executed"] = True
     status = "PASS" if all(checks.values()) else "FAIL"
     payload = {
         "release": "O46-S61",
         "status": status,
         "checks": checks,
         "path": "O46 consequential intent -> explicit human approval boundary -> await/reject/approve -> release to downstream executor",
-        "external_action_executed": False,
-        "memory_write_executed": False,
+        "external_action_executed": boundary_snapshot.get("external_action_executed") if boundary_snapshot else None,
         "automatic_approval": False,
         "notes": [
             "Approval releases the action to a downstream executor; this boundary itself never performs an external action.",
-            "No memory write is performed by the approval boundary.",
+            "S61 does not claim runtime evidence for memory writes; that concern is covered by downstream integration gates.",
         ],
     }
     print("S61_HUMAN_APPROVAL_BOUNDARY_PASS" if status == "PASS" else "S61_HUMAN_APPROVAL_BOUNDARY_FAIL")

@@ -13,9 +13,34 @@ from __future__ import annotations
 
 import hashlib
 import json
-import sys
-from pathlib import Path
 from typing import Any, Dict, Mapping, Optional
+
+
+class _AuthenticatedScopeAuthorizer:
+    """Authorization adapter over scopes already issued by S20/S19."""
+
+    @staticmethod
+    def authorize(
+        principal: Mapping[str, Any] | None,
+        required_scope: str,
+    ) -> Dict[str, Any]:
+        principal = dict(principal or {})
+        if principal.get("authenticated") is False:
+            return {
+                "status": "UNAUTHORIZED",
+                "reason": "principal_not_authenticated",
+                "required_scope": required_scope,
+            }
+        scopes = {str(item) for item in (principal.get("scopes") or [])}
+        if required_scope not in scopes:
+            return {
+                "status": "DENY",
+                "reason": "scope_not_granted",
+                "required_scope": required_scope,
+            }
+        return {"status": "ALLOW", "required_scope": required_scope}
+
+
 
 from .s1 import S1Input, build_s1_runtime
 from .udi_adapter import build_udi_decision_adapter
@@ -56,16 +81,12 @@ class RealUnifiedRuntime:
         if self._o45_bundle is not None:
             return self._o45_bundle
 
-        core_root = str(Path(__file__).resolve().parents[1] / "core")
-        if core_root not in sys.path:
-            sys.path.insert(0, core_root)
-
-        from src.governance_intelligence import GovernanceIntelligence
-        from src.tool_registry import ToolRegistry
-        from src.receipt_store import ExecutionReceiptStore
-        from src.o45_execution_service import ExecutionService
-        from src.governed_execution_orchestrator import GovernedExecutionOrchestrator, GovernedExecutionStore
-        from src.execution_observability import ExecutionObservability, ExecutionObservabilityStore
+        from core.src.governance_intelligence import GovernanceIntelligence
+        from core.src.tool_registry import ToolRegistry
+        from core.src.receipt_store import ExecutionReceiptStore
+        from core.src.o45_execution_service import ExecutionService
+        from core.src.governed_execution_orchestrator import GovernedExecutionOrchestrator, GovernedExecutionStore
+        from core.src.execution_observability import ExecutionObservability, ExecutionObservabilityStore
 
         root = self.persistence.root / "o45"
         root.mkdir(parents=True, exist_ok=True)
@@ -137,7 +158,70 @@ class RealUnifiedRuntime:
         '''
         bundle = self._ensure_o45()
         orchestrator = bundle[-1]
-        return orchestrator.drive(intent_id, principal=principal)
+        return orchestrator.drive(
+            intent_id,
+            authz=_AuthenticatedScopeAuthorizer(),
+            principal=principal,
+        )
+
+    def _o45_components(self):
+        bundle = self._ensure_o45()
+        return {
+            "governance": bundle[0],
+            "receipts": bundle[2],
+            "execution": bundle[3],
+            "orchestrator": bundle[-1],
+        }
+
+    def list_approvals(self) -> list[Dict[str, Any]]:
+        return self._o45_components()["governance"].pending()
+
+    def get_approval(self, approval_id: str) -> Dict[str, Any]:
+        item = self._o45_components()["governance"].approvals.get(approval_id)
+        return item or {"status": "NOT_FOUND", "approval_id": approval_id}
+
+    def decide_approval(
+        self,
+        approval_id: str,
+        *,
+        principal: Mapping[str, Any],
+        decision: str,
+        reason: str = "",
+    ) -> Dict[str, Any]:
+        components = self._o45_components()
+        governance = components["governance"]
+        principal = dict(principal or {})
+        principal_id = str(
+            principal.get("principal_id")
+            or principal.get("principal")
+            or ""
+        )
+        if not principal_id:
+            return {"status": "DENY", "reason": "principal_required"}
+        principal["principal_id"] = principal_id
+        result = governance.decide(
+            approval_id,
+            principal,
+            decision,
+            reason,
+        )
+        if result.get("status") == "APPROVED":
+            payload = result.get("payload") or {}
+            project_id = payload.get("project_id")
+            run_id = result.get("run_id")
+            for receipt in components["receipts"].list(
+                project_id=project_id,
+                run_id=run_id,
+            ):
+                if receipt.get("approval_id") == approval_id:
+                    result["execution"] = components["execution"].approve_and_ready(
+                        receipt["execution_id"]
+                    )
+                    break
+        return result
+
+    def get_execution(self, execution_id: str) -> Dict[str, Any]:
+        return self._o45_components()["execution"].get(execution_id)
 
     def _submit_governed_execution(
         self,
@@ -195,11 +279,7 @@ class RealUnifiedRuntime:
             decision_surface.get("evidence_boundary"),
         )
 
-        core_root = str(Path(__file__).resolve().parents[1] / "core")
-        if core_root not in sys.path:
-            sys.path.insert(0, core_root)
-
-        from src.execution_intent_planner import ExecutionIntentPlanner
+        from core.src.execution_intent_planner import ExecutionIntentPlanner
 
         intent = ExecutionIntentPlanner.build_intent(
             decision_plan=dict(decision_stage),
