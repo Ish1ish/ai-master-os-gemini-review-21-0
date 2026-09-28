@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Master OS — Canonical Console</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <p class="eyebrow">PATCH11 • CANONICAL S21</p>
+      <h1>AI Master OS</h1>
+      <p class="subtitle">Browser → Node BFF → Python S21</p>
+    </header>
+
+    <section class="card">
+      <h2>Authorization</h2>
+      <input id="token" type="password" placeholder="Bearer token">
+      <button id="saveToken">Save token in session</button>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>System</h2>
+        <div class="row">
+          <button id="health">GET /health</button>
+          <button id="ready">GET /ready</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Submit Run</h2>
+        <textarea id="runBody">{
+  "run_id": "PATCH11-RUN-001",
+  "project_id": "PATCH11",
+  "strategy_id": "PATCH11",
+  "intent": "Canonical frontend smoke test"
+}</textarea>
+        <button id="submitRun">POST /api/runs</button>
+      </article>
+
+      <article class="card">
+        <h2>Execute Intent</h2>
+        <input id="intentId" placeholder="intent_id">
+        <button id="executeIntent">POST /api/intents/{id}/execute</button>
+      </article>
+
+      <article class="card">
+        <h2>Approvals</h2>
+        <div class="row">
+          <button id="listApprovals">GET /api/approvals</button>
+        </div>
+        <input id="approvalId" placeholder="approval_id">
+        <div class="row">
+          <button id="getApproval">GET approval</button>
+          <button id="approve">POST decision</button>
+        </div>
+        <input id="decisionReason" placeholder="decision reason">
+      </article>
+
+      <article class="card">
+        <h2>Execution</h2>
+        <input id="executionId" placeholder="execution_id">
+        <button id="getExecution">GET /api/executions/{id}</button>
+      </article>
+    </section>
+
+    <section class="card">
+      <h2>Response</h2>
+      <pre id="status">Ready.</pre>
+      <pre id="output">{}</pre>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
