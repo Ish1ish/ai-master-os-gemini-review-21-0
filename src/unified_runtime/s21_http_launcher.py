@@ -48,11 +48,35 @@ def build_s21_http_server(
         raise RuntimeError(f"s21_security_config_blocked:{failures}")
 
     authenticator, identity = build_default_production_authenticator()
+    worker_principal_id = os.getenv(
+        "AI_OS_EXECUTION_WORKER_PRINCIPAL_ID",
+        "worker-01",
+    ).strip()
+    worker_principal = identity.get(worker_principal_id)
+    if not worker_principal or not worker_principal.active:
+        raise RuntimeError(f"s21_execution_worker_invalid:{worker_principal_id}")
+    worker_dict = worker_principal.to_dict()
+    if worker_dict.get("principal_type") != "service":
+        raise RuntimeError(f"s21_execution_worker_not_service:{worker_principal_id}")
+    if "job:execute" not in set(worker_dict.get("scopes") or []):
+        raise RuntimeError(
+            f"s21_execution_worker_missing_job_execute:{worker_principal_id}"
+        )
+    execution_principal = {
+        "status": "AUTHENTICATED",
+        "authenticated": True,
+        "principal": worker_dict["principal_id"],
+        "principal_id": worker_dict["principal_id"],
+        "scopes": list(worker_dict.get("scopes") or []),
+        "roles": list(worker_dict.get("roles") or []),
+        "auth_method": "internal-worker",
+    }
     root = Path(
         persistence_root
         or os.getenv(PERSISTENCE_ENV, DEFAULT_PERSISTENCE_ROOT)
     ).resolve()
     entrypoint = UnifiedRuntimeEntrypoint(str(root), enable_external_actions=False)
+    entrypoint.execution_principal = execution_principal
 
     server_config = HTTPServerConfig(
         host=host or os.getenv(HOST_ENV, DEFAULT_HOST),

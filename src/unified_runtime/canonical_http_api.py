@@ -13,11 +13,20 @@ from urllib.parse import urlsplit
 class CanonicalHTTPAPI:
     """Small route adapter for the canonical Python/O45 surface."""
 
-    def __init__(self, entrypoint) -> None:
+    def __init__(
+        self,
+        entrypoint,
+        *,
+        execution_principal: Mapping[str, Any] | None = None,
+    ) -> None:
         if entrypoint is None:
             raise ValueError("entrypoint_required")
         self.entrypoint = entrypoint
         self.runtime = entrypoint.runtime
+        self.execution_principal = self._principal(
+            execution_principal
+            or getattr(entrypoint, "execution_principal", None)
+        ) or None
 
     @staticmethod
     def _principal(value: Mapping[str, Any] | None) -> dict[str, Any]:
@@ -114,7 +123,7 @@ class CanonicalHTTPAPI:
                 return self._http_status(denied), denied
             result = self.runtime.execute_governed_intent(
                 intent_id,
-                principal=principal,
+                principal=self.execution_principal or principal,
             )
             return self._http_status(result), result
 
