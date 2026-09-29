@@ -70,6 +70,22 @@ def _provider_evidence(obj):
     return hits
 
 
+def _configuration_flags():
+    model_required = (
+        "AI_OS_MODEL_BASE_URL",
+        "AI_OS_MODEL_API_KEY",
+        "AI_OS_MODEL_NAME",
+    )
+    search_required = (
+        "AI_OS_SEARCH_BASE_URL",
+        "AI_OS_SEARCH_API_KEY",
+    )
+    return (
+        all(bool(os.getenv(name)) for name in model_required),
+        all(bool(os.getenv(name)) for name in search_required),
+    )
+
+
 def main() -> int:
     # The caller must already have configured the real provider credentials.
     # This gate never prints credential values.
@@ -107,10 +123,11 @@ def main() -> int:
     try:
         from core.src.live_providers import provider_configuration_status
         cfg = provider_configuration_status()
+        model_configured, search_configured = _configuration_flags()
         safe_cfg = {
             "status": cfg.get("status"),
-            "model_configured": bool(cfg.get("model_configured")),
-            "search_configured": bool(cfg.get("search_configured")),
+            "model_configured": model_configured,
+            "search_configured": search_configured,
             "missing": list(cfg.get("missing", [])),
         }
         report["checks"]["provider_configuration"] = safe_cfg
@@ -183,6 +200,8 @@ def main() -> int:
 
         strict = (
             report["checks"]["provider_configuration"]["status"] == "CONFIGURED"
+            and report["checks"]["provider_configuration"]["model_configured"]
+            and report["checks"]["provider_configuration"]["search_configured"]
             and report["checks"]["service_constructed"]
             and report["checks"]["submit_status"] == "QUEUED"
             and report["checks"]["execute_status"] == "COMPLETE"
