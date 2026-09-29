@@ -5,11 +5,11 @@
   "runtime_module": "core.src.real_wiring",
   "provider_module": "core.src.live_providers",
   "checks": {
-    "service_source_hash": "c2dda5b1c6fe121421fa10acbb7063dc258b13fd78a702d1e2fa76f51abaee43",
+    "service_source_hash": "a86c33474a42e7d5df8583e7d4cab40212cf3095f59b4dc7d268e2700f52cd91",
     "provider_configuration": {
       "status": "CONFIGURED",
-      "model_configured": false,
-      "search_configured": false,
+      "model_configured": true,
+      "search_configured": true,
       "missing": []
     },
     "service_constructed": true,
