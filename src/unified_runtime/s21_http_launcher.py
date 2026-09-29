@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from core.src.auth import build_default_production_authenticator
+from core.src.canonical_provider_tools import real_search_tool
 
 from .entrypoint import UnifiedRuntimeEntrypoint
 from .http_api_server import HTTPServerConfig, UnifiedRuntimeHTTPServer
@@ -76,6 +77,7 @@ def build_s21_http_server(
         or os.getenv(PERSISTENCE_ENV, DEFAULT_PERSISTENCE_ROOT)
     ).resolve()
     entrypoint = UnifiedRuntimeEntrypoint(str(root), enable_external_actions=False)
+    entrypoint.register_execution_tool("provider.search.live", real_search_tool, version="1.0.0")
     entrypoint.execution_principal = execution_principal
 
     server_config = HTTPServerConfig(
