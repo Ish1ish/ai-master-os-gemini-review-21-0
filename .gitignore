@@ -43,3 +43,4 @@ PATCH_*_BACKUP/
 .s14_acceptance/
 *_backup
 *.backup
+setup_keys.cmd
