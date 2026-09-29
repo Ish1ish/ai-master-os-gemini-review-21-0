@@ -18,9 +18,9 @@ const CANONICAL_ROUTE_PATTERNS = [
   { method: 'GET', pattern: /^\/api\/executions\/[^/]+$/ },
 ];
 
-function isCanonicalRoute(method, pathValue) {
+function isCanonicalRoute(method, path) {
   return CANONICAL_ROUTE_PATTERNS.some(
-    (entry) => entry.method === method && entry.pattern.test(pathValue),
+    (entry) => entry.method === method && entry.pattern.test(path),
   );
 }
 
@@ -60,7 +60,8 @@ async function proxyCanonicalRequest(req, res, fetchImpl = fetch) {
   try {
     const upstream = await fetchImpl(targetUrl, init);
     const text = await upstream.text();
-    const contentType = upstream.headers.get('content-type') || 'application/json';
+    const contentType =
+      upstream.headers.get('content-type') || 'application/json';
 
     res.status(upstream.status);
     res.set('content-type', contentType);
@@ -152,12 +153,19 @@ export function startServer({
   return { app, server };
 }
 
-if (process.argv[1] === new URL(import.meta.url).pathname) {
+const isDirectLaunch =
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isDirectLaunch) {
   const { server } = startServer();
   server.on('listening', () => {
     const address = server.address();
-    const actualPort = typeof address === 'object' && address ? address.port : PORT;
-    process.stdout.write(`AI Master OS Node BFF listening on http://${HOST}:${actualPort}\n`);
+    const actualPort =
+      typeof address === 'object' && address ? address.port : PORT;
+    process.stdout.write(
+      `AI Master OS Node BFF listening on http://${HOST}:${actualPort}\n`,
+    );
   });
 
   const shutdown = () => {
