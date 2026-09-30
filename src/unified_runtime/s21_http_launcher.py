@@ -118,7 +118,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         server.start()
         print(f"AI Master OS S21 HTTP listening on http://{host}:{port}")
-        print("canonical surface: /api/runs /api/intents/{intent_id}/execute /api/approvals /api/executions/{execution_id}")
+        print("canonical surface: /api/runs /api/intents/{intent_id}/execute /api/approvals /api/executions/{execution_id} /api/experiments /api/learning/context")
         print("external actions: disabled")
         print("automatic memory write: disabled")
         server._thread.join()

@@ -63,6 +63,9 @@ class UnifiedRuntimeProductionService:
         self.entrypoint = UnifiedRuntimeEntrypoint(str(self.persistence_root))
         self.metrics = RuntimeMetrics()
 
+    def close(self) -> None:
+        self.entrypoint.close()
+
     def health(self) -> dict[str, Any]:
         return {
             "status": "HEALTHY",

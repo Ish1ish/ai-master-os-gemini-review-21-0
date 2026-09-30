@@ -7,7 +7,7 @@ delegated to the already-owned runtime instance.
 from __future__ import annotations
 
 from typing import Any, Mapping
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 
 
 class CanonicalHTTPAPI:
@@ -179,6 +179,81 @@ class CanonicalHTTPAPI:
             if denied:
                 return self._http_status(denied), denied
             result = self.runtime.get_execution(execution_id)
+            return self._http_status(result), result
+
+        if method == "GET" and route == "/api/experiments":
+            denied = self._authorize(principal, "experiment:read")
+            if denied:
+                return self._http_status(denied), denied
+            query = parse_qs(urlsplit(path).query)
+            project_id = (query.get("project_id") or [None])[0]
+            limit = (query.get("limit") or ["50"])[0]
+            try:
+                parsed_limit = int(limit)
+            except (TypeError, ValueError):
+                result = {"status": "BAD_REQUEST", "reason": "limit_invalid"}
+                return self._http_status(result), result
+            result = {
+                "status": "OK",
+                "experiments": self.runtime.list_experiments(project_id=project_id, limit=parsed_limit),
+            }
+            return self._http_status(result), result
+
+        if method == "GET" and route.startswith("/api/experiments/"):
+            experiment_id = route[len("/api/experiments/") :].strip("/")
+            if not experiment_id or "/" in experiment_id:
+                result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+                return self._http_status(result), result
+            denied = self._authorize(principal, "experiment:read")
+            if denied:
+                return self._http_status(denied), denied
+            result = self.runtime.get_experiment(experiment_id)
+            return self._http_status(result), result
+
+        if (
+            method == "POST"
+            and route.startswith("/api/experiments/")
+            and route.endswith("/evidence")
+        ):
+            experiment_id = route[len("/api/experiments/") : -len("/evidence")].strip("/")
+            if not experiment_id or "/" in experiment_id:
+                result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+                return self._http_status(result), result
+            denied = self._authorize(principal, "experiment:write")
+            if denied:
+                return self._http_status(denied), denied
+            result = self.runtime.record_experiment_evidence(experiment_id, body)
+            return self._http_status(result), result
+
+        if (
+            method == "POST"
+            and route.startswith("/api/experiments/")
+            and route.endswith("/evaluate")
+        ):
+            experiment_id = route[len("/api/experiments/") : -len("/evaluate")].strip("/")
+            if not experiment_id or "/" in experiment_id:
+                result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+                return self._http_status(result), result
+            denied = self._authorize(principal, "experiment:evaluate")
+            if denied:
+                return self._http_status(denied), denied
+            result = self.runtime.evaluate_experiment(experiment_id)
+            return self._http_status(result), result
+
+        if method == "GET" and route == "/api/learning/context":
+            denied = self._authorize(principal, "learning:read")
+            if denied:
+                return self._http_status(denied), denied
+            query = parse_qs(urlsplit(path).query)
+            project_id = (query.get("project_id") or [""])[0].strip()
+            if not project_id:
+                result = {"status": "BAD_REQUEST", "reason": "project_id_required"}
+                return self._http_status(result), result
+            experiment_id = (query.get("experiment_id") or [None])[0]
+            result = self.runtime.get_learning_context(
+                project_id,
+                current_experiment_id=experiment_id,
+            )
             return self._http_status(result), result
 
         return 404, {

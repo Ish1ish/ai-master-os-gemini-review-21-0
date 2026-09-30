@@ -49,6 +49,7 @@ def build_default_production_authenticator():
         ("viewer-01", "human", "viewer"),
         ("operator-01", "human", "operator"),
         ("approver-01", "human", "approver"),
+        ("validator-01", "human", "validator"),
         ("worker-01", "service", "worker"),
         ("admin-01", "human", "admin"),
     ):

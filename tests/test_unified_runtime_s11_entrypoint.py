@@ -10,6 +10,7 @@ class TestS11UnifiedRuntimeEntrypoint(unittest.TestCase):
         self.entrypoint = UnifiedRuntimeEntrypoint(self.tmp.name)
 
     def tearDown(self):
+        self.entrypoint.close()
         self.tmp.cleanup()
 
     def _payload(self, **overrides):

@@ -16,6 +16,11 @@ const CANONICAL_ROUTE_PATTERNS = [
   { method: 'GET', pattern: /^\/api\/approvals\/[^/]+$/ },
   { method: 'POST', pattern: /^\/api\/approvals\/[^/]+\/decision$/ },
   { method: 'GET', pattern: /^\/api\/executions\/[^/]+$/ },
+  { method: 'GET', pattern: /^\/api\/experiments$/ },
+  { method: 'GET', pattern: /^\/api\/experiments\/[^/]+$/ },
+  { method: 'POST', pattern: /^\/api\/experiments\/[^/]+\/evidence$/ },
+  { method: 'POST', pattern: /^\/api\/experiments\/[^/]+\/evaluate$/ },
+  { method: 'GET', pattern: /^\/api\/learning\/context$/ },
 ];
 
 function isCanonicalRoute(method, path) {

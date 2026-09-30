@@ -65,6 +65,8 @@ class RealUnifiedRuntime:
         self.persistence = UnifiedRunPersistence(persistence_root)
         self.memory = UnifiedMemoryHandoff()
         self.o42 = O42EvidenceAdapter()
+        self._o42_store = None
+        self._o42_service = None
         self.evaluation = UnifiedEvaluationAdapter()
         self.governance = UnifiedGovernanceAdapter()
         self.execution = UnifiedExecutionOutcomeAdapter()
@@ -172,6 +174,70 @@ class RealUnifiedRuntime:
             "execution": bundle[3],
             "orchestrator": bundle[-1],
         }
+
+    def _ensure_o42(self):
+        """Compose the durable O42 service under the Unified Runtime root."""
+        if self._o42_service is not None:
+            return self._o42_service
+
+        from core.src.experiment_store import ExperimentStore
+        from core.src.experiments import ExperimentService
+
+        root = self.persistence.root / "o42"
+        root.mkdir(parents=True, exist_ok=True)
+        self._o42_store = ExperimentStore(str(root / "experiments.sqlite3"))
+        # memory_runtime=None preserves the S21 contract: O42 can evaluate and
+        # learn, but this canonical surface never performs an automatic memory write.
+        self._o42_service = ExperimentService(
+            self._o42_store,
+            jobs=None,
+            memory_runtime=None,
+        )
+        return self._o42_service
+
+    def _ensure_durable_experiment(
+        self,
+        definition: Mapping[str, Any],
+        *,
+        run_id: str,
+        project_id: str,
+    ) -> Dict[str, Any]:
+        service = self._ensure_o42()
+        experiment_id = str(definition.get("experiment_id") or "").strip()
+        if not experiment_id:
+            raise ValueError("experiment_id_required")
+        existing = service.get(experiment_id)
+        if existing and existing.get("status") != "NOT_FOUND":
+            if existing.get("run_id") != run_id or existing.get("project_id") != project_id:
+                raise ValueError("experiment_identity_conflict")
+            return existing
+        return self._o42_store.create(dict(definition), project_id, run_id=run_id)
+
+    def get_experiment(self, experiment_id: str) -> Dict[str, Any]:
+        return self._ensure_o42().get(experiment_id)
+
+    def list_experiments(self, project_id: str | None = None, limit: int = 50) -> list[Dict[str, Any]]:
+        return self._ensure_o42().list(project_id=project_id, limit=limit)["experiments"]
+
+    def record_experiment_evidence(
+        self,
+        experiment_id: str,
+        evidence: Mapping[str, Any],
+    ) -> Dict[str, Any]:
+        return self._ensure_o42().record_evidence(experiment_id, dict(evidence))
+
+    def evaluate_experiment(self, experiment_id: str) -> Dict[str, Any]:
+        return self._ensure_o42().evaluate(experiment_id)
+
+    def get_learning_context(
+        self,
+        project_id: str,
+        current_experiment_id: str | None = None,
+    ) -> Dict[str, Any]:
+        return self._ensure_o42().get_learning_context(
+            project_id,
+            current_experiment_id=current_experiment_id,
+        )
 
     def list_approvals(self) -> list[Dict[str, Any]]:
         return self._o45_components()["governance"].pending()
@@ -390,15 +456,20 @@ class RealUnifiedRuntime:
 
     def close(self):
         bundle = self._o45_bundle
-        if bundle is None:
-            return
-        governance, _registry, _receipts, execution, _geo, _obs, orchestrator = bundle
         try:
-            orchestrator.close()
+            if bundle is not None:
+                governance, _registry, _receipts, execution, _geo, _obs, orchestrator = bundle
+                try:
+                    orchestrator.close()
+                finally:
+                    execution.close()
+                    governance.close()
+                    self._o45_bundle = None
         finally:
-            execution.close()
-            governance.close()
-            self._o45_bundle = None
+            if self._o42_store is not None:
+                self._o42_store.close()
+                self._o42_store = None
+                self._o42_service = None
 
     @staticmethod
     def _validation_experiment() -> Dict[str, Any]:
@@ -457,19 +528,31 @@ class RealUnifiedRuntime:
         }
 
         evidence_payload = dict(evidence or {
-            "sample_size": 10,
-            "evidence_refs": ["EV-UNIFIED-001", "EV-UNIFIED-002"],
-            "metrics": {"problem_confirmed": 8, "pilot_interest": 4},
+            "sample_size": 0,
+            "evidence_refs": [],
+            "metrics": {},
         })
-        o42 = self.o42.evaluate_decision_surface(
+        definition = self.o42.build_experiment(
             decision_surface,
             run_id=run_id,
             project_id=project_id,
-            evidence=evidence_payload,
             language=requested_language,
         )
+        durable_experiment = self._ensure_durable_experiment(
+            definition,
+            run_id=run_id,
+            project_id=project_id,
+        )
+        if evidence is not None:
+            saved = self.record_experiment_evidence(
+                durable_experiment["experiment_id"],
+                evidence_payload,
+            )
+            if saved.get("status") in {"NOT_FOUND", "BAD_REQUEST"}:
+                raise ValueError(saved.get("reason") or "experiment_evidence_rejected")
+        durable_experiment = self.evaluate_experiment(durable_experiment["experiment_id"])
         evaluation = self.evaluation.normalize(
-            o42["evaluation"], run_id=run_id, project_id=project_id
+            durable_experiment["evaluation"], run_id=run_id, project_id=project_id
         )
         governance = self.governance.evaluate(
             evaluation, run_id=run_id, project_id=project_id
@@ -522,7 +605,7 @@ class RealUnifiedRuntime:
             "UNDERSTAND": s1["stages"]["UNDERSTAND"]["data"],
             "ROUTE": s1["stages"]["ROUTE"]["data"],
             "DECISION": decision_stage,
-            "EVIDENCE": o42["experiment"],
+            "EVIDENCE": durable_experiment["definition"],
             "EVALUATION": evaluation,
             "GOVERNANCE": governance,
             "EXECUTION": outcome,
@@ -552,6 +635,11 @@ class RealUnifiedRuntime:
             "decision_engine": decision_stage.get("decision_engine"),
             "governed_execution": governed_execution,
             "evidence_engine": "ValidationEvidenceLoop",
+            "experiment": {
+                "experiment_id": durable_experiment["experiment_id"],
+                "status": durable_experiment["status"],
+                "decision": durable_experiment["decision"],
+            },
             "requested_by": principal.get("principal") if principal else "unknown",
         }
         persisted = self.persistence.persist(result)

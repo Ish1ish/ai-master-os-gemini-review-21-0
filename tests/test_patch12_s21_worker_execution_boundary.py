@@ -58,6 +58,14 @@ class TestPatch12S21WorkerExecutionBoundary(unittest.TestCase):
                             "project_id": "PATCH12-WORKER",
                             "strategy_id": "PATCH12-WORKER",
                             "intent": "Verify worker execution boundary",
+                            "evidence": {
+                                "sample_size": 10,
+                                "metrics": {
+                                    "problem_confirmed": 8,
+                                    "pilot_interest": 4,
+                                },
+                                "evidence_refs": ["PATCH12-1"],
+                            },
                             "execution_contract": {
                                 "action": "read_only_inspection",
                                 "tool_name": "internal.echo",
