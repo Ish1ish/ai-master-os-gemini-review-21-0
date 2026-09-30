@@ -11,6 +11,7 @@ class TestS12ProductionizationOperations(unittest.TestCase):
         self.service = UnifiedRuntimeProductionService(self.tmp.name)
 
     def tearDown(self):
+        self.service.close()
         self.tmp.cleanup()
 
     def _payload(self, run_id="UR-S12-001"):

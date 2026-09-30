@@ -27,6 +27,11 @@ The allowlist is intentionally narrow:
 - `GET /api/approvals/{approval_id}`
 - `POST /api/approvals/{approval_id}/decision`
 - `GET /api/executions/{execution_id}`
+- `GET /api/experiments`
+- `GET /api/experiments/{experiment_id}`
+- `POST /api/experiments/{experiment_id}/evidence`
+- `POST /api/experiments/{experiment_id}/evaluate`
+- `GET /api/learning/context`
 
 Unknown `/api/*` routes return `404` and never fall through to a legacy handler.
 

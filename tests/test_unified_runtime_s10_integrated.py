@@ -10,6 +10,7 @@ class TestS10RealUnifiedRuntime(unittest.TestCase):
         self.runtime = RealUnifiedRuntime(self.tmp.name)
 
     def tearDown(self):
+        self.runtime.close()
         self.tmp.cleanup()
 
     def test_real_runtime_uses_authoritative_engines(self):

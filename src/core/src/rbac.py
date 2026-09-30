@@ -14,6 +14,9 @@ DEFAULT_ROLE_SCOPES: Dict[str, Set[str]] = {
     "worker": {
         "run:read", "job:execute", "memory:write", "audit:write",
     },
+    "validator": {
+        "experiment:read", "experiment:write", "experiment:evaluate", "learning:read",
+    },
     "admin": {
         "run:submit", "run:read", "run:list", "run:execute", "run:cancel", "run:retry", "control:read",
         "queue:recover", "dlq:replay", "approval:read", "approval:decide", "governance:read", "governance:evaluate",
