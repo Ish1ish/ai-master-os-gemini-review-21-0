@@ -121,7 +121,7 @@ class CanonicalHTTPAPI:
             result = {"status": "UNAUTHORIZED", "reason": "principal_required"}
             return self._http_status(result), result
 
-        if operation not in {"update_task", "append_note", "record_decision", "update_status"}:
+        if operation not in {"add_task", "update_task", "append_note", "record_decision", "update_status"}:
             result = {"status": "BAD_REQUEST", "reason": "project_workspace_operation_invalid"}
             return self._http_status(result), result
 
@@ -207,7 +207,7 @@ class CanonicalHTTPAPI:
                 "reason": "project_workspace_status_unchanged",
             }
             return self._http_status(result), result
-        if project_status == "PAUSED" and operation == "update_task":
+        if project_status == "PAUSED" and operation in {"update_task", "add_task"}:
             result = {
                 "status": "CONFLICT",
                 "reason": "project_workspace_paused",
@@ -216,7 +216,66 @@ class CanonicalHTTPAPI:
             return self._http_status(result), result
 
         tasks = workspace.get("tasks") if isinstance(workspace.get("tasks"), list) else []
-        if operation == "update_task":
+        if operation == "add_task":
+            title = body.get("title")
+            if not isinstance(title, str) or not title.strip() or len(title) > 500:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_title_invalid"}
+                return self._http_status(result), result
+            note = body.get("note", "")
+            if not isinstance(note, str) or len(note) > 1000:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_note_invalid"}
+                return self._http_status(result), result
+            priority = body.get("priority", "")
+            if priority and (
+                not isinstance(priority, str)
+                or priority.strip().lower() not in {"low", "medium", "high", "urgent"}
+            ):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_priority_invalid"}
+                return self._http_status(result), result
+            due_in_days = body.get("due_in_days")
+            if due_in_days is not None and (
+                isinstance(due_in_days, bool)
+                or not isinstance(due_in_days, int)
+                or due_in_days < 0
+                or due_in_days > 3650
+            ):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_due_in_days_invalid"}
+                return self._http_status(result), result
+            success_criteria = body.get("success_criteria", "")
+            if not isinstance(success_criteria, str) or len(success_criteria) > 700:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_success_criteria_invalid"}
+                return self._http_status(result), result
+            milestone_id = body.get("milestone_id", "")
+            if not isinstance(milestone_id, str):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_milestone_id_invalid"}
+                return self._http_status(result), result
+            milestone_id = milestone_id.strip()
+            if milestone_id:
+                plan = workspace.get("plan", {})
+                milestones = plan.get("milestones", []) if isinstance(plan, Mapping) else []
+                known_milestones = {
+                    f"M{index:02d}"
+                    for index, milestone in enumerate(milestones, start=1)
+                    if isinstance(milestone, Mapping)
+                }
+                if milestone_id not in known_milestones:
+                    result = {"status": "BAD_REQUEST", "reason": "project_workspace_milestone_not_found"}
+                    return self._http_status(result), result
+            mutation = {
+                "operation": "add_task",
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "title": title,
+                "note": note,
+                "author": principal_id,
+                "priority": priority.strip().lower() if isinstance(priority, str) else "",
+                "success_criteria": success_criteria,
+                "milestone_id": milestone_id,
+            }
+            if due_in_days is not None:
+                mutation["due_in_days"] = due_in_days
+
+        elif operation == "update_task":
             if not isinstance(task_id, str) or not task_id.strip() or "/" in task_id:
                 result = {"status": "BAD_REQUEST", "reason": "task_id_invalid"}
                 return self._http_status(result), result
@@ -398,9 +457,10 @@ class CanonicalHTTPAPI:
                     principal=principal,
                     task_id=task_id,
                 )
-            if len(segments) == 2 and segments[1] in {"notes", "decisions", "status"}:
+            if len(segments) == 2 and segments[1] in {"tasks", "notes", "decisions", "status"}:
                 project_id, suffix = segments
                 operation = {
+                    "tasks": "add_task",
                     "notes": "append_note",
                     "decisions": "record_decision",
                     "status": "update_status",
