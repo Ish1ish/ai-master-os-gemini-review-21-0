@@ -97,10 +97,13 @@ class TestS21HTTPWorkspaceMutations(unittest.TestCase):
             try:
                 operator = identity.issue_token("operator-01")
                 viewer = identity.issue_token("viewer-01")
+                admin = identity.issue_token("admin-01")
                 self.assertEqual(operator["status"], "ISSUED")
                 self.assertEqual(viewer["status"], "ISSUED")
+                self.assertEqual(admin["status"], "ISSUED")
                 operator_token = operator["token"]
                 viewer_token = viewer["token"]
+                admin_token = admin["token"]
 
                 submission = {
                     "run_id": "PATCH30-HTTP-CREATE",
@@ -205,6 +208,23 @@ class TestS21HTTPWorkspaceMutations(unittest.TestCase):
                 self.assertEqual(saved["decisions"][-1]["source_ids"], ["S001"])
                 self.assertFalse(saved["external_actions_executed"])
 
+                # A different principal with submit permission still cannot mutate the owner workspace.
+                code, hidden_owner = self._request(
+                    server.address,
+                    "POST",
+                    f"/api/projects/{PROJECT_ID}/notes",
+                    admin_token,
+                    {
+                        "expected_revision": 4,
+                        "note": "Cross-owner write must not be accepted.",
+                    },
+                )
+                self.assertEqual(code, 404, msg=repr(hidden_owner))
+                self.assertEqual(
+                    hidden_owner["application_response"]["reason"],
+                    "project_workspace_not_found",
+                )
+
                 # Stale revisions are rejected before a governed intent is created.
                 code, stale = self._request(
                     server.address,
@@ -225,8 +245,8 @@ class TestS21HTTPWorkspaceMutations(unittest.TestCase):
                 server.shutdown()
                 entrypoint.close()
 
-    def test_mutation_cannot_target_another_owners_project(self):
-        # The owner check happens before revision disclosure or intent submission.
+    def test_viewer_without_submit_scope_cannot_stage_mutation(self):
+        # The write scope is required even before the project is inspected.
         with tempfile.TemporaryDirectory() as td, patch.dict(
             os.environ,
             {
