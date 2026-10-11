@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from unittest.mock import patch
 
 from core.src.goal_research_workflow import real_goal_research_workflow
+from core.src.research_synthesis import real_research_synthesis_tool
 from unified_runtime.integrated_runtime import RealUnifiedRuntime
 
 
@@ -81,6 +83,36 @@ class TestGoalResearchWorkflow(unittest.TestCase):
             "requested_language": "ar",
             "results": self.research_result["results"],
         })
+
+
+    @patch("core.src.research_synthesis.model_provider")
+    def test_synthesis_source_map_preserves_matched_query_provenance(self, model):
+        model.return_value = {"text": json.dumps({
+            "executive_summary": "Initial signal; more research is needed.",
+            "evidence_findings": [{
+                "claim": "The provided snippet discusses the market category.",
+                "source_ids": ["S001"],
+                "confidence": "low",
+            }],
+            "hypotheses": [],
+            "recommendations": [],
+            "risks": [],
+            "evidence_gaps": ["The full source page has not been reviewed."],
+        })}
+        result = real_research_synthesis_tool({
+            "goal": "Assess the market category",
+            "results": [{
+                "url": "https://example.com/category",
+                "title": "Category overview",
+                "snippet": "An illustrative source snippet.",
+                "matched_queries": ["market demand query", "competitor pricing query"],
+                "accessed_at": "2026-10-11T10:00:00Z",
+            }],
+        })
+        self.assertEqual(
+            result["sources"][0]["matched_queries"],
+            ["market demand query", "competitor pricing query"],
+        )
 
     @patch("core.src.goal_research_workflow.real_research_synthesis_tool")
     @patch("core.src.goal_research_workflow.real_research_tool")
