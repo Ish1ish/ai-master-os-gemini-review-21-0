@@ -513,7 +513,7 @@ class ProjectWorkspaceStore:
                 if current_status == "ARCHIVED":
                     conn.rollback()
                     return {"status": "CONFLICT", "reason": "project_workspace_archived", "project_id": project_id}
-                if current_status == "PAUSED" and operation == "update_task":
+                if current_status == "PAUSED" and operation in {"update_task", "add_task"}:
                     conn.rollback()
                     return {"status": "CONFLICT", "reason": "project_workspace_paused", "project_id": project_id}
                 if current_status == "COMPLETED":
@@ -537,6 +537,83 @@ class ProjectWorkspaceStore:
                     task["note"] = note
                     task["updated_at"] = now
                     event_payload = {"task_id": task_id, "task_status": task_status, "note": note}
+
+                elif operation == "add_task":
+                    if len(snapshot.get("tasks", [])) >= MAX_WORKSPACE_TASKS:
+                        raise ValueError("project_workspace_task_limit_reached")
+                    title = _text(payload.get("title"), "task_title", limit=500)
+                    note = _text(payload.get("note") or "", "task_note", required=False, limit=1000)
+                    author = _text(payload.get("author") or "operator", "author", limit=100)
+                    existing_ids = {str(task.get("task_id") or "") for task in snapshot["tasks"]}
+                    sequence = 1
+                    while f"X{sequence:03d}" in existing_ids:
+                        sequence += 1
+                    task = {
+                        "task_id": f"X{sequence:03d}",
+                        "task_type": "ad_hoc",
+                        "title": title,
+                        "status": "TODO",
+                        "note": note,
+                        "created_at": now,
+                        "updated_at": now,
+                    }
+
+                    raw_plan = snapshot.get("plan", {})
+                    raw_milestones = raw_plan.get("milestones", []) if isinstance(raw_plan, Mapping) else []
+                    milestone_id = _text(
+                        payload.get("milestone_id") or "",
+                        "milestone_id",
+                        required=False,
+                        limit=20,
+                    )
+                    if milestone_id:
+                        milestone = next(
+                            (
+                                item for index, item in enumerate(raw_milestones, start=1)
+                                if isinstance(item, Mapping) and f"M{index:02d}" == milestone_id
+                            ),
+                            None,
+                        )
+                        if milestone is None:
+                            raise ValueError("project_workspace_milestone_not_found")
+                        task["milestone_id"] = milestone_id
+                        task["milestone_name"] = _text(
+                            milestone.get("name") or milestone_id,
+                            "milestone_name",
+                            limit=180,
+                        )
+
+                    priority = _text(
+                        payload.get("priority") or "",
+                        "task_priority",
+                        required=False,
+                        limit=20,
+                    ).lower()
+                    if priority:
+                        if priority not in {"low", "medium", "high", "urgent"}:
+                            raise ValueError("project_workspace_task_priority_invalid")
+                        task["priority"] = priority
+
+                    if "due_in_days" in payload and payload.get("due_in_days") is not None:
+                        task["due_in_days"] = _bounded_int(
+                            payload.get("due_in_days"),
+                            "due_in_days",
+                            0,
+                            3650,
+                        )
+
+                    success_criteria = _text(
+                        payload.get("success_criteria") or "",
+                        "success_criteria",
+                        required=False,
+                        limit=700,
+                    )
+                    if success_criteria:
+                        task["success_criteria"] = success_criteria
+
+                    snapshot["tasks"].append(task)
+                    event_payload = dict(task)
+                    event_payload["author"] = author
 
                 elif operation == "append_note":
                     if len(snapshot["notes"]) >= MAX_WORKSPACE_NOTES:
@@ -624,6 +701,6 @@ def project_workspace_write_tool(payload: Dict[str, Any], *, store: ProjectWorks
     if not isinstance(payload, Mapping):
         raise TypeError("project_workspace_write_payload_must_be_mapping")
     operation = str(payload.get("operation") or "").strip().lower()
-    if operation not in {"create_from_plan", "update_task", "append_note", "record_decision", "update_status"}:
+    if operation not in {"create_from_plan", "add_task", "update_task", "append_note", "record_decision", "update_status"}:
         raise ValueError("project_workspace_write_operation_unsupported")
     return (store or _default_store()).write(dict(payload))
