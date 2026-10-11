@@ -78,6 +78,15 @@ def _source_records(raw_sources: Any) -> list[dict[str, str]]:
             "snippet": snippet,
             "domain": hostname,
         }
+        matched_queries = row.get("matched_queries")
+        if isinstance(matched_queries, list):
+            cleaned_queries = [
+                _clean_text(query, limit=700)
+                for query in matched_queries[:6]
+            ]
+            cleaned_queries = [query for query in cleaned_queries if query]
+            if cleaned_queries:
+                record["matched_queries"] = cleaned_queries
         published = _clean_text(
             row.get("published_at") or row.get("published_date") or row.get("date"),
             limit=100,
@@ -253,7 +262,7 @@ def real_research_synthesis_tool(payload: Dict[str, Any]) -> Dict[str, Any]:
     parsed = _parse_json_object(raw_text)
     synthesis = _validate_synthesis(parsed, sources)
     public_sources = [
-        {key: item[key] for key in ("source_id", "url", "title", "domain", "published_at", "accessed_at") if key in item}
+        {key: item[key] for key in ("source_id", "url", "title", "domain", "matched_queries", "published_at", "accessed_at") if key in item}
         for item in sources
     ]
     return {
