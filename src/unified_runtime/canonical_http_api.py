@@ -121,7 +121,7 @@ class CanonicalHTTPAPI:
             result = {"status": "UNAUTHORIZED", "reason": "principal_required"}
             return self._http_status(result), result
 
-        if operation not in {"update_task", "append_note", "record_decision"}:
+        if operation not in {"update_task", "append_note", "record_decision", "update_status"}:
             result = {"status": "BAD_REQUEST", "reason": "project_workspace_operation_invalid"}
             return self._http_status(result), result
 
@@ -173,10 +173,37 @@ class CanonicalHTTPAPI:
             return self._http_status(result), result
 
         project_status = str(workspace.get("status") or "").upper()
-        if project_status in {"ARCHIVED", "COMPLETED"}:
+        requested_status = None
+        if operation == "update_status":
+            raw_status = body.get("project_status")
+            allowed_project_statuses = {"ACTIVE", "PAUSED", "COMPLETED", "ARCHIVED"}
+            if not isinstance(raw_status, str) or raw_status.strip().upper() not in allowed_project_statuses:
+                result = {
+                    "status": "BAD_REQUEST",
+                    "reason": "project_workspace_status_invalid",
+                }
+                return self._http_status(result), result
+            requested_status = raw_status.strip().upper()
+            if requested_status == project_status:
+                result = {
+                    "status": "BAD_REQUEST",
+                    "reason": "project_workspace_status_unchanged",
+                }
+                return self._http_status(result), result
+
+        if project_status == "ARCHIVED":
             result = {
                 "status": "CONFLICT",
-                "reason": "project_workspace_" + project_status.lower(),
+                "reason": "project_workspace_archived",
+                "project_id": project_id,
+            }
+            return self._http_status(result), result
+        if project_status == "COMPLETED" and not (
+            operation == "update_status" and requested_status == "ARCHIVED"
+        ):
+            result = {
+                "status": "CONFLICT",
+                "reason": "project_workspace_completed",
                 "project_id": project_id,
             }
             return self._http_status(result), result
@@ -245,6 +272,30 @@ class CanonicalHTTPAPI:
                 "note_type": note_type.strip().lower(),
                 "author": principal_id,
                 "task_id": note_task_id,
+            }
+
+        elif operation == "update_status":
+            if requested_status == "COMPLETED":
+                unfinished = [
+                    str(task.get("task_id") or "")
+                    for task in tasks
+                    if isinstance(task, Mapping)
+                    and str(task.get("status") or "").upper() not in {"DONE", "SKIPPED"}
+                ]
+                if unfinished:
+                    result = {
+                        "status": "CONFLICT",
+                        "reason": "project_completion_requires_all_tasks_resolved",
+                        "project_id": project_id,
+                        "unfinished_task_count": len(unfinished),
+                        "unfinished_task_ids": unfinished[:20],
+                    }
+                    return self._http_status(result), result
+            mutation = {
+                "operation": "update_status",
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "project_status": requested_status,
             }
 
         else:  # record_decision
@@ -347,11 +398,16 @@ class CanonicalHTTPAPI:
                     principal=principal,
                     task_id=task_id,
                 )
-            if len(segments) == 2 and segments[1] in {"notes", "decisions"}:
+            if len(segments) == 2 and segments[1] in {"notes", "decisions", "status"}:
                 project_id, suffix = segments
+                operation = {
+                    "notes": "append_note",
+                    "decisions": "record_decision",
+                    "status": "update_status",
+                }[suffix]
                 return self._submit_workspace_mutation(
                     project_id=project_id,
-                    operation="append_note" if suffix == "notes" else "record_decision",
+                    operation=operation,
                     body=body,
                     principal=principal,
                 )
