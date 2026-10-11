@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
 from unittest.mock import patch
+
+from unified_runtime.integrated_runtime import RealUnifiedRuntime
 
 from core.src.canonical_provider_tools import (
     MAX_RESEARCH_QUERIES,
@@ -160,6 +163,121 @@ class TestPatch18GoalDrivenResearchExecution(unittest.TestCase):
             real_research_tool("not-a-mapping")
         with self.assertRaisesRegex(ValueError, "max_queries_invalid"):
             real_research_tool({"goal": "A useful goal", "max_queries": "many"})
+
+
+
+class TestPatch18GovernedResearchIntegration(unittest.TestCase):
+    PRINCIPAL = {
+        "status": "AUTHENTICATED",
+        "authenticated": True,
+        "principal": "operator-01",
+        "principal_id": "operator-01",
+        "scopes": ["run:submit", "job:execute", "governance:evaluate"],
+        "roles": ["operator"],
+        "auth_method": "test",
+    }
+
+    def test_research_bootstrap_is_governed_and_executes_only_on_explicit_drive(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = RealUnifiedRuntime(directory)
+            calls = []
+
+            def fake_research(payload):
+                calls.append(dict(payload))
+                return {
+                    "provider": "fake_search",
+                    "status": "COMPLETE",
+                    "query_count": 1,
+                    "result_count": 1,
+                    "results": [{
+                        "url": "https://example.com/market",
+                        "title": "Market signals",
+                        "snippet": "Citable evidence",
+                    }],
+                }
+
+            runtime.register_execution_tool(
+                "provider.research.live", fake_research,
+                version="1.0.0", retry_safe=False,
+            )
+            try:
+                result = runtime.run(
+                    run_id="PATCH18-RESEARCH-R1",
+                    project_id="PATCH18-RESEARCH-P1",
+                    strategy_id="PATCH18-RESEARCH-S1",
+                    intent="Research a business opportunity before making a recommendation",
+                    goal="Validate demand for affordable home-cooked meals",
+                    audience="busy office workers",
+                    constraints={"location": "Cairo", "budget": "10000 EGP"},
+                    principal=self.PRINCIPAL,
+                    execution_contract={
+                        "action": "read_only_market_research",
+                        "tool_name": "provider.research.live",
+                        "payload": {
+                            "goal": "Validate demand for affordable home-cooked meals",
+                            "audience": "busy office workers",
+                            "constraints": {"location": "Cairo", "budget": "10000 EGP"},
+                            "max_queries": 1,
+                        },
+                    },
+                )
+                self.assertEqual(result["status"], "PASS")
+                governed = result["governed_execution"]
+                self.assertEqual(
+                    governed["execution_path"], "READ_ONLY_EVIDENCE_ACQUISITION"
+                )
+                self.assertEqual(calls, [], "submitting a research intent must not call the tool")
+                intent_id = governed["intent"]["intent_id"]
+                self.assertEqual(governed["status"], "READY")
+
+                driven = runtime.execute_governed_intent(
+                    intent_id, principal=self.PRINCIPAL
+                )
+                self.assertEqual(driven["status"], "SUCCEEDED")
+                self.assertEqual(len(calls), 1)
+                self.assertEqual(
+                    driven["execution"]["result"]["result_count"], 1
+                )
+                self.assertEqual(
+                    driven["execution"]["result"]["results"][0]["url"],
+                    "https://example.com/market",
+                )
+            finally:
+                runtime.close()
+
+    def test_bootstrap_exception_does_not_apply_to_other_tool_names(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = RealUnifiedRuntime(directory)
+            calls = []
+            runtime.register_execution_tool(
+                "provider.search.fake",
+                lambda payload: calls.append(payload) or {"ok": True},
+                version="1.0.0",
+            )
+            try:
+                result = runtime.run(
+                    run_id="PATCH18-NEG-R1",
+                    project_id="PATCH18-NEG-P1",
+                    strategy_id="PATCH18-NEG-S1",
+                    intent="Try to submit non-allowlisted research tool",
+                    goal="Research demand",
+                    audience="test users",
+                    principal=self.PRINCIPAL,
+                    execution_contract={
+                        "action": "read_only_market_research",
+                        "tool_name": "provider.search.fake",
+                        "payload": {"query": "demand"},
+                    },
+                )
+                governed = result.get("governed_execution") or {}
+                self.assertEqual(governed.get("status"), "BLOCKED")
+                self.assertNotEqual(
+                    governed.get("execution_path"),
+                    "READ_ONLY_EVIDENCE_ACQUISITION",
+                )
+                self.assertEqual(calls, [])
+            finally:
+                runtime.close()
 
 
 if __name__ == "__main__":
