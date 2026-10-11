@@ -374,6 +374,24 @@ class RealUnifiedRuntime:
                 "status": "BLOCKED",
                 "reason": "project_workspace_action_tool_binding_invalid",
             }
+        if workspace_read_tool:
+            payload = dict(payload)
+            operation = str(payload.get("operation") or "").strip().lower()
+            if operation == "get" and str(payload.get("project_id") or "") != project_id:
+                return {
+                    "status": "BLOCKED",
+                    "reason": "project_workspace_project_binding_invalid",
+                }
+            payload["requested_by"] = requester
+        if workspace_write_tool:
+            payload = dict(payload)
+            if str(payload.get("project_id") or "") != project_id:
+                return {
+                    "status": "BLOCKED",
+                    "reason": "project_workspace_project_binding_invalid",
+                }
+            payload["requested_by"] = requester
+
         bootstrap_allowed = (
             research_bootstrap
             or plan_bootstrap
