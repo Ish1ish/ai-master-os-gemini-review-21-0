@@ -163,7 +163,11 @@ class TestProjectPlanGenerator(unittest.TestCase):
         output["risks"][0]["source_ids"] = ["S999"]
         model.return_value = {"text": json.dumps(output)}
         with self.assertRaisesRegex(ValueError, "project_plan_unknown_source_id"):
-            real_project_plan_tool({"goal": "Test plan", "research": _research()})
+            real_project_plan_tool({
+                "goal": "Test plan",
+                "constraints": {"budget": {"amount": 10000, "currency": "EGP"}},
+                "research": _research(),
+            })
 
     @patch("core.src.project_plan_generator.model_provider")
     def test_estimated_cost_is_rejected_when_currency_is_unknown(self, model):
