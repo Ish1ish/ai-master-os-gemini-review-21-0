@@ -7,6 +7,7 @@ from typing import Any
 
 from core.src.auth import build_default_production_authenticator
 from core.src.canonical_provider_tools import real_research_tool, real_search_tool
+from core.src.research_synthesis import real_research_synthesis_tool
 
 from .entrypoint import UnifiedRuntimeEntrypoint
 from .http_api_server import HTTPServerConfig, UnifiedRuntimeHTTPServer
@@ -82,6 +83,12 @@ def build_s21_http_server(
     )
     entrypoint.register_execution_tool(
         "provider.research.live", real_research_tool, version="1.0.0", retry_safe=False
+    )
+    entrypoint.register_execution_tool(
+        "provider.research.synthesis",
+        real_research_synthesis_tool,
+        version="1.0.0",
+        retry_safe=False,
     )
     entrypoint.execution_principal = execution_principal
 
