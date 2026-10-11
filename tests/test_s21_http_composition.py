@@ -56,6 +56,7 @@ class TestS21HTTPComposition(unittest.TestCase):
                 self.assertIn("provider.research.workflow", tools_by_name)
                 self.assertIn("provider.project.plan", tools_by_name)
                 self.assertIn("provider.project.workspace.read", tools_by_name)
+                self.assertIn("provider.project.workspace.review", tools_by_name)
                 self.assertIn("provider.project.workspace.write", tools_by_name)
                 self.assertIn("provider.project.goal-to-workspace", tools_by_name)
                 self.assertFalse(tools_by_name["provider.research.live"]["retry_safe"])
@@ -63,6 +64,7 @@ class TestS21HTTPComposition(unittest.TestCase):
                 self.assertFalse(tools_by_name["provider.research.workflow"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.project.plan"]["retry_safe"])
                 self.assertTrue(tools_by_name["provider.project.workspace.read"]["retry_safe"])
+                self.assertTrue(tools_by_name["provider.project.workspace.review"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.project.workspace.write"]["retry_safe"])
             finally:
                 server.shutdown()
