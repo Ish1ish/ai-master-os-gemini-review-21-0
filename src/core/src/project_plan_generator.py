@@ -29,7 +29,6 @@ _ALLOWED_CONSTRAINTS = {
     "capacity", "preferred_channels", "limitations", "avoid", "capital",
 }
 _SOURCE_ID_RE = re.compile(r"^S[0-9]{3,6}$")
-_CURRENCY_RE = re.compile(r"\b([A-Z]{3})\b")
 
 
 def _text(value: Any, field: str, *, required: bool = True, limit: int = MAX_PLAN_TEXT_CHARS) -> str:
@@ -209,8 +208,11 @@ def _validated_research(value: Any) -> tuple[dict[str, Any], list[dict[str, str]
                 entry["mitigation"] = _text(item.get("mitigation"), "research_risk_mitigation")
             normalized.append(entry)
         synthesis[list_key] = normalized
+    research_status = _text(value.get("status") or "UNKNOWN", "research_status", limit=20).upper()
+    if research_status not in {"COMPLETE", "PARTIAL"}:
+        raise ValueError("project_plan_research_status_invalid")
     normalized_research = {
-        "status": _text(value.get("status") or "UNKNOWN", "research_status", limit=20),
+        "status": research_status,
         "goal": _text(value.get("goal") or "", "research_goal", required=False, limit=500),
         "audience": _text(value.get("audience") or "", "research_audience", required=False, limit=240),
         "evidence_boundary": _text(
@@ -418,7 +420,8 @@ def real_project_plan_tool(payload: Dict[str, Any]) -> Dict[str, Any]:
         "least one assumption and explanatory notes. Do not treat estimates as quotes. If amount is unknown, "
         "use basis 'unknown' with both amounts null. Respect the user_budget as a budget constraint, not as "
         "proof that costs will fit. Provide phased milestones, tasks, measurable success metrics, risks, "
-        "and small next actions suitable for validation before committing significant money. Do not execute "
+        "and small next actions suitable for validation before committing significant money. If research.status "
+        "is PARTIAL, clearly preserve the coverage limitation and identify extra checks needed. Do not execute "
         "anything; produce only a draft plan. All citations must use source IDs in the input.\n"
         "Output only valid JSON with exactly these top-level fields: project_title, executive_summary, "
         "recommended_approach, minimum_viable_launch, assumptions (array of assumption, why_it_matters, "
@@ -450,9 +453,19 @@ def real_project_plan_tool(payload: Dict[str, Any]) -> Dict[str, Any]:
         "project_goal": goal,
         "audience": audience,
         "requested_language": language,
+        "research_status": research["status"],
+        "research_coverage_note": (
+            "Research queries were partially successful; validate coverage before relying on this plan."
+            if research["status"] == "PARTIAL"
+            else "The plan uses the returned research synthesis; source pages still require direct verification."
+        ),
         "user_budget": budget_text,
         "budget_currency": currency,
         "budget_note": currency_note,
+        "nominal_sequential_duration_days": sum(
+            milestone["duration_days"] for milestone in plan["milestones"]
+        ),
+        "timeline_note": "The nominal duration sums milestone durations as if phases run sequentially; treat it as a planning estimate.",
         "plan": plan,
         "sources": source_map,
         "evidence_boundary": "DRAFT_PLAN_BASED_ON_USER_INPUT_AND_UNVERIFIED_SEARCH_SNIPPET_SYNTHESIS",
