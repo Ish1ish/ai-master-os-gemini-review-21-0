@@ -111,8 +111,8 @@ def _budget_metadata(constraints: Mapping[str, Any]) -> tuple[str, str]:
     if isinstance(raw, Mapping):
         currency = _clean_text(raw.get("currency"), limit=20).upper()
     else:
-        match = _CURRENCY_RE.search(str(raw).upper())
-        currency = match.group(1) if match else ""
+        match = re.search(r"(?:[0-9][0-9,. ]*\\s+([A-Z]{3})\\b|\\b([A-Z]{3})\\s+[0-9])", str(raw).upper())
+        currency = (match.group(1) or match.group(2)) if match else ""
     if not re.fullmatch(r"[A-Z]{3}", currency):
         currency = "unspecified"
     return budget_text, currency
@@ -148,7 +148,7 @@ def _validated_research(value: Any) -> tuple[dict[str, Any], list[dict[str, str]
             "source_id": source_id,
             "url": url,
             "title": _text(row.get("title") or host, "source_title", limit=240),
-            "domain": _text(row.get("domain") or host, "source_domain", limit=180),
+            "domain": host,
         }
         for key in ("published_at", "accessed_at"):
             item = _clean_text(row.get(key), limit=100)
@@ -179,10 +179,13 @@ def _validated_research(value: Any) -> tuple[dict[str, Any], list[dict[str, str]
     for item in raw_findings:
         if not isinstance(item, Mapping):
             raise ValueError("project_plan_schema_invalid:research_finding")
+        confidence = _text(item.get("confidence") or "low", "research_finding_confidence", limit=16).lower()
+        if confidence not in {"low", "medium", "high"}:
+            raise ValueError("project_plan_schema_invalid:research_finding_confidence")
         synthesis["evidence_findings"].append({
             "claim": _text(item.get("claim"), "research_finding"),
             "source_ids": _refs(item.get("source_ids"), "research_finding", ids, required=True),
-            "confidence": _text(item.get("confidence") or "low", "research_finding_confidence", limit=16).lower(),
+            "confidence": confidence,
         })
 
     for list_key, text_key in (("hypotheses", "hypothesis"), ("recommendations", "recommendation"), ("risks", "risk")):
