@@ -11,6 +11,7 @@ from core.src.research_synthesis import real_research_synthesis_tool
 from core.src.goal_research_workflow import real_goal_research_workflow
 from core.src.project_plan_generator import real_project_plan_tool
 from core.src.goal_to_project_workspace import real_goal_to_project_workspace
+from core.src.project_progress_review import project_progress_review_tool
 from core.src.project_workspace_store import (
     ProjectWorkspaceStore,
     project_workspace_read_tool,
@@ -114,6 +115,12 @@ def build_s21_http_server(
     entrypoint.register_execution_tool(
         "provider.project.workspace.read",
         lambda payload: project_workspace_read_tool(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=True,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.workspace.review",
+        lambda payload: project_progress_review_tool(payload, store=workspace_store),
         version="1.0.0",
         retry_safe=True,
     )
