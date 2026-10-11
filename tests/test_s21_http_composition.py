@@ -47,6 +47,12 @@ class TestS21HTTPComposition(unittest.TestCase):
                 self.assertEqual(body["application_response"]["approvals"], [])
                 self.assertFalse(body["external_action_executed"])
                 self.assertFalse(body["memory_write_executed"])
+
+                registered = entrypoint.runtime._ensure_o45()[1].list()
+                tools_by_name = {item["tool_name"]: item for item in registered}
+                self.assertIn("provider.search.live", tools_by_name)
+                self.assertIn("provider.research.live", tools_by_name)
+                self.assertFalse(tools_by_name["provider.research.live"]["retry_safe"])
             finally:
                 server.shutdown()
                 entrypoint.close()
