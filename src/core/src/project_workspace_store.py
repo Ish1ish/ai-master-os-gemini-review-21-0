@@ -180,6 +180,51 @@ def _progress(tasks: list[dict[str, Any]]) -> dict[str, int]:
     }
 
 
+def _milestone_progress(plan: Any, tasks: list[dict[str, Any]]) -> dict[str, Any]:
+    """Derive milestone-level progress from task state without storing duplicates."""
+    raw_milestones = plan.get("milestones", []) if isinstance(plan, Mapping) else []
+    if not isinstance(raw_milestones, list):
+        raw_milestones = []
+
+    milestones: list[dict[str, Any]] = []
+    for index, raw in enumerate(raw_milestones, start=1):
+        if not isinstance(raw, Mapping):
+            continue
+        milestone_id = f"M{index:02d}"
+        related = [task for task in tasks if task.get("milestone_id") == milestone_id]
+        counts = _progress(related)
+        if counts["task_count"] and counts["completed_task_count"] == counts["task_count"]:
+            status = "DONE"
+        elif counts["blocked_task_count"]:
+            status = "BLOCKED"
+        elif counts["in_progress_task_count"] or counts["completed_task_count"]:
+            status = "IN_PROGRESS"
+        else:
+            status = "TODO"
+        entry: dict[str, Any] = {
+            "milestone_id": milestone_id,
+            "name": raw.get("name", milestone_id),
+            "status": status,
+            "task_tracking": counts,
+        }
+        for field in ("duration_days", "objective", "completion_criteria"):
+            if field in raw:
+                entry[field] = raw[field]
+        milestones.append(entry)
+
+    count = len(milestones)
+    return {
+        "milestone_count": count,
+        "completed_milestone_count": sum(1 for item in milestones if item["status"] == "DONE"),
+        "in_progress_milestone_count": sum(1 for item in milestones if item["status"] == "IN_PROGRESS"),
+        "blocked_milestone_count": sum(1 for item in milestones if item["status"] == "BLOCKED"),
+        # Weight overall milestone progress by tasks so empty milestones don't
+        # inflate or suppress the project's aggregate completion percentage.
+        "progress_percent": _progress(tasks)["progress_percent"],
+        "milestones": milestones,
+    }
+
+
 class ProjectWorkspaceStore:
     """Persistent project snapshot store with optimistic revision checks."""
 
@@ -251,6 +296,10 @@ class ProjectWorkspaceStore:
     def _result(self, conn: sqlite3.Connection, row: sqlite3.Row, status: str = "OK") -> dict[str, Any]:
         snapshot = self._decode_snapshot(row)
         snapshot["task_tracking"] = _progress(snapshot.get("tasks", []))
+        snapshot["milestone_tracking"] = _milestone_progress(
+            snapshot.get("plan", {}),
+            snapshot.get("tasks", []),
+        )
         return {
             "status": status,
             "revision": row["revision"],
@@ -296,6 +345,10 @@ class ProjectWorkspaceStore:
                         "goal": snapshot.get("goal", ""),
                         "updated_at": row["updated_at"],
                         "task_tracking": _progress(snapshot.get("tasks", [])),
+                        "milestone_tracking": _milestone_progress(
+                            snapshot.get("plan", {}),
+                            snapshot.get("tasks", []),
+                        ),
                     })
                     if len(projects) >= limit:
                         break
