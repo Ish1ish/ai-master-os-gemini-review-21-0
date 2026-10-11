@@ -358,10 +358,14 @@ class RealUnifiedRuntime:
             and tool_name == "provider.project.plan"
         )
         workspace_read_tool = tool_name == "provider.project.workspace.read"
+        workspace_review_tool = tool_name == "provider.project.workspace.review"
         workspace_write_tool = tool_name == "provider.project.workspace.write"
         goal_to_workspace_tool = tool_name == "provider.project.goal-to-workspace"
         workspace_read_bootstrap = (
             action == "read_only_inspection" and workspace_read_tool
+        )
+        workspace_review_bootstrap = (
+            action == "read_only_inspection" and workspace_review_tool
         )
         workspace_write_bootstrap = (
             action == "update_project_workspace" and workspace_write_tool
@@ -371,6 +375,7 @@ class RealUnifiedRuntime:
         )
         if (
             (workspace_read_tool and action != "read_only_inspection")
+            or (workspace_review_tool and action != "read_only_inspection")
             or (workspace_write_tool and action != "update_project_workspace")
             or (goal_to_workspace_tool and action != "update_project_workspace")
             or (
@@ -382,10 +387,13 @@ class RealUnifiedRuntime:
                 "status": "BLOCKED",
                 "reason": "project_workspace_action_tool_binding_invalid",
             }
-        if workspace_read_tool:
+        if workspace_read_tool or workspace_review_tool:
             payload = dict(payload)
             operation = str(payload.get("operation") or "").strip().lower()
-            if operation == "get" and str(payload.get("project_id") or "") != project_id:
+            if (
+                workspace_review_tool
+                or (workspace_read_tool and operation == "get")
+            ) and str(payload.get("project_id") or "") != project_id:
                 return {
                     "status": "BLOCKED",
                     "reason": "project_workspace_project_binding_invalid",
@@ -404,6 +412,7 @@ class RealUnifiedRuntime:
             research_bootstrap
             or plan_bootstrap
             or workspace_read_bootstrap
+            or workspace_review_bootstrap
             or workspace_write_bootstrap
             or goal_to_workspace_bootstrap
         )
@@ -429,6 +438,8 @@ class RealUnifiedRuntime:
                 context["evidence_boundary"] = "user_goal_and_research_scope_only"
             elif workspace_read_bootstrap:
                 context["evidence_boundary"] = "project_workspace_scope_only"
+            elif workspace_review_bootstrap:
+                context["evidence_boundary"] = "project_workspace_read_only_review_scope"
             else:
                 context["evidence_boundary"] = "project_workspace_mutation_scope_only"
         else:
