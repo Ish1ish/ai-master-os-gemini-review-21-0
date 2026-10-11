@@ -57,6 +57,7 @@ class TestS21HTTPComposition(unittest.TestCase):
                 self.assertIn("provider.project.plan", tools_by_name)
                 self.assertIn("provider.project.workspace.read", tools_by_name)
                 self.assertIn("provider.project.workspace.write", tools_by_name)
+                self.assertIn("provider.project.goal-to-workspace", tools_by_name)
                 self.assertFalse(tools_by_name["provider.research.live"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.research.synthesis"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.research.workflow"]["retry_safe"])
