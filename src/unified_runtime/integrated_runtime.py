@@ -327,22 +327,26 @@ class RealUnifiedRuntime:
                 "status": "BLOCKED",
                 "reason": "execution_payload_must_be_mapping",
             }
+        research_tool_allowlist = {
+            "provider.research.live",
+            "provider.research.synthesis",
+        }
         if (
             action == "read_only_market_research"
-            and tool_name != "provider.research.live"
+            and tool_name not in research_tool_allowlist
         ):
             return {
                 "status": "BLOCKED",
                 "reason": "research_action_tool_binding_invalid",
             }
 
-        # The one bootstrap exception is intentionally an exact action/tool pair:
-        # research is needed to obtain market evidence, so it cannot depend on
-        # already having decision-grade market evidence. O45 still independently
-        # classifies and authorizes this registered low-risk, read-only operation.
+        # Bootstrap is limited to the read-only research action and an explicit
+        # allowlist of provider tools. This supports both evidence acquisition and
+        # source-grounded synthesis before decision-grade market evidence exists.
+        # O45 still independently classifies and authorizes each registered tool.
         research_bootstrap = (
             action == "read_only_market_research"
-            and tool_name == "provider.research.live"
+            and tool_name in research_tool_allowlist
         )
         upstream_posture = str(governance.get("posture") or "UNKNOWN")
         if (
