@@ -184,12 +184,6 @@ class CanonicalHTTPAPI:
                 }
                 return self._http_status(result), result
             requested_status = raw_status.strip().upper()
-            if requested_status == project_status:
-                result = {
-                    "status": "BAD_REQUEST",
-                    "reason": "project_workspace_status_unchanged",
-                }
-                return self._http_status(result), result
 
         if project_status == "ARCHIVED":
             result = {
@@ -205,6 +199,12 @@ class CanonicalHTTPAPI:
                 "status": "CONFLICT",
                 "reason": "project_workspace_completed",
                 "project_id": project_id,
+            }
+            return self._http_status(result), result
+        if operation == "update_status" and requested_status == project_status:
+            result = {
+                "status": "BAD_REQUEST",
+                "reason": "project_workspace_status_unchanged",
             }
             return self._http_status(result), result
         if project_status == "PAUSED" and operation == "update_task":
