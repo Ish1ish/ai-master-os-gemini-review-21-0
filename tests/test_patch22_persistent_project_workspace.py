@@ -181,7 +181,6 @@ class TestProjectWorkspaceStore(unittest.TestCase):
             "expected_revision": 3, "title": "Bad reference",
             "rationale": "Should fail.", "source_ids": ["S999"],
         })
-        self.assertEqual(invalid["status"], "NOT_FOUND") if False else None
         with self.assertRaisesRegex(ValueError, "project_workspace_unknown_source_id"):
             self.store.write({
                 "operation": "record_decision", "project_id": "WS-P1",
@@ -220,6 +219,11 @@ class TestProjectWorkspaceStore(unittest.TestCase):
             "expected_revision": archived_revision, "project_status": "ARCHIVED",
         })
         self.assertEqual(archived["workspace"]["status"], "ARCHIVED")
+        with self.assertRaisesRegex(ValueError, "project_workspace_archived"):
+            self.store.write({
+                "operation": "append_note", "project_id": "WS-P1",
+                "expected_revision": archived["revision"], "note": "Archived projects are frozen.",
+            })
         with self.assertRaisesRegex(ValueError, "project_workspace_invalid:expected_revision"):
             self.store.write({
                 "operation": "append_note", "project_id": "WS-P1",
