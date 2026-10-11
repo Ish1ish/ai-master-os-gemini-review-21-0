@@ -9,11 +9,13 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import sqlite3
 from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Mapping
+from urllib.parse import urlsplit, urlunsplit
 
 
 MAX_WORKSPACE_TASKS = 160
@@ -61,23 +63,37 @@ def _source_map(value: Any) -> tuple[list[dict[str, Any]], set[str]]:
             raise ValueError("project_workspace_source_invalid")
         source_id = _text(item.get("source_id"), "source_id", limit=20)
         url = _text(item.get("url"), "source_url", limit=1800)
-        if source_id in ids or not source_id.startswith("S"):
+        if source_id in ids or not re.fullmatch(r"S[0-9]{3,6}", source_id):
             raise ValueError("project_workspace_source_id_invalid")
-        from urllib.parse import urlsplit
         try:
             parsed = urlsplit(url)
         except ValueError as exc:
             raise ValueError("project_workspace_source_url_invalid") from exc
-        if parsed.scheme.lower() not in {"http", "https"} or not parsed.hostname:
+        if (
+            parsed.scheme.lower() not in {"http", "https"}
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+        ):
             raise ValueError("project_workspace_source_url_invalid")
-        if parsed.username or parsed.password:
-            raise ValueError("project_workspace_source_url_invalid")
+        normalized_url = urlunsplit((
+            parsed.scheme.lower(),
+            parsed.netloc,
+            parsed.path,
+            parsed.query,
+            "",
+        ))
+        if any(existing["url"].casefold() == normalized_url.casefold() for existing in sources):
+            raise ValueError("project_workspace_source_url_duplicate")
         ids.add(source_id)
+        hostname = (parsed.hostname or "").lower()
+        if hostname.startswith("www."):
+            hostname = hostname[4:]
         source = {
             "source_id": source_id,
-            "url": url,
-            "title": _text(item.get("title") or parsed.hostname or source_id, "source_title", limit=240),
-            "domain": _text(item.get("domain") or parsed.hostname or "", "source_domain", limit=180),
+            "url": normalized_url,
+            "title": _text(item.get("title") or hostname or source_id, "source_title", limit=240),
+            "domain": hostname,
         }
         for key in ("published_at", "accessed_at"):
             val = item.get(key)
@@ -255,18 +271,23 @@ class ProjectWorkspaceStore:
                 ).fetchone()
                 if row is None:
                     return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
+                requested_by = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
+                if self._decode_snapshot(row).get("owner_id", "local_operator") != requested_by:
+                    return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
                 return self._result(conn, row)
 
             if operation == "list":
                 limit = _bounded_int(payload.get("limit", 20), "limit", 1, 100)
+                requested_by = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
                 rows = conn.execute(
                     "SELECT project_id, revision, title, status, created_at, updated_at, snapshot_json "
-                    "FROM project_workspaces ORDER BY updated_at DESC LIMIT ?",
-                    (limit,),
+                    "FROM project_workspaces ORDER BY updated_at DESC",
                 ).fetchall()
                 projects = []
                 for row in rows:
                     snapshot = json.loads(row["snapshot_json"])
+                    if snapshot.get("owner_id", "local_operator") != requested_by:
+                        continue
                     projects.append({
                         "project_id": row["project_id"],
                         "revision": row["revision"],
@@ -276,6 +297,8 @@ class ProjectWorkspaceStore:
                         "updated_at": row["updated_at"],
                         "task_tracking": _progress(snapshot.get("tasks", [])),
                     })
+                    if len(projects) >= limit:
+                        break
                 return {"status": "OK", "count": len(projects), "projects": projects}
             raise ValueError("project_workspace_read_operation_unsupported")
 
@@ -317,6 +340,7 @@ class ProjectWorkspaceStore:
         now = _now()
         goal = _text(plan_result.get("project_goal"), "project_goal", limit=500)
         title = _text(plan.get("project_title"), "project_title", limit=200)
+        owner_id = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
         status = "ACTIVE"
         fingerprint_basis = {
             "project_id": project_id,
@@ -327,6 +351,7 @@ class ProjectWorkspaceStore:
         fingerprint = _sha256(fingerprint_basis)
         snapshot = {
             "project_id": project_id,
+            "owner_id": owner_id,
             "title": title,
             "goal": goal,
             "audience": _text(plan_result.get("audience") or "", "audience", required=False, limit=240),
@@ -358,6 +383,14 @@ class ProjectWorkspaceStore:
                     "SELECT * FROM project_workspaces WHERE project_id=?", (project_id,)
                 ).fetchone()
                 if existing is not None:
+                    existing_snapshot = self._decode_snapshot(existing)
+                    if existing_snapshot.get("owner_id", "local_operator") != owner_id:
+                        conn.rollback()
+                        return {
+                            "status": "CONFLICT",
+                            "reason": "project_workspace_already_exists",
+                            "project_id": project_id,
+                        }
                     if existing["plan_fingerprint"] == fingerprint:
                         conn.rollback()
                         return self._result(conn, existing, "IDEMPOTENT_REPLAY")
@@ -410,6 +443,10 @@ class ProjectWorkspaceStore:
                         "current_revision": current_revision,
                     }
                 snapshot = self._decode_snapshot(row)
+                requested_by = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
+                if snapshot.get("owner_id", "local_operator") != requested_by:
+                    conn.rollback()
+                    return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
                 if snapshot.get("status") == "ARCHIVED":
                     conn.rollback()
                     return {"status": "CONFLICT", "reason": "project_workspace_archived", "project_id": project_id}
