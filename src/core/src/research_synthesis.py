@@ -10,7 +10,6 @@ evidence or a substitute for inspecting the cited pages.
 from __future__ import annotations
 
 import json
-import re
 from typing import Any, Dict, Mapping
 from urllib.parse import urlsplit
 
@@ -101,8 +100,11 @@ def _parse_json_object(raw: Any) -> dict[str, Any]:
         raise ValueError("model_synthesis_text_missing")
     text = raw.strip()
     if text.startswith("```"):
-        text = re.sub(r"^\`\`\`(?:json)?\s*", "", text, count=1, flags=re.IGNORECASE)
-        text = re.sub(r"\s*\`\`\`$", "", text, count=1)
+        first_newline = text.find("\n")
+        text = text[first_newline + 1:] if first_newline >= 0 else text[3:]
+        text = text.rstrip()
+        if text.endswith("```"):
+            text = text[:-3].rstrip()
     try:
         parsed = json.loads(text)
     except (TypeError, json.JSONDecodeError) as exc:
