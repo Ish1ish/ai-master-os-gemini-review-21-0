@@ -111,7 +111,7 @@ def _budget_metadata(constraints: Mapping[str, Any]) -> tuple[str, str]:
     if isinstance(raw, Mapping):
         currency = _clean_text(raw.get("currency"), limit=20).upper()
     else:
-        match = re.search(r"(?:[0-9][0-9,. ]*\\s+([A-Z]{3})\\b|\\b([A-Z]{3})\\s+[0-9])", str(raw).upper())
+        match = re.search(r"(?:[0-9][0-9,. ]*\s+([A-Z]{3})\b|\b([A-Z]{3})\s+[0-9])", str(raw).upper())
         currency = (match.group(1) or match.group(2)) if match else ""
     if not re.fullmatch(r"[A-Z]{3}", currency):
         currency = "unspecified"
