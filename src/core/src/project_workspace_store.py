@@ -361,7 +361,7 @@ class ProjectWorkspaceStore:
         operation = _text(payload.get("operation"), "operation", limit=40).lower()
         if operation == "create_from_plan":
             return self._create_from_plan(payload)
-        if operation in {"update_task", "append_note", "record_decision", "update_status"}:
+        if operation in {"add_task", "update_task", "append_note", "record_decision", "update_status"}:
             return self._mutate(payload, operation)
         raise ValueError("project_workspace_write_operation_unsupported")
 
