@@ -299,8 +299,71 @@ class TestGovernedWorkspaceTools(unittest.TestCase):
                 )
                 self.assertEqual(executed["status"], "SUCCEEDED")
                 self.assertEqual(len(calls), 1)
-                result = store.read({"operation": "get", "project_id": "WS-GOV-P1"})
+                result = store.read({"operation": "get", "project_id": "WS-GOV-P1", "requested_by": "operator-01"})
                 self.assertEqual(result["workspace"]["task_tracking"]["task_count"], 4)
+            finally:
+                runtime.close()
+
+    def test_workspace_write_cannot_target_another_runtime_project(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = RealUnifiedRuntime(directory)
+            calls = []
+            runtime.register_execution_tool(
+                "provider.project.workspace.write",
+                lambda payload: calls.append(payload) or {"ok": True},
+                retry_safe=False,
+            )
+            try:
+                result = runtime.run(
+                    run_id="PATCH22-WS-SCOPE-R1",
+                    project_id="AUTHORIZED-P1",
+                    strategy_id="PATCH22-WS-SCOPE-S1",
+                    intent="Attempt to target another project's workspace",
+                    goal="Test workspace project binding",
+                    principal=self.PRINCIPAL,
+                    execution_contract={
+                        "action": "update_project_workspace",
+                        "tool_name": "provider.project.workspace.write",
+                        "payload": {
+                            "operation": "create_from_plan",
+                            "project_id": "DIFFERENT-P2",
+                            "plan_result": _plan_result(),
+                        },
+                    },
+                )
+                governed = result.get("governed_execution") or {}
+                self.assertEqual(governed.get("status"), "BLOCKED")
+                self.assertEqual(governed.get("reason"), "project_workspace_project_binding_invalid")
+                self.assertEqual(calls, [])
+            finally:
+                runtime.close()
+
+    def test_workspace_read_cannot_target_another_runtime_project(self):
+        with tempfile.TemporaryDirectory() as directory:
+            runtime = RealUnifiedRuntime(directory)
+            store = ProjectWorkspaceStore(Path(directory) / "workspace.sqlite3")
+            runtime.register_execution_tool(
+                "provider.project.workspace.read",
+                lambda payload: store.read(payload),
+                retry_safe=True,
+            )
+            try:
+                result = runtime.run(
+                    run_id="PATCH22-WS-READ-SCOPE-R1",
+                    project_id="AUTHORIZED-P1",
+                    strategy_id="PATCH22-WS-READ-SCOPE-S1",
+                    intent="Attempt to read another project's workspace",
+                    goal="Test workspace read binding",
+                    principal=self.PRINCIPAL,
+                    execution_contract={
+                        "action": "read_only_inspection",
+                        "tool_name": "provider.project.workspace.read",
+                        "payload": {"operation": "get", "project_id": "DIFFERENT-P2"},
+                    },
+                )
+                governed = result.get("governed_execution") or {}
+                self.assertEqual(governed.get("status"), "BLOCKED")
+                self.assertEqual(governed.get("reason"), "project_workspace_project_binding_invalid")
             finally:
                 runtime.close()
 
