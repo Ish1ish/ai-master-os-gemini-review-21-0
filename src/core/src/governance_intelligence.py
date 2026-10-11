@@ -31,6 +31,11 @@ class GovernanceIntelligence:
             "destructive": False, "sensitive": False, "reversible": True,
             "required_scope": "governance:evaluate",
         },
+        "update_project_workspace": {
+            "risk": "MEDIUM", "external_effect": False, "financial": False,
+            "destructive": False, "sensitive": False, "reversible": True,
+            "required_scope": "governance:evaluate",
+        },
         "generate_internal_draft": {
             "risk": "LOW", "external_effect": False, "financial": False,
             "destructive": False, "sensitive": False, "reversible": True,
