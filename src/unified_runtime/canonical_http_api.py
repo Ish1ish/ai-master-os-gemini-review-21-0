@@ -125,6 +125,10 @@ class CanonicalHTTPAPI:
             result = {"status": "BAD_REQUEST", "reason": "project_workspace_operation_invalid"}
             return self._http_status(result), result
 
+        if not project_id.strip() or "/" in project_id or project_id in {".", ".."}:
+            result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+            return self._http_status(result), result
+
         store = getattr(self.entrypoint, "project_workspace_store", None)
         if store is None:
             result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
