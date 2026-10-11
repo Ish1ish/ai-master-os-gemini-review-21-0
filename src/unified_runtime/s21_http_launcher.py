@@ -9,6 +9,7 @@ from core.src.auth import build_default_production_authenticator
 from core.src.canonical_provider_tools import real_research_tool, real_search_tool
 from core.src.research_synthesis import real_research_synthesis_tool
 from core.src.goal_research_workflow import real_goal_research_workflow
+from core.src.project_plan_generator import real_project_plan_tool
 
 from .entrypoint import UnifiedRuntimeEntrypoint
 from .http_api_server import HTTPServerConfig, UnifiedRuntimeHTTPServer
@@ -94,6 +95,12 @@ def build_s21_http_server(
     entrypoint.register_execution_tool(
         "provider.research.workflow",
         real_goal_research_workflow,
+        version="1.0.0",
+        retry_safe=False,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.plan",
+        real_project_plan_tool,
         version="1.0.0",
         retry_safe=False,
     )
