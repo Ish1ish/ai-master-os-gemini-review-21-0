@@ -213,6 +213,13 @@ class TestProjectWorkspaceStore(unittest.TestCase):
             "expected_revision": revision, "project_status": "COMPLETED",
         })
         self.assertEqual(completed["workspace"]["status"], "COMPLETED")
+        blocked_task_update = self.store.write({
+            "operation": "update_task", "project_id": "WS-P1",
+            "expected_revision": completed["revision"], "task_id": "M01-T01",
+            "task_status": "IN_PROGRESS",
+        })
+        self.assertEqual(blocked_task_update["status"], "CONFLICT")
+        self.assertEqual(blocked_task_update["reason"], "project_workspace_completed")
         archived_revision = completed["revision"]
         archived = self.store.write({
             "operation": "update_status", "project_id": "WS-P1",
@@ -230,6 +237,33 @@ class TestProjectWorkspaceStore(unittest.TestCase):
                 "operation": "append_note", "project_id": "WS-P1",
                 "note": "No update without revision.",
             })
+
+    def test_workspace_data_is_scoped_to_the_owner(self):
+        created = self.store.write({
+            "operation": "create_from_plan",
+            "project_id": "WS-OWNER-P1",
+            "requested_by": "alice",
+            "plan_result": _plan_result(),
+        })
+        self.assertEqual(created["status"], "CREATED")
+        self.assertEqual(
+            self.store.read({
+                "operation": "get", "project_id": "WS-OWNER-P1", "requested_by": "bob"
+            })["status"],
+            "NOT_FOUND",
+        )
+        self.assertEqual(
+            self.store.read({"operation": "list", "requested_by": "bob"})["count"],
+            0,
+        )
+        denied = self.store.write({
+            "operation": "append_note",
+            "project_id": "WS-OWNER-P1",
+            "requested_by": "bob",
+            "expected_revision": 1,
+            "note": "Cross-owner mutation attempt",
+        })
+        self.assertEqual(denied["status"], "NOT_FOUND")
 
     def test_tool_wrappers_separate_reads_from_mutations(self):
         with self.assertRaisesRegex(ValueError, "project_workspace_write_operation_unsupported"):
