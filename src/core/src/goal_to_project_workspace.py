@@ -14,6 +14,8 @@ from .project_workspace_store import ProjectWorkspaceStore, project_workspace_wr
 
 
 def _required_text(value: Any, field: str, limit: int) -> str:
+    if value is None:
+        raise ValueError("goal_to_workspace_required:" + field)
     if not isinstance(value, str):
         raise ValueError("goal_to_workspace_invalid:" + field)
     result = " ".join(value.split())[:limit]
