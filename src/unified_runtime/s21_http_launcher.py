@@ -10,6 +10,7 @@ from core.src.canonical_provider_tools import real_research_tool, real_search_to
 from core.src.research_synthesis import real_research_synthesis_tool
 from core.src.goal_research_workflow import real_goal_research_workflow
 from core.src.project_plan_generator import real_project_plan_tool
+from core.src.goal_to_project_workspace import real_goal_to_project_workspace
 from core.src.project_workspace_store import (
     ProjectWorkspaceStore,
     project_workspace_read_tool,
@@ -119,6 +120,12 @@ def build_s21_http_server(
     entrypoint.register_execution_tool(
         "provider.project.workspace.write",
         lambda payload: project_workspace_write_tool(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=False,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.goal-to-workspace",
+        lambda payload: real_goal_to_project_workspace(payload, store=workspace_store),
         version="1.0.0",
         retry_safe=False,
     )
