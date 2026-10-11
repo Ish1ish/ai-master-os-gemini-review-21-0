@@ -330,6 +330,7 @@ class RealUnifiedRuntime:
         research_tool_allowlist = {
             "provider.research.live",
             "provider.research.synthesis",
+            "provider.research.workflow",
         }
         if (
             action == "read_only_market_research"
@@ -341,9 +342,10 @@ class RealUnifiedRuntime:
             }
 
         # Bootstrap is limited to the read-only research action and an explicit
-        # allowlist of provider tools. This supports both evidence acquisition and
-        # source-grounded synthesis before decision-grade market evidence exists.
-        # O45 still independently classifies and authorizes each registered tool.
+        # allowlist of provider tools. This supports evidence acquisition,
+        # source-grounded synthesis, and their combined workflow before
+        # decision-grade market evidence exists. O45 still independently
+        # classifies and authorizes each registered tool.
         research_bootstrap = (
             action == "read_only_market_research"
             and tool_name in research_tool_allowlist
