@@ -437,6 +437,14 @@ class ProjectWorkspaceStore:
                 if row is None:
                     conn.rollback()
                     return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
+                snapshot = self._decode_snapshot(row)
+                requested_by = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
+                # Enforce owner scope before checking revision so another owner
+                # cannot use conflicts to infer the current revision.
+                if snapshot.get("owner_id", "local_operator") != requested_by:
+                    conn.rollback()
+                    return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
+
                 current_revision = int(row["revision"])
                 if current_revision != expected_revision:
                     conn.rollback()
@@ -447,17 +455,19 @@ class ProjectWorkspaceStore:
                         "expected_revision": expected_revision,
                         "current_revision": current_revision,
                     }
-                snapshot = self._decode_snapshot(row)
-                requested_by = _text(payload.get("requested_by") or "local_operator", "requested_by", limit=160)
-                if snapshot.get("owner_id", "local_operator") != requested_by:
-                    conn.rollback()
-                    return {"status": "NOT_FOUND", "reason": "project_workspace_not_found", "project_id": project_id}
-                if snapshot.get("status") == "ARCHIVED":
+
+                current_status = snapshot.get("status")
+                if current_status == "ARCHIVED":
                     conn.rollback()
                     return {"status": "CONFLICT", "reason": "project_workspace_archived", "project_id": project_id}
-                if snapshot.get("status") == "COMPLETED" and operation == "update_task":
+                if current_status == "PAUSED" and operation == "update_task":
                     conn.rollback()
-                    return {"status": "CONFLICT", "reason": "project_workspace_completed", "project_id": project_id}
+                    return {"status": "CONFLICT", "reason": "project_workspace_paused", "project_id": project_id}
+                if current_status == "COMPLETED":
+                    requested_status = str(payload.get("project_status") or "").strip().upper()
+                    if operation != "update_status" or requested_status != "ARCHIVED":
+                        conn.rollback()
+                        return {"status": "CONFLICT", "reason": "project_workspace_completed", "project_id": project_id}
                 event_payload: dict[str, Any] = {}
 
                 if operation == "update_task":
