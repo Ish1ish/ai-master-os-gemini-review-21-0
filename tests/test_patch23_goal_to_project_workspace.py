@@ -237,7 +237,11 @@ class TestGoalToProjectWorkspace(unittest.TestCase):
         self.assertEqual(first["workspace_save_status"], "CREATED")
         self.assertEqual(result["status"], "CONFLICT")
         self.assertEqual(result["workspace_save_status"], "CONFLICT")
-        saved = self.store.read({"operation": "get", "project_id": "P23-MEAL-PREP"})
+        saved = self.store.read({
+            "operation": "get",
+            "project_id": "P23-MEAL-PREP",
+            "requested_by": "operator-01",
+        })
         self.assertEqual(
             saved["workspace"]["plan"]["executive_summary"],
             "Validate demand before committing significant capital.",
