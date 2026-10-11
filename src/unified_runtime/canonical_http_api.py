@@ -9,6 +9,9 @@ from __future__ import annotations
 from typing import Any, Mapping
 from urllib.parse import parse_qs, urlsplit
 
+from core.src.project_progress_review import project_progress_review_tool
+from core.src.project_workspace_store import project_workspace_read_tool
+
 
 class CanonicalHTTPAPI:
     """Small route adapter for the canonical Python/O45 surface."""
@@ -88,6 +91,8 @@ class CanonicalHTTPAPI:
             return 400
         if status == "CONFLICT":
             return 409
+        if status == "UNAVAILABLE":
+            return 503
         return 200
 
     def handle(
@@ -125,6 +130,65 @@ class CanonicalHTTPAPI:
                 intent_id,
                 principal=self.execution_principal or principal,
             )
+            return self._http_status(result), result
+
+        if method == "GET" and route == "/api/projects":
+            denied = self._authorize(principal, "run:read")
+            if denied:
+                return self._http_status(denied), denied
+            query = parse_qs(urlsplit(path).query)
+            raw_limit = (query.get("limit") or ["20"])[0]
+            try:
+                limit = int(raw_limit)
+            except (TypeError, ValueError):
+                result = {"status": "BAD_REQUEST", "reason": "project_limit_invalid"}
+                return self._http_status(result), result
+            if limit < 1 or limit > 100:
+                result = {"status": "BAD_REQUEST", "reason": "project_limit_out_of_range"}
+                return self._http_status(result), result
+            store = getattr(self.entrypoint, "project_workspace_store", None)
+            if store is None:
+                result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
+                return self._http_status(result), result
+            principal_id = str(principal.get("principal_id") or principal.get("principal") or "").strip()
+            result = project_workspace_read_tool(
+                {"operation": "list", "limit": limit, "requested_by": principal_id},
+                store=store,
+            )
+            return self._http_status(result), result
+
+        if method == "GET" and route.startswith("/api/projects/"):
+            project_path = route[len("/api/projects/"):]
+            is_review = project_path.endswith("/review")
+            project_id = (
+                project_path[:-len("/review")].strip("/")
+                if is_review else project_path.strip("/")
+            )
+            if not project_id or "/" in project_id:
+                result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+                return self._http_status(result), result
+            denied = self._authorize(principal, "run:read")
+            if denied:
+                return self._http_status(denied), denied
+            store = getattr(self.entrypoint, "project_workspace_store", None)
+            if store is None:
+                result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
+                return self._http_status(result), result
+            principal_id = str(principal.get("principal_id") or principal.get("principal") or "").strip()
+            if is_review:
+                result = project_progress_review_tool(
+                    {"project_id": project_id, "requested_by": principal_id},
+                    store=store,
+                )
+            else:
+                result = project_workspace_read_tool(
+                    {
+                        "operation": "get",
+                        "project_id": project_id,
+                        "requested_by": principal_id,
+                    },
+                    store=store,
+                )
             return self._http_status(result), result
 
         if method == "GET" and route == "/api/approvals":
