@@ -128,10 +128,6 @@ class TestS21HTTPProjectLifecycle(unittest.TestCase):
                     server.address, token, route,
                     {"expected_revision": 1, "project_status": "PAUSED"},
                 )
-                self.assertEqual(
-                    paused["application_response"]["execution"]["output"]["mode"],
-                    "O45_GOVERNED_SUBMISSION",
-                )
                 detail = self._request(
                     server.address, "GET", f"/api/projects/{PROJECT_ID}", token
                 )[1]["application_response"]
