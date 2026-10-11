@@ -199,6 +199,16 @@ class TestGoalToProjectWorkspace(unittest.TestCase):
 
     @patch("core.src.goal_to_project_workspace.real_project_plan_tool")
     @patch("core.src.goal_to_project_workspace.real_goal_research_workflow")
+    def test_non_string_project_id_is_rejected_as_invalid(self, research, plan):
+        payload = dict(self.payload)
+        payload["project_id"] = 123
+        with self.assertRaisesRegex(ValueError, "goal_to_workspace_invalid:project_id"):
+            real_goal_to_project_workspace(payload, store=self.store)
+        research.assert_not_called()
+        plan.assert_not_called()
+
+    @patch("core.src.goal_to_project_workspace.real_project_plan_tool")
+    @patch("core.src.goal_to_project_workspace.real_goal_research_workflow")
     def test_invalid_plan_boundary_is_rejected_before_persistence(self, research, plan):
         research.return_value = _research_result()
         invalid_plan = _plan_result()
