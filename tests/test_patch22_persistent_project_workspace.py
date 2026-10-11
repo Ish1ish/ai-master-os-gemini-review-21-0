@@ -176,11 +176,6 @@ class TestProjectWorkspaceStore(unittest.TestCase):
         self.assertEqual(note["revision"], 2)
         self.assertEqual(decision["revision"], 3)
         self.assertEqual(decision["workspace"]["decisions"][0]["source_ids"], ["S001"])
-        invalid = self.store.write({
-            "operation": "record_decision", "project_id": "WS-P1",
-            "expected_revision": 3, "title": "Bad reference",
-            "rationale": "Should fail.", "source_ids": ["S999"],
-        })
         with self.assertRaisesRegex(ValueError, "project_workspace_unknown_source_id"):
             self.store.write({
                 "operation": "record_decision", "project_id": "WS-P1",
