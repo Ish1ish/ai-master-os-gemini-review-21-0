@@ -305,12 +305,6 @@ class RealUnifiedRuntime:
         if not isinstance(execution_contract, Mapping):
             return {"status": "BLOCKED", "reason": "execution_contract_must_be_mapping"}
 
-        if governance.get("posture") != "PROCEED_TO_EXECUTION_GATE":
-            return {
-                "status": "BLOCKED",
-                "reason": f"governance_posture_not_executable:{governance.get('posture')}",
-            }
-
         requester = str((principal or {}).get("principal") or "").strip()
         if not requester:
             return {"status": "BLOCKED", "reason": "principal_required"}
@@ -334,16 +328,43 @@ class RealUnifiedRuntime:
                 "reason": "execution_payload_must_be_mapping",
             }
 
+        # The one bootstrap exception is intentionally an exact action/tool pair:
+        # research is needed to obtain market evidence, so it cannot depend on
+        # already having decision-grade market evidence. O45 still independently
+        # classifies and authorizes this registered low-risk, read-only operation.
+        research_bootstrap = (
+            action == "read_only_market_research"
+            and tool_name == "provider.research.live"
+        )
+        upstream_posture = str(governance.get("posture") or "UNKNOWN")
+        if (
+            upstream_posture != "PROCEED_TO_EXECUTION_GATE"
+            and not research_bootstrap
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": f"governance_posture_not_executable:{upstream_posture}",
+            }
+
         context = dict(execution_contract.get("context") or {})
-        context.setdefault("confidence", evaluation.get("confidence"))
-        context.setdefault(
-            "evidence_refs",
-            list(evidence_payload.get("evidence_refs") or []),
-        )
-        context.setdefault(
-            "evidence_boundary",
-            decision_surface.get("evidence_boundary"),
-        )
+        if research_bootstrap:
+            # These signals describe authorization of the user-requested research
+            # operation, not confidence in any market claim. Research output is
+            # returned with source provenance and is not silently promoted to
+            # decision-grade evidence by this bootstrap step.
+            context["confidence"] = "high"
+            context.setdefault("evidence_refs", [f"user_request:{run_id}"])
+            context["evidence_boundary"] = "user_request_scope_only"
+        else:
+            context.setdefault("confidence", evaluation.get("confidence"))
+            context.setdefault(
+                "evidence_refs",
+                list(evidence_payload.get("evidence_refs") or []),
+            )
+            context.setdefault(
+                "evidence_boundary",
+                decision_surface.get("evidence_boundary"),
+            )
 
         from core.src.execution_intent_planner import ExecutionIntentPlanner
 
@@ -382,13 +403,17 @@ class RealUnifiedRuntime:
             intent,
             expected_project_id=project_id,
         )
-        return {
+        result = {
             "status": submission.get("status", "BLOCKED"),
             "intent": intent,
             "preflight": preflight,
             "submission": submission,
             "principal_id": requester,
         }
+        if research_bootstrap:
+            result["execution_path"] = "READ_ONLY_EVIDENCE_ACQUISITION"
+            result["upstream_governance_posture"] = upstream_posture
+        return result
 
     @staticmethod
     def _normalize_governed_submission(
