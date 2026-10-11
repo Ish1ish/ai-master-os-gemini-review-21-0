@@ -62,13 +62,22 @@ def real_goal_to_project_workspace(
     research_status = str(research.get("status") or "").upper()
     if research_status not in {"COMPLETE", "PARTIAL"}:
         raise ValueError("goal_to_workspace_research_status_invalid")
+    research_for_plan = dict(research)
+    stage_rows = research.get("workflow_stages")
+    if isinstance(stage_rows, list) and any(
+        not isinstance(stage, Mapping)
+        or str(stage.get("status") or "").upper() != "COMPLETE"
+        for stage in stage_rows
+    ):
+        research_status = "PARTIAL"
+    research_for_plan["status"] = research_status
 
     plan_result = real_project_plan_tool({
         "goal": goal,
         "audience": audience,
         "constraints": dict(constraints),
         "requested_language": language,
-        "research": dict(research),
+        "research": research_for_plan,
     })
     if not isinstance(plan_result, Mapping):
         raise ValueError("goal_to_workspace_plan_result_invalid")
