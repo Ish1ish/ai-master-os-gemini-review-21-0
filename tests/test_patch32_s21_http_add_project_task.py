@@ -182,8 +182,9 @@ class TestS21HTTPAddProjectTask(unittest.TestCase):
                 )
                 first_milestone = workspace["milestone_tracking"]["milestones"][0]
                 self.assertEqual(first_milestone["task_tracking"]["task_count"], 3)
-                self.assertEqual(workspace["events"][-1]["event_type"], "ADD_TASK")
-                self.assertEqual(workspace["events"][-1]["payload"]["author"], "operator-01")
+                # The workspace store returns audit events beside (not inside) the snapshot.
+                self.assertEqual(detail["events"][-1]["event_type"], "ADD_TASK")
+                self.assertEqual(detail["events"][-1]["payload"]["author"], "operator-01")
                 self.assertFalse(workspace["external_actions_executed"])
 
                 # A paused workspace cannot accept a new task.
