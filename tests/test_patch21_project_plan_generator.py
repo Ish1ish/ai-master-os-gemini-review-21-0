@@ -153,6 +153,8 @@ class TestProjectPlanGenerator(unittest.TestCase):
             "constraints": {"budget": {"amount": 10000, "currency": "EGP"}},
             "research": research,
         })
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertEqual(result["generation_status"], "COMPLETE")
         self.assertEqual(result["research_status"], "PARTIAL")
         self.assertIn("partially successful", result["research_coverage_note"])
         self.assertEqual(result["nominal_sequential_duration_days"], 21)
