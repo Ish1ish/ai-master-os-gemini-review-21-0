@@ -27,7 +27,9 @@ def real_goal_research_workflow(payload: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError("goal_required")
     audience = _clean_text(payload.get("audience"), limit=240)
     requested_language = _clean_text(payload.get("requested_language") or "en", limit=40)
-    constraints = payload.get("constraints") or {}
+    constraints = payload.get("constraints", {})
+    if constraints is None:
+        constraints = {}
     if not isinstance(constraints, Mapping):
         raise ValueError("constraints_must_be_mapping")
 
