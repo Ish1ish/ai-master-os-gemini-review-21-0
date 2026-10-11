@@ -54,9 +54,11 @@ class TestS21HTTPComposition(unittest.TestCase):
                 self.assertIn("provider.research.live", tools_by_name)
                 self.assertIn("provider.research.synthesis", tools_by_name)
                 self.assertIn("provider.research.workflow", tools_by_name)
+                self.assertIn("provider.project.plan", tools_by_name)
                 self.assertFalse(tools_by_name["provider.research.live"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.research.synthesis"]["retry_safe"])
                 self.assertFalse(tools_by_name["provider.research.workflow"]["retry_safe"])
+                self.assertFalse(tools_by_name["provider.project.plan"]["retry_safe"])
             finally:
                 server.shutdown()
                 entrypoint.close()
