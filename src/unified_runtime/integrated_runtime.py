@@ -350,10 +350,18 @@ class RealUnifiedRuntime:
             action == "read_only_market_research"
             and tool_name in research_tool_allowlist
         )
+        # A generated plan is an internal draft only. This exact pair may be
+        # bootstrapped from the user's goal and prior research because it has
+        # no external effect, does not spend funds, and does not execute tasks.
+        plan_bootstrap = (
+            action == "generate_internal_draft"
+            and tool_name == "provider.project.plan"
+        )
         upstream_posture = str(governance.get("posture") or "UNKNOWN")
         if (
             upstream_posture != "PROCEED_TO_EXECUTION_GATE"
             and not research_bootstrap
+            and not plan_bootstrap
         ):
             return {
                 "status": "BLOCKED",
@@ -361,14 +369,17 @@ class RealUnifiedRuntime:
             }
 
         context = dict(execution_contract.get("context") or {})
-        if research_bootstrap:
-            # These signals describe authorization of the user-requested research
-            # operation, not confidence in any market claim. Research output is
-            # returned with source provenance and is not silently promoted to
-            # decision-grade evidence by this bootstrap step.
+        if research_bootstrap or plan_bootstrap:
+            # These signals describe authorization of a bounded internal request,
+            # not confidence in market claims. Neither source snippets nor a plan
+            # draft are silently promoted to decision-grade evidence.
             context["confidence"] = "high"
             context.setdefault("evidence_refs", [f"user_request:{run_id}"])
-            context["evidence_boundary"] = "user_request_scope_only"
+            context["evidence_boundary"] = (
+                "user_request_scope_only"
+                if research_bootstrap
+                else "user_goal_and_research_scope_only"
+            )
         else:
             context.setdefault("confidence", evaluation.get("confidence"))
             context.setdefault(
@@ -426,6 +437,9 @@ class RealUnifiedRuntime:
         }
         if research_bootstrap:
             result["execution_path"] = "READ_ONLY_EVIDENCE_ACQUISITION"
+            result["upstream_governance_posture"] = upstream_posture
+        if plan_bootstrap:
+            result["execution_path"] = "INTERNAL_DRAFT_BOOTSTRAP"
             result["upstream_governance_posture"] = upstream_posture
         return result
 
