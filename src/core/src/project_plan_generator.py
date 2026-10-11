@@ -448,7 +448,8 @@ def real_project_plan_tool(payload: Dict[str, Any]) -> Dict[str, Any]:
     )
     return {
         "provider": "live_model",
-        "status": "COMPLETE",
+        "status": "PARTIAL" if research["status"] == "PARTIAL" else "COMPLETE",
+        "generation_status": "COMPLETE",
         "plan_type": "INTERNAL_DRAFT",
         "project_goal": goal,
         "audience": audience,
