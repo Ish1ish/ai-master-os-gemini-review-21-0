@@ -175,6 +175,20 @@ class TestGoalToProjectWorkspace(unittest.TestCase):
 
     @patch("core.src.goal_to_project_workspace.real_project_plan_tool")
     @patch("core.src.goal_to_project_workspace.real_goal_research_workflow")
+    def test_partial_synthesis_stage_downgrades_pipeline_status(self, research, plan):
+        mixed_research = _research_result("COMPLETE")
+        mixed_research["workflow_stages"][1]["status"] = "PARTIAL"
+        research.return_value = mixed_research
+        plan.return_value = _plan_result("PARTIAL")
+
+        result = real_goal_to_project_workspace(self.payload, store=self.store)
+
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertEqual(result["workspace"]["research_status"], "PARTIAL")
+        self.assertEqual(plan.call_args.args[0]["research"]["status"], "PARTIAL")
+
+    @patch("core.src.goal_to_project_workspace.real_project_plan_tool")
+    @patch("core.src.goal_to_project_workspace.real_goal_research_workflow")
     def test_project_id_is_required_before_provider_calls(self, research, plan):
         payload = dict(self.payload)
         payload.pop("project_id")
