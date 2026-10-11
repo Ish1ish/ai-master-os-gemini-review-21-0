@@ -67,11 +67,11 @@ class TestS21HTTPGoalToWorkspaceEndToEnd(unittest.TestCase):
                 tls_terminated=True,
                 persistence_root=root,
             )
+            server.start()
             try:
                 token_result = identity.issue_token("operator-01")
                 self.assertEqual(token_result["status"], "ISSUED")
                 token = token_result["token"]
-                server.start()
 
                 store = ProjectWorkspaceStore(root / "project_workspace.sqlite3")
                 submission_payload = {
@@ -153,7 +153,8 @@ class TestS21HTTPGoalToWorkspaceEndToEnd(unittest.TestCase):
                 self.assertEqual(workspace["task_tracking"]["task_count"], 4)
                 self.assertFalse(workspace["decision_grade_evidence"])
                 self.assertFalse(workspace["external_actions_executed"])
-                self.assertFalse(execution_result.get("external_action", True))
+                self.assertFalse(executed["external_action_executed"])
+                self.assertFalse(executed["memory_write_executed"])
             finally:
                 server.shutdown()
                 entrypoint.close()
