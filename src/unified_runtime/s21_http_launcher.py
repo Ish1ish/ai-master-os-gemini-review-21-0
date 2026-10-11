@@ -112,6 +112,8 @@ def build_s21_http_server(
         retry_safe=False,
     )
     workspace_store = ProjectWorkspaceStore(root / "project_workspace.sqlite3")
+    # Expose the same owned store to read-only canonical HTTP routes.
+    entrypoint.project_workspace_store = workspace_store
     entrypoint.register_execution_tool(
         "provider.project.workspace.read",
         lambda payload: project_workspace_read_tool(payload, store=workspace_store),
