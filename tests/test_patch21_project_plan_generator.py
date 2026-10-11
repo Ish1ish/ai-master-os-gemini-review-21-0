@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from core.src.project_plan_generator import real_project_plan_tool
+from core.src.project_plan_generator import _budget_metadata, real_project_plan_tool
 from unified_runtime.integrated_runtime import RealUnifiedRuntime
 
 
@@ -138,6 +138,24 @@ class TestProjectPlanGenerator(unittest.TestCase):
         self.assertNotIn("must-not-enter-model-prompt", prompt)
         self.assertIn("planning_estimate", prompt)
         model.assert_called_once()
+
+    def test_budget_currency_is_only_read_from_an_amount_and_currency_pair(self):
+        self.assertEqual(_budget_metadata({"budget": "10000 EGP"}), ("10000 EGP", "EGP"))
+        self.assertEqual(_budget_metadata({"budget": "not sure"}), ("not sure", "unspecified"))
+
+    @patch("core.src.project_plan_generator.model_provider")
+    def test_partial_research_coverage_is_preserved(self, model):
+        model.return_value = {"text": json.dumps(_valid_plan())}
+        research = _research()
+        research["status"] = "PARTIAL"
+        result = real_project_plan_tool({
+            "goal": "Test partial research plan",
+            "constraints": {"budget": {"amount": 10000, "currency": "EGP"}},
+            "research": research,
+        })
+        self.assertEqual(result["research_status"], "PARTIAL")
+        self.assertIn("partially successful", result["research_coverage_note"])
+        self.assertEqual(result["nominal_sequential_duration_days"], 21)
 
     @patch("core.src.project_plan_generator.model_provider")
     def test_unknown_source_id_is_rejected(self, model):
