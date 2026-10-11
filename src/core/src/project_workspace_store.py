@@ -319,14 +319,17 @@ class ProjectWorkspaceStore:
             raise ValueError("project_workspace_plan_result_required")
         if plan_result.get("plan_type") != "INTERNAL_DRAFT" or plan_result.get("decision_grade_evidence") is not False:
             raise ValueError("project_workspace_plan_boundary_invalid")
-        generation_status = str(plan_result.get("generation_status") or ("COMPLETE" if plan_result.get("status") == "COMPLETE" else ""))
+        result_status = str(plan_result.get("status") or "").upper()
+        if result_status not in {"COMPLETE", "PARTIAL"}:
+            raise ValueError("project_workspace_plan_result_status_invalid")
+        generation_status = str(plan_result.get("generation_status") or ("COMPLETE" if result_status == "COMPLETE" else ""))
         if generation_status != "COMPLETE":
             raise ValueError("project_workspace_plan_not_complete")
         plan = plan_result.get("plan")
         if not isinstance(plan, Mapping):
             raise ValueError("project_workspace_plan_body_required")
         sources, source_ids = _source_map(plan_result.get("sources"))
-        for finding_group in ("assumptions", "risks"):
+        for finding_group in ("assumptions", "risks", "budget_items"):
             items = plan.get(finding_group, [])
             if not isinstance(items, list):
                 raise ValueError("project_workspace_plan_schema_invalid")
@@ -334,8 +337,10 @@ class ProjectWorkspaceStore:
                 if not isinstance(item, Mapping):
                     raise ValueError("project_workspace_plan_schema_invalid")
                 refs = item.get("source_ids", [])
-                if not isinstance(refs, list) or any(ref not in source_ids for ref in refs):
+                if not isinstance(refs, list) or any(not isinstance(ref, str) or ref not in source_ids for ref in refs):
                     raise ValueError("project_workspace_plan_unknown_source_id")
+                if finding_group == "budget_items" and item.get("basis") == "source_supported" and not refs:
+                    raise ValueError("project_workspace_plan_citation_required")
         tasks = _build_tasks(plan)
         now = _now()
         goal = _text(plan_result.get("project_goal"), "project_goal", limit=500)
@@ -450,6 +455,9 @@ class ProjectWorkspaceStore:
                 if snapshot.get("status") == "ARCHIVED":
                     conn.rollback()
                     return {"status": "CONFLICT", "reason": "project_workspace_archived", "project_id": project_id}
+                if snapshot.get("status") == "COMPLETED" and operation == "update_task":
+                    conn.rollback()
+                    return {"status": "CONFLICT", "reason": "project_workspace_completed", "project_id": project_id}
                 event_payload: dict[str, Any] = {}
 
                 if operation == "update_task":
