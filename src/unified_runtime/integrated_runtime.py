@@ -359,16 +359,24 @@ class RealUnifiedRuntime:
         )
         workspace_read_tool = tool_name == "provider.project.workspace.read"
         workspace_write_tool = tool_name == "provider.project.workspace.write"
+        goal_to_workspace_tool = tool_name == "provider.project.goal-to-workspace"
         workspace_read_bootstrap = (
             action == "read_only_inspection" and workspace_read_tool
         )
         workspace_write_bootstrap = (
             action == "update_project_workspace" and workspace_write_tool
         )
+        goal_to_workspace_bootstrap = (
+            action == "update_project_workspace" and goal_to_workspace_tool
+        )
         if (
             (workspace_read_tool and action != "read_only_inspection")
             or (workspace_write_tool and action != "update_project_workspace")
-            or (action == "update_project_workspace" and not workspace_write_tool)
+            or (goal_to_workspace_tool and action != "update_project_workspace")
+            or (
+                action == "update_project_workspace"
+                and not (workspace_write_tool or goal_to_workspace_tool)
+            )
         ):
             return {
                 "status": "BLOCKED",
@@ -383,7 +391,7 @@ class RealUnifiedRuntime:
                     "reason": "project_workspace_project_binding_invalid",
                 }
             payload["requested_by"] = requester
-        if workspace_write_tool:
+        if workspace_write_tool or goal_to_workspace_tool:
             payload = dict(payload)
             if str(payload.get("project_id") or "") != project_id:
                 return {
@@ -397,6 +405,7 @@ class RealUnifiedRuntime:
             or plan_bootstrap
             or workspace_read_bootstrap
             or workspace_write_bootstrap
+            or goal_to_workspace_bootstrap
         )
         upstream_posture = str(governance.get("posture") or "UNKNOWN")
         if (
