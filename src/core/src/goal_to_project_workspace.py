@@ -75,9 +75,6 @@ def real_goal_to_project_workspace(
     if plan_result.get("plan_type") != "INTERNAL_DRAFT" or plan_result.get("decision_grade_evidence") is not False:
         raise ValueError("goal_to_workspace_plan_boundary_invalid")
 
-    target_store = store or ProjectWorkspaceStore(
-        "./data/project_workspace.sqlite3"
-    )
     saved = project_workspace_write_tool(
         {
             "operation": "create_from_plan",
@@ -85,7 +82,7 @@ def real_goal_to_project_workspace(
             "requested_by": requested_by,
             "plan_result": dict(plan_result),
         },
-        store=target_store,
+        store=store,
     )
     persistence_status = str(saved.get("status") or "UNKNOWN")
     if persistence_status not in {"CREATED", "IDEMPOTENT_REPLAY"}:
