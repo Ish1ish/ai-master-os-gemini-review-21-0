@@ -327,6 +327,14 @@ class RealUnifiedRuntime:
                 "status": "BLOCKED",
                 "reason": "execution_payload_must_be_mapping",
             }
+        if (
+            action == "read_only_market_research"
+            and tool_name != "provider.research.live"
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": "research_action_tool_binding_invalid",
+            }
 
         # The one bootstrap exception is intentionally an exact action/tool pair:
         # research is needed to obtain market evidence, so it cannot depend on
