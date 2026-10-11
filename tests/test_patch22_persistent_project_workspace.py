@@ -219,11 +219,12 @@ class TestProjectWorkspaceStore(unittest.TestCase):
             "expected_revision": archived_revision, "project_status": "ARCHIVED",
         })
         self.assertEqual(archived["workspace"]["status"], "ARCHIVED")
-        with self.assertRaisesRegex(ValueError, "project_workspace_archived"):
-            self.store.write({
-                "operation": "append_note", "project_id": "WS-P1",
-                "expected_revision": archived["revision"], "note": "Archived projects are frozen.",
-            })
+        archived_mutation = self.store.write({
+            "operation": "append_note", "project_id": "WS-P1",
+            "expected_revision": archived["revision"], "note": "Archived projects are frozen.",
+        })
+        self.assertEqual(archived_mutation["status"], "CONFLICT")
+        self.assertEqual(archived_mutation["reason"], "project_workspace_archived")
         with self.assertRaisesRegex(ValueError, "project_workspace_invalid:expected_revision"):
             self.store.write({
                 "operation": "append_note", "project_id": "WS-P1",
