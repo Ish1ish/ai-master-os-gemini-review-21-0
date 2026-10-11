@@ -11,7 +11,7 @@ import uuid
 from urllib.parse import parse_qs, urlsplit
 
 from core.src.project_progress_review import project_progress_review_tool
-from core.src.project_workspace_store import project_workspace_read_tool
+from core.src.project_workspace_store import MAX_WORKSPACE_TASKS, project_workspace_read_tool
 
 
 class CanonicalHTTPAPI:
@@ -217,6 +217,14 @@ class CanonicalHTTPAPI:
 
         tasks = workspace.get("tasks") if isinstance(workspace.get("tasks"), list) else []
         if operation == "add_task":
+            if len(tasks) >= MAX_WORKSPACE_TASKS:
+                result = {
+                    "status": "CONFLICT",
+                    "reason": "project_workspace_task_limit_reached",
+                    "project_id": project_id,
+                    "task_limit": MAX_WORKSPACE_TASKS,
+                }
+                return self._http_status(result), result
             title = body.get("title")
             if not isinstance(title, str) or not title.strip() or len(title) > 500:
                 result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_title_invalid"}
