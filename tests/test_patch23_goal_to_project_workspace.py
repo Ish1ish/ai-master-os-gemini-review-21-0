@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from core.src.goal_to_project_workspace import real_goal_to_project_workspace
 from core.src.project_workspace_store import ProjectWorkspaceStore
+from unified_runtime.integrated_runtime import RealUnifiedRuntime
 
 
 def _research_result(status: str = "COMPLETE"):
@@ -193,6 +194,33 @@ class TestGoalToProjectWorkspace(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "goal_to_workspace_plan_boundary_invalid"):
             real_goal_to_project_workspace(self.payload, store=self.store)
         self.assertEqual(self.store.read({"operation": "list"})["count"], 0)
+
+    def test_composite_tool_is_bound_to_authenticated_runtime_project(self):
+        runtime = RealUnifiedRuntime(str(Path(self.tmp.name) / "runtime"))
+        result = runtime._submit_governed_execution(
+            execution_contract={
+                "action": "update_project_workspace",
+                "tool_name": "provider.project.goal-to-workspace",
+                "payload": {"project_id": "ATTACKER-CHOSEN-PROJECT", "goal": "test"},
+            },
+            decision_stage={
+                "status": "RECOMMEND",
+                "plan_id": "PLAN-P23",
+                "selected_route": {
+                    "provider": "live",
+                    "tool": "provider.project.goal-to-workspace",
+                },
+            },
+            evaluation={},
+            evidence_payload={},
+            decision_surface={},
+            governance={"posture": "PROCEED_TO_EXECUTION_GATE"},
+            run_id="RUN-P23",
+            project_id="RUNTIME-BOUND-PROJECT",
+            principal={"principal": "operator-01"},
+        )
+        self.assertEqual(result["status"], "BLOCKED")
+        self.assertEqual(result["reason"], "project_workspace_project_binding_invalid")
 
     @patch("core.src.goal_to_project_workspace.real_project_plan_tool")
     @patch("core.src.goal_to_project_workspace.real_goal_research_workflow")
