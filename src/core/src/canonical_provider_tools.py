@@ -167,7 +167,7 @@ def real_research_tool(payload: Dict[str, Any]) -> Dict[str, Any]:
       {"goal": str, "audience": str?, "constraints": mapping?,
        "max_queries": int?}
 
-    At most six provider calls are made. Each returned source includes its URL,
+    At most six search queries are issued to the provider client; its configured\n    reliability layer may retry underlying HTTP requests. Each source includes its URL,
     title, snippet, query provenance, and UTC access timestamp. Individual query
     failures are reported as partial research when other valid sources exist;
     if no citable source is collected, an exception reaches O45 and the entire
