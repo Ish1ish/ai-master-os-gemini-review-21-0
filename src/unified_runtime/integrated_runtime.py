@@ -357,11 +357,32 @@ class RealUnifiedRuntime:
             action == "generate_internal_draft"
             and tool_name == "provider.project.plan"
         )
+        workspace_read_bootstrap = (
+            action == "read_only_inspection"
+            and tool_name == "provider.project.workspace.read"
+        )
+        workspace_write_bootstrap = (
+            action == "update_project_workspace"
+            and tool_name == "provider.project.workspace.write"
+        )
+        if (
+            action == "update_project_workspace"
+            and not workspace_write_bootstrap
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": "project_workspace_action_tool_binding_invalid",
+            }
+        bootstrap_allowed = (
+            research_bootstrap
+            or plan_bootstrap
+            or workspace_read_bootstrap
+            or workspace_write_bootstrap
+        )
         upstream_posture = str(governance.get("posture") or "UNKNOWN")
         if (
             upstream_posture != "PROCEED_TO_EXECUTION_GATE"
-            and not research_bootstrap
-            and not plan_bootstrap
+            and not bootstrap_allowed
         ):
             return {
                 "status": "BLOCKED",
@@ -369,17 +390,19 @@ class RealUnifiedRuntime:
             }
 
         context = dict(execution_contract.get("context") or {})
-        if research_bootstrap or plan_bootstrap:
-            # These signals describe authorization of a bounded internal request,
-            # not confidence in market claims. Neither source snippets nor a plan
-            # draft are silently promoted to decision-grade evidence.
+        if bootstrap_allowed:
+            # These signals authorize a bounded requested operation; they do not
+            # imply market claims are true or that a project update was validated.
             context["confidence"] = "high"
             context.setdefault("evidence_refs", [f"user_request:{run_id}"])
-            context["evidence_boundary"] = (
-                "user_request_scope_only"
-                if research_bootstrap
-                else "user_goal_and_research_scope_only"
-            )
+            if research_bootstrap:
+                context["evidence_boundary"] = "user_request_scope_only"
+            elif plan_bootstrap:
+                context["evidence_boundary"] = "user_goal_and_research_scope_only"
+            elif workspace_read_bootstrap:
+                context["evidence_boundary"] = "project_workspace_scope_only"
+            else:
+                context["evidence_boundary"] = "project_workspace_mutation_scope_only"
         else:
             context.setdefault("confidence", evaluation.get("confidence"))
             context.setdefault(
@@ -440,6 +463,12 @@ class RealUnifiedRuntime:
             result["upstream_governance_posture"] = upstream_posture
         if plan_bootstrap:
             result["execution_path"] = "INTERNAL_DRAFT_BOOTSTRAP"
+            result["upstream_governance_posture"] = upstream_posture
+        if workspace_read_bootstrap:
+            result["execution_path"] = "PROJECT_WORKSPACE_READ"
+            result["upstream_governance_posture"] = upstream_posture
+        if workspace_write_bootstrap:
+            result["execution_path"] = "PROJECT_WORKSPACE_REVISIONED_WRITE"
             result["upstream_governance_posture"] = upstream_posture
         return result
 
