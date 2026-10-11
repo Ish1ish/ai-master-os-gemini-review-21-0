@@ -357,10 +357,6 @@ class RealUnifiedRuntime:
             action == "generate_internal_draft"
             and tool_name == "provider.project.plan"
         )
-        workspace_read_bootstrap = (
-            action == "read_only_inspection"
-            and tool_name == "provider.project.workspace.read"
-        )
         workspace_read_tool = tool_name == "provider.project.workspace.read"
         workspace_write_tool = tool_name == "provider.project.workspace.write"
         workspace_read_bootstrap = (
@@ -372,14 +368,7 @@ class RealUnifiedRuntime:
         if (
             (workspace_read_tool and action != "read_only_inspection")
             or (workspace_write_tool and action != "update_project_workspace")
-        ):
-            return {
-                "status": "BLOCKED",
-                "reason": "project_workspace_action_tool_binding_invalid",
-            }
-        if (
-            action == "update_project_workspace"
-            and not workspace_write_bootstrap
+            or (action == "update_project_workspace" and not workspace_write_tool)
         ):
             return {
                 "status": "BLOCKED",
