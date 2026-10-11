@@ -32,6 +32,10 @@ _SOURCE_ID_RE = re.compile(r"^S[0-9]{3,6}$")
 
 
 def _text(value: Any, field: str, *, required: bool = True, limit: int = MAX_PLAN_TEXT_CHARS) -> str:
+    if value is None and not required:
+        return ""
+    if not isinstance(value, str):
+        raise ValueError("project_plan_schema_invalid:" + field)
     rendered = _clean_text(value, limit=limit)
     if required and not rendered:
         raise ValueError("project_plan_schema_invalid:" + field)
