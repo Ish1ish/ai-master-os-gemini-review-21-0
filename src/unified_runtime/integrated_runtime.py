@@ -305,12 +305,6 @@ class RealUnifiedRuntime:
         if not isinstance(execution_contract, Mapping):
             return {"status": "BLOCKED", "reason": "execution_contract_must_be_mapping"}
 
-        if governance.get("posture") != "PROCEED_TO_EXECUTION_GATE":
-            return {
-                "status": "BLOCKED",
-                "reason": f"governance_posture_not_executable:{governance.get('posture')}",
-            }
-
         requester = str((principal or {}).get("principal") or "").strip()
         if not requester:
             return {"status": "BLOCKED", "reason": "principal_required"}
@@ -333,17 +327,131 @@ class RealUnifiedRuntime:
                 "status": "BLOCKED",
                 "reason": "execution_payload_must_be_mapping",
             }
+        research_tool_allowlist = {
+            "provider.research.live",
+            "provider.research.synthesis",
+            "provider.research.workflow",
+        }
+        if (
+            action == "read_only_market_research"
+            and tool_name not in research_tool_allowlist
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": "research_action_tool_binding_invalid",
+            }
+
+        # Bootstrap is limited to the read-only research action and an explicit
+        # allowlist of provider tools. This supports evidence acquisition,
+        # source-grounded synthesis, and their combined workflow before
+        # decision-grade market evidence exists. O45 still independently
+        # classifies and authorizes each registered tool.
+        research_bootstrap = (
+            action == "read_only_market_research"
+            and tool_name in research_tool_allowlist
+        )
+        # A generated plan is an internal draft only. This exact pair may be
+        # bootstrapped from the user's goal and prior research because it has
+        # no external effect, does not spend funds, and does not execute tasks.
+        plan_bootstrap = (
+            action == "generate_internal_draft"
+            and tool_name == "provider.project.plan"
+        )
+        workspace_read_tool = tool_name == "provider.project.workspace.read"
+        workspace_review_tool = tool_name == "provider.project.workspace.review"
+        workspace_write_tool = tool_name == "provider.project.workspace.write"
+        goal_to_workspace_tool = tool_name == "provider.project.goal-to-workspace"
+        workspace_read_bootstrap = (
+            action == "read_only_inspection" and workspace_read_tool
+        )
+        workspace_review_bootstrap = (
+            action == "read_only_inspection" and workspace_review_tool
+        )
+        workspace_write_bootstrap = (
+            action == "update_project_workspace" and workspace_write_tool
+        )
+        goal_to_workspace_bootstrap = (
+            action == "update_project_workspace" and goal_to_workspace_tool
+        )
+        if (
+            (workspace_read_tool and action != "read_only_inspection")
+            or (workspace_review_tool and action != "read_only_inspection")
+            or (workspace_write_tool and action != "update_project_workspace")
+            or (goal_to_workspace_tool and action != "update_project_workspace")
+            or (
+                action == "update_project_workspace"
+                and not (workspace_write_tool or goal_to_workspace_tool)
+            )
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": "project_workspace_action_tool_binding_invalid",
+            }
+        if workspace_read_tool or workspace_review_tool:
+            payload = dict(payload)
+            operation = str(payload.get("operation") or "").strip().lower()
+            if (
+                workspace_review_tool
+                or (workspace_read_tool and operation == "get")
+            ) and str(payload.get("project_id") or "") != project_id:
+                return {
+                    "status": "BLOCKED",
+                    "reason": "project_workspace_project_binding_invalid",
+                }
+            payload["requested_by"] = requester
+        if workspace_write_tool or goal_to_workspace_tool:
+            payload = dict(payload)
+            if str(payload.get("project_id") or "") != project_id:
+                return {
+                    "status": "BLOCKED",
+                    "reason": "project_workspace_project_binding_invalid",
+                }
+            payload["requested_by"] = requester
+
+        bootstrap_allowed = (
+            research_bootstrap
+            or plan_bootstrap
+            or workspace_read_bootstrap
+            or workspace_review_bootstrap
+            or workspace_write_bootstrap
+            or goal_to_workspace_bootstrap
+        )
+        upstream_posture = str(governance.get("posture") or "UNKNOWN")
+        if (
+            upstream_posture != "PROCEED_TO_EXECUTION_GATE"
+            and not bootstrap_allowed
+        ):
+            return {
+                "status": "BLOCKED",
+                "reason": f"governance_posture_not_executable:{upstream_posture}",
+            }
 
         context = dict(execution_contract.get("context") or {})
-        context.setdefault("confidence", evaluation.get("confidence"))
-        context.setdefault(
-            "evidence_refs",
-            list(evidence_payload.get("evidence_refs") or []),
-        )
-        context.setdefault(
-            "evidence_boundary",
-            decision_surface.get("evidence_boundary"),
-        )
+        if bootstrap_allowed:
+            # These signals authorize a bounded requested operation; they do not
+            # imply market claims are true or that a project update was validated.
+            context["confidence"] = "high"
+            context.setdefault("evidence_refs", [f"user_request:{run_id}"])
+            if research_bootstrap:
+                context["evidence_boundary"] = "user_request_scope_only"
+            elif plan_bootstrap:
+                context["evidence_boundary"] = "user_goal_and_research_scope_only"
+            elif workspace_read_bootstrap:
+                context["evidence_boundary"] = "project_workspace_scope_only"
+            elif workspace_review_bootstrap:
+                context["evidence_boundary"] = "project_workspace_read_only_review_scope"
+            else:
+                context["evidence_boundary"] = "project_workspace_mutation_scope_only"
+        else:
+            context.setdefault("confidence", evaluation.get("confidence"))
+            context.setdefault(
+                "evidence_refs",
+                list(evidence_payload.get("evidence_refs") or []),
+            )
+            context.setdefault(
+                "evidence_boundary",
+                decision_surface.get("evidence_boundary"),
+            )
 
         from core.src.execution_intent_planner import ExecutionIntentPlanner
 
@@ -382,13 +490,26 @@ class RealUnifiedRuntime:
             intent,
             expected_project_id=project_id,
         )
-        return {
+        result = {
             "status": submission.get("status", "BLOCKED"),
             "intent": intent,
             "preflight": preflight,
             "submission": submission,
             "principal_id": requester,
         }
+        if research_bootstrap:
+            result["execution_path"] = "READ_ONLY_EVIDENCE_ACQUISITION"
+            result["upstream_governance_posture"] = upstream_posture
+        if plan_bootstrap:
+            result["execution_path"] = "INTERNAL_DRAFT_BOOTSTRAP"
+            result["upstream_governance_posture"] = upstream_posture
+        if workspace_read_bootstrap:
+            result["execution_path"] = "PROJECT_WORKSPACE_READ"
+            result["upstream_governance_posture"] = upstream_posture
+        if workspace_write_bootstrap:
+            result["execution_path"] = "PROJECT_WORKSPACE_REVISIONED_WRITE"
+            result["upstream_governance_posture"] = upstream_posture
+        return result
 
     @staticmethod
     def _normalize_governed_submission(

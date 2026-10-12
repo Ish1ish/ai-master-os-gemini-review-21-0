@@ -6,7 +6,17 @@ from pathlib import Path
 from typing import Any
 
 from core.src.auth import build_default_production_authenticator
-from core.src.canonical_provider_tools import real_search_tool
+from core.src.canonical_provider_tools import real_research_tool, real_search_tool
+from core.src.research_synthesis import real_research_synthesis_tool
+from core.src.goal_research_workflow import real_goal_research_workflow
+from core.src.project_plan_generator import real_project_plan_tool
+from core.src.goal_to_project_workspace import real_goal_to_project_workspace
+from core.src.project_progress_review import project_progress_review_tool
+from core.src.project_workspace_store import (
+    ProjectWorkspaceStore,
+    project_workspace_read_tool,
+    project_workspace_write_tool,
+)
 
 from .entrypoint import UnifiedRuntimeEntrypoint
 from .http_api_server import HTTPServerConfig, UnifiedRuntimeHTTPServer
@@ -77,7 +87,57 @@ def build_s21_http_server(
         or os.getenv(PERSISTENCE_ENV, DEFAULT_PERSISTENCE_ROOT)
     ).resolve()
     entrypoint = UnifiedRuntimeEntrypoint(str(root), enable_external_actions=False)
-    entrypoint.register_execution_tool("provider.search.live", real_search_tool, version="1.0.0")
+    entrypoint.register_execution_tool(
+        "provider.search.live", real_search_tool, version="1.0.0", retry_safe=False
+    )
+    entrypoint.register_execution_tool(
+        "provider.research.live", real_research_tool, version="1.0.0", retry_safe=False
+    )
+    entrypoint.register_execution_tool(
+        "provider.research.synthesis",
+        real_research_synthesis_tool,
+        version="1.0.0",
+        retry_safe=False,
+    )
+    entrypoint.register_execution_tool(
+        "provider.research.workflow",
+        real_goal_research_workflow,
+        version="1.0.0",
+        retry_safe=False,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.plan",
+        real_project_plan_tool,
+        version="1.0.0",
+        retry_safe=False,
+    )
+    workspace_store = ProjectWorkspaceStore(root / "project_workspace.sqlite3")
+    # Expose the same owned store to read-only canonical HTTP routes.
+    entrypoint.project_workspace_store = workspace_store
+    entrypoint.register_execution_tool(
+        "provider.project.workspace.read",
+        lambda payload: project_workspace_read_tool(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=True,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.workspace.review",
+        lambda payload: project_progress_review_tool(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=True,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.workspace.write",
+        lambda payload: project_workspace_write_tool(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=False,
+    )
+    entrypoint.register_execution_tool(
+        "provider.project.goal-to-workspace",
+        lambda payload: real_goal_to_project_workspace(payload, store=workspace_store),
+        version="1.0.0",
+        retry_safe=False,
+    )
     entrypoint.execution_principal = execution_principal
 
     server_config = HTTPServerConfig(

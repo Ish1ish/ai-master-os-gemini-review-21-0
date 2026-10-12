@@ -7,7 +7,11 @@ delegated to the already-owned runtime instance.
 from __future__ import annotations
 
 from typing import Any, Mapping
+import uuid
 from urllib.parse import parse_qs, urlsplit
+
+from core.src.project_progress_review import project_progress_review_tool
+from core.src.project_workspace_store import MAX_WORKSPACE_TASKS, project_workspace_read_tool
 
 
 class CanonicalHTTPAPI:
@@ -88,7 +92,329 @@ class CanonicalHTTPAPI:
             return 400
         if status == "CONFLICT":
             return 409
+        if status == "UNAVAILABLE":
+            return 503
         return 200
+
+    def _submit_workspace_mutation(
+        self,
+        *,
+        project_id: str,
+        operation: str,
+        body: Mapping[str, Any],
+        principal: Mapping[str, Any],
+        task_id: str | None = None,
+    ) -> tuple[int, dict[str, Any]]:
+        """Submit an owner-scoped workspace mutation as an O45-governed intent.
+
+        This method deliberately does not execute the mutation. The caller must
+        use the existing explicit /api/intents/{intent_id}/execute route.
+        """
+        denied = self._authorize(principal, "run:submit")
+        if denied:
+            return self._http_status(denied), denied
+
+        principal_id = str(
+            principal.get("principal_id") or principal.get("principal") or ""
+        ).strip()
+        if not principal_id:
+            result = {"status": "UNAUTHORIZED", "reason": "principal_required"}
+            return self._http_status(result), result
+
+        if operation not in {"add_task", "update_task", "append_note", "record_decision", "update_status"}:
+            result = {"status": "BAD_REQUEST", "reason": "project_workspace_operation_invalid"}
+            return self._http_status(result), result
+
+        if not project_id.strip() or "/" in project_id or project_id in {".", ".."}:
+            result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+            return self._http_status(result), result
+
+        store = getattr(self.entrypoint, "project_workspace_store", None)
+        if store is None:
+            result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
+            return self._http_status(result), result
+
+        current = project_workspace_read_tool(
+            {
+                "operation": "get",
+                "project_id": project_id,
+                "requested_by": principal_id,
+            },
+            store=store,
+        )
+        if current.get("status") != "OK":
+            result = {
+                "status": "NOT_FOUND",
+                "reason": "project_workspace_not_found",
+                "project_id": project_id,
+            }
+            return self._http_status(result), result
+
+        workspace = current.get("workspace") or {}
+        expected_revision = body.get("expected_revision")
+        if (
+            isinstance(expected_revision, bool)
+            or not isinstance(expected_revision, int)
+            or expected_revision < 1
+            or expected_revision > 2**31 - 1
+        ):
+            result = {"status": "BAD_REQUEST", "reason": "expected_revision_invalid"}
+            return self._http_status(result), result
+
+        current_revision = current.get("revision")
+        if current_revision != expected_revision:
+            result = {
+                "status": "CONFLICT",
+                "reason": "project_workspace_revision_mismatch",
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "current_revision": current_revision,
+            }
+            return self._http_status(result), result
+
+        project_status = str(workspace.get("status") or "").upper()
+        requested_status = None
+        if operation == "update_status":
+            raw_status = body.get("project_status")
+            allowed_project_statuses = {"ACTIVE", "PAUSED", "COMPLETED", "ARCHIVED"}
+            if not isinstance(raw_status, str) or raw_status.strip().upper() not in allowed_project_statuses:
+                result = {
+                    "status": "BAD_REQUEST",
+                    "reason": "project_workspace_status_invalid",
+                }
+                return self._http_status(result), result
+            requested_status = raw_status.strip().upper()
+
+        if project_status == "ARCHIVED":
+            result = {
+                "status": "CONFLICT",
+                "reason": "project_workspace_archived",
+                "project_id": project_id,
+            }
+            return self._http_status(result), result
+        if project_status == "COMPLETED" and not (
+            operation == "update_status" and requested_status == "ARCHIVED"
+        ):
+            result = {
+                "status": "CONFLICT",
+                "reason": "project_workspace_completed",
+                "project_id": project_id,
+            }
+            return self._http_status(result), result
+        if operation == "update_status" and requested_status == project_status:
+            result = {
+                "status": "BAD_REQUEST",
+                "reason": "project_workspace_status_unchanged",
+            }
+            return self._http_status(result), result
+        if project_status == "PAUSED" and operation in {"update_task", "add_task"}:
+            result = {
+                "status": "CONFLICT",
+                "reason": "project_workspace_paused",
+                "project_id": project_id,
+            }
+            return self._http_status(result), result
+
+        tasks = workspace.get("tasks") if isinstance(workspace.get("tasks"), list) else []
+        if operation == "add_task":
+            if len(tasks) >= MAX_WORKSPACE_TASKS:
+                result = {
+                    "status": "CONFLICT",
+                    "reason": "project_workspace_task_limit_reached",
+                    "project_id": project_id,
+                    "task_limit": MAX_WORKSPACE_TASKS,
+                }
+                return self._http_status(result), result
+            title = body.get("title")
+            if not isinstance(title, str) or not title.strip() or len(title) > 500:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_title_invalid"}
+                return self._http_status(result), result
+            note = body.get("note", "")
+            if not isinstance(note, str) or len(note) > 1000:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_note_invalid"}
+                return self._http_status(result), result
+            priority = body.get("priority", "")
+            if priority and (
+                not isinstance(priority, str)
+                or priority.strip().lower() not in {"low", "medium", "high", "urgent"}
+            ):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_priority_invalid"}
+                return self._http_status(result), result
+            due_in_days = body.get("due_in_days")
+            if due_in_days is not None and (
+                isinstance(due_in_days, bool)
+                or not isinstance(due_in_days, int)
+                or due_in_days < 0
+                or due_in_days > 3650
+            ):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_due_in_days_invalid"}
+                return self._http_status(result), result
+            success_criteria = body.get("success_criteria", "")
+            if not isinstance(success_criteria, str) or len(success_criteria) > 700:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_success_criteria_invalid"}
+                return self._http_status(result), result
+            milestone_id = body.get("milestone_id", "")
+            if not isinstance(milestone_id, str):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_milestone_id_invalid"}
+                return self._http_status(result), result
+            milestone_id = milestone_id.strip()
+            if milestone_id:
+                plan = workspace.get("plan", {})
+                milestones = plan.get("milestones", []) if isinstance(plan, Mapping) else []
+                known_milestones = {
+                    f"M{index:02d}"
+                    for index, milestone in enumerate(milestones, start=1)
+                    if isinstance(milestone, Mapping)
+                }
+                if milestone_id not in known_milestones:
+                    result = {"status": "BAD_REQUEST", "reason": "project_workspace_milestone_not_found"}
+                    return self._http_status(result), result
+            mutation = {
+                "operation": "add_task",
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "title": title,
+                "note": note,
+                "author": principal_id,
+                "priority": priority.strip().lower() if isinstance(priority, str) else "",
+                "success_criteria": success_criteria,
+                "milestone_id": milestone_id,
+            }
+            if due_in_days is not None:
+                mutation["due_in_days"] = due_in_days
+
+        elif operation == "update_task":
+            if not isinstance(task_id, str) or not task_id.strip() or "/" in task_id:
+                result = {"status": "BAD_REQUEST", "reason": "task_id_invalid"}
+                return self._http_status(result), result
+            task_id = task_id.strip()
+            if not any(isinstance(task, Mapping) and task.get("task_id") == task_id for task in tasks):
+                result = {"status": "NOT_FOUND", "reason": "project_workspace_task_not_found", "task_id": task_id}
+                return self._http_status(result), result
+            task_status = body.get("task_status")
+            allowed_statuses = {"TODO", "IN_PROGRESS", "BLOCKED", "DONE", "SKIPPED"}
+            if not isinstance(task_status, str) or task_status.strip().upper() not in allowed_statuses:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_status_invalid"}
+                return self._http_status(result), result
+            note = body.get("note", "")
+            if not isinstance(note, str) or len(note) > 1000:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_note_invalid"}
+                return self._http_status(result), result
+            mutation = {
+                "operation": operation,
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "task_id": task_id,
+                "task_status": task_status.strip().upper(),
+                "note": note,
+            }
+
+        elif operation == "append_note":
+            note = body.get("note")
+            if not isinstance(note, str) or not note.strip() or len(note) > 1800:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_note_invalid"}
+                return self._http_status(result), result
+            note_type = body.get("note_type", "progress")
+            if not isinstance(note_type, str) or note_type.strip().lower() not in {
+                "progress", "blocker", "observation", "follow_up"
+            }:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_note_type_invalid"}
+                return self._http_status(result), result
+            note_task_id = body.get("task_id", "")
+            if not isinstance(note_task_id, str):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_task_id_invalid"}
+                return self._http_status(result), result
+            note_task_id = note_task_id.strip()
+            if note_task_id and not any(
+                isinstance(task, Mapping) and task.get("task_id") == note_task_id
+                for task in tasks
+            ):
+                result = {"status": "NOT_FOUND", "reason": "project_workspace_task_not_found", "task_id": note_task_id}
+                return self._http_status(result), result
+            mutation = {
+                "operation": operation,
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "note": note,
+                "note_type": note_type.strip().lower(),
+                "author": principal_id,
+                "task_id": note_task_id,
+            }
+
+        elif operation == "update_status":
+            if requested_status == "COMPLETED":
+                unfinished = [
+                    str(task.get("task_id") or "")
+                    for task in tasks
+                    if isinstance(task, Mapping)
+                    and str(task.get("status") or "").upper() not in {"DONE", "SKIPPED"}
+                ]
+                if unfinished:
+                    result = {
+                        "status": "CONFLICT",
+                        "reason": "project_completion_requires_all_tasks_resolved",
+                        "project_id": project_id,
+                        "unfinished_task_count": len(unfinished),
+                        "unfinished_task_ids": unfinished[:20],
+                    }
+                    return self._http_status(result), result
+            mutation = {
+                "operation": "update_status",
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "project_status": requested_status,
+            }
+
+        else:  # record_decision
+            title = body.get("title")
+            rationale = body.get("rationale")
+            if not isinstance(title, str) or not title.strip() or len(title) > 240:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_decision_title_invalid"}
+                return self._http_status(result), result
+            if not isinstance(rationale, str) or not rationale.strip() or len(rationale) > 1800:
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_decision_rationale_invalid"}
+                return self._http_status(result), result
+            source_ids = body.get("source_ids", [])
+            if not isinstance(source_ids, list) or any(not isinstance(item, str) for item in source_ids):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_decision_source_ids_invalid"}
+                return self._http_status(result), result
+            allowed_source_ids = {
+                item.get("source_id")
+                for item in (workspace.get("sources") or [])
+                if isinstance(item, Mapping)
+            }
+            if any(item not in allowed_source_ids for item in source_ids):
+                result = {"status": "BAD_REQUEST", "reason": "project_workspace_unknown_source_id"}
+                return self._http_status(result), result
+            mutation = {
+                "operation": operation,
+                "project_id": project_id,
+                "expected_revision": expected_revision,
+                "title": title,
+                "rationale": rationale,
+                "source_ids": list(dict.fromkeys(source_ids)),
+                "author": principal_id,
+            }
+
+        # The authenticated project owner and route project ID are the only
+        # identity/scope values copied into the governed operation.
+        run_id = "S21-HTTP-WS-" + uuid.uuid4().hex
+        submission_payload = {
+            "run_id": run_id,
+            "project_id": project_id,
+            "strategy_id": "S21-HTTP-WS-STRATEGY-" + uuid.uuid4().hex[:16],
+            "intent": "Update project workspace using " + operation,
+            "goal": str(workspace.get("goal") or ""),
+            "audience": str(workspace.get("audience") or ""),
+            "requested_language": "en",
+            "execution_contract": {
+                "action": "update_project_workspace",
+                "tool_name": "provider.project.workspace.write",
+                "payload": mutation,
+            },
+        }
+        result = self.entrypoint.run(submission_payload, principal=principal)
+        return self._http_status(result), result
 
     def handle(
         self,
@@ -125,6 +451,94 @@ class CanonicalHTTPAPI:
                 intent_id,
                 principal=self.execution_principal or principal,
             )
+            return self._http_status(result), result
+
+        if method == "POST" and route.startswith("/api/projects/"):
+            project_path = route[len("/api/projects/"):]
+            segments = project_path.split("/")
+            if len(segments) == 3 and segments[1] == "tasks":
+                project_id, _tasks, task_id = segments
+                return self._submit_workspace_mutation(
+                    project_id=project_id,
+                    operation="update_task",
+                    body=body,
+                    principal=principal,
+                    task_id=task_id,
+                )
+            if len(segments) == 2 and segments[1] in {"tasks", "notes", "decisions", "status"}:
+                project_id, suffix = segments
+                operation = {
+                    "tasks": "add_task",
+                    "notes": "append_note",
+                    "decisions": "record_decision",
+                    "status": "update_status",
+                }[suffix]
+                return self._submit_workspace_mutation(
+                    project_id=project_id,
+                    operation=operation,
+                    body=body,
+                    principal=principal,
+                )
+            result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+            return self._http_status(result), result
+
+        if method == "GET" and route == "/api/projects":
+            denied = self._authorize(principal, "run:read")
+            if denied:
+                return self._http_status(denied), denied
+            query = parse_qs(urlsplit(path).query)
+            raw_limit = (query.get("limit") or ["20"])[0]
+            try:
+                limit = int(raw_limit)
+            except (TypeError, ValueError):
+                result = {"status": "BAD_REQUEST", "reason": "project_limit_invalid"}
+                return self._http_status(result), result
+            if limit < 1 or limit > 100:
+                result = {"status": "BAD_REQUEST", "reason": "project_limit_out_of_range"}
+                return self._http_status(result), result
+            store = getattr(self.entrypoint, "project_workspace_store", None)
+            if store is None:
+                result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
+                return self._http_status(result), result
+            principal_id = str(principal.get("principal_id") or principal.get("principal") or "").strip()
+            result = project_workspace_read_tool(
+                {"operation": "list", "limit": limit, "requested_by": principal_id},
+                store=store,
+            )
+            return self._http_status(result), result
+
+        if method == "GET" and route.startswith("/api/projects/"):
+            project_path = route[len("/api/projects/"):]
+            is_review = project_path.endswith("/review")
+            project_id = (
+                project_path[:-len("/review")].strip("/")
+                if is_review else project_path.strip("/")
+            )
+            if not project_id or "/" in project_id:
+                result = {"status": "NOT_FOUND", "reason": "canonical_route_not_found"}
+                return self._http_status(result), result
+            denied = self._authorize(principal, "run:read")
+            if denied:
+                return self._http_status(denied), denied
+            store = getattr(self.entrypoint, "project_workspace_store", None)
+            if store is None:
+                result = {"status": "UNAVAILABLE", "reason": "project_workspace_store_unavailable"}
+                return self._http_status(result), result
+            principal_id = str(principal.get("principal_id") or principal.get("principal") or "").strip()
+            if is_review:
+                result = project_progress_review_tool(
+                    {"project_id": project_id, "requested_by": principal_id},
+                    store=store,
+                )
+            else:
+                result = project_workspace_read_tool(
+                    {
+                        "operation": "get",
+                        "project_id": project_id,
+                        "requested_by": principal_id,
+                    },
+                    store=store,
+                )
             return self._http_status(result), result
 
         if method == "GET" and route == "/api/approvals":
